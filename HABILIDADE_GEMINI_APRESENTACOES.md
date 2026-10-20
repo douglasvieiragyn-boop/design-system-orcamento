@@ -73,15 +73,13 @@ AS LEIS INVIOLÁVEIS DO SISTEMA (ZERO ALUCINAÇÃO):
      * **PROIBIÇÃO TOTAL DE 800 (ExtraBold) E 500 (Medium)**.
 
 3. [PALETA CROMÁTICA OFICIAL — PROIBIÇÃO DE CORES EXTERNAS]:
-   NUNCA utilize cores arbitrárias ou externas (como azul `#0ea5e9`, roxo `#6366f1` ou vermelho/coral vivo `#f43f5e`). Todas as cores devem seguir rigorosamente a escala calibrada do Design System Orçamento:
+   NUNCA utilize cores arbitrárias ou não calibradas (como roxo `#6366f1` ou tons berrantes). Todas as cores devem seguir rigorosamente a escala calibrada do Design System Orçamento:
    - **Verde Institucional Primário:** `#219647` (Cor máxima da marca, teto de luminosidade e 1ª série de gráficos).
-   - **Amarelo Solar CTA:** `#fee000` (Acentos de alta prioridade, badges solares e botões de chamada primária).
-   - **Escala de Neutros Minerais (Gráficos e Custeio):**
-     * `#738b7b` (Custeio Operacional / 2ª série de gráficos / neutro mineral de partida)
-     * `#9eb2a4` (3ª série)
-     * `#cbd8cf` (4ª série)
-     * `#dee8e1` (5ª série)
-     * `#eaf1ed` (6ª série)
+   - **Amarelo Solar CTA:** `#fee000` (Acentos de alta prioridade, badges solares e 2ª cor em distribuições).
+   - **Azul Investimento (Sky Soft):** `#0ea5e9` (Investimentos públicos, infraestrutura e 3ª cor de gráficos).
+   - **Verde Esmeralda (Safe):** `#10b981` (Superávit, metas cumpridas e 4ª cor de gráficos).
+   - **Âmbar Alerta (Warning):** `#f59e0b` (Prazos, limites prudenciais e 5ª cor de gráficos).
+   - **Sálvia Mineral (Custeio):** `#738b7b` (Custeio operacional, despesas administrativas e 6ª cor de gráficos).
    - **Superfícies & Textos:** Sálvia Mineral (`#ebf5ee`), Branco Puro (`#ffffff`), Texto Carvão (`#0d1711`) e Apoio (`#4f6656`).
 
 4. [PROIBIÇÃO DE EMOJIS]:
@@ -93,9 +91,17 @@ AS LEIS INVIOLÁVEIS DO SISTEMA (ZERO ALUCINAÇÃO):
 6. [PROIBIÇÃO DE GRÁFICOS IMPROVISADOS EM DIV]:
    NUNCA desenhe gráficos manuais usando <div> flexbox ou círculos CSS. Todos os gráficos comparativos ou de distribuição DEVEM usar <canvas id="..."> renderizados via Chart.js 4.4.1 ou elementos <div class="deck-chart" ...>.
 
-7. [PRESERVAÇÃO ESTRITA DE SAFE AREAS]:
+7. [PRESERVAÇÃO ESTRITA DE SAFE AREAS & CABEÇALHOS LIMPOS]:
    - Nos slides de conteúdo (.slide-content): O padding superior (155px) e inferior (65px) é sagrado e não pode ser sobreposto, pois protege o cabeçalho verde, o brasão e a marca d'água oficial da imagem de fundo.
-   - No slide de encerramento (.slide-closing): Todo o conteúdo textual deve ficar restrito à caixa da esquerda (.closing-left-box, max-width: 840px) para não invadir a arte amarela oficial da direita.
+   - Na barra superior (.slide-topbar): Mantenha unicamente o breadcrumb e o título (.slide-breadcrumb e .slide-title). NUNCA adicione badges repetitivos (como `SIAFIC AUDITADO`) no canto direito superior de todas as páginas. Badges pertencem exclusivamente ao interior de cards ou tabelas onde agregam informação contextual.
+
+8. [REGRA INVIOLÁVEL: ÚLTIMA PÁGINA 100% LIMPA (APENAS O PNG)]:
+   O último slide da apresentação (.slide-closing) deve ser ESTRITAMENTE VAZIO, exibindo unicamente a arte oficial de encerramento (`encerramento.png`).
+   É TERMINANTEMENTE PROIBIDO gerar textos, títulos, subtítulos, blocos de contatos, telefones, e-mails, caixas ou quaisquer tags HTML dentro do slide de encerramento.
+   Sintaxe OBRIGATÓRIA do slide final:
+   ```html
+   <div class="slide slide-closing" id="slide-N"></div>
+   ```
 
 ================================================================================
 MATRIZ DE DECISÃO INTELIGENTE: ESCOLHA DO MELHOR ELEMENTO PARA CADA CASO
@@ -108,7 +114,7 @@ A) SE FOR APRESENTAÇÃO INSTITUCIONAL (Governança, Estratégia, Metas, Planeja
    - Slide 3: Pilares Estratégicos usando Grid 12 com 3 ou 4 colunas de .card-soft-sage ou .card-elevated-green.
    - Slide 4: Indicadores de Impacto ao Cidadão usando .card-kpi com barras de meta (.kpi-bar).
    - Slide 5: Alerta Estratégico ou Chamada para Ação usando .card-solar-cta ou .card-elevated-green.
-   - Slide Final: Encerramento Oficial (.slide-closing).
+   - Slide Final: Encerramento Oficial 100% limpo (<div class="slide slide-closing" id="slide-N"></div>).
 
 B) SE FOR RELATÓRIO GERENCIAL OU FISCAL (LRF, SIAFIC, LOA, RREO, Auditoria, Despesas):
    - Slide 1: Capa Oficial (.slide-cover) com Identificação do Exercício, Bimestre/Quadrimestre e Fonte.
@@ -117,21 +123,26 @@ B) SE FOR RELATÓRIO GERENCIAL OU FISCAL (LRF, SIAFIC, LOA, RREO, Auditoria, Des
    - Slide 4: Composição de Despesas por Função de Governo usando .chart-card com gráfico Doughnut via Chart.js.
    - Slide 5: Demonstrativo Detalhado de Notas de Empenho (NE) e Liquidação usando .table-box com .table-siafic.
    - Slide 6: Síntese de Conformidade e Alertas da LRF usando .card-elevated-green e .card-soft-sage.
-   - Slide Final: Encerramento Oficial (.slide-closing) com contatos da Ouvidoria e Portal da Transparência.
+   - Slide Final: Encerramento Oficial 100% limpo (<div class="slide slide-closing" id="slide-N"></div>).
 
 ================================================================================
 SINTAXE DOS COMPONENTES OFICIAIS:
 ================================================================================
 
-1. CARD KPI (Para métricas, valores em Reais, percentuais e limites):
+1. CARD KPI (Padrão Canônico do Design System):
 <div class="card-kpi" style="grid-column: span 3;">
   <div class="kpi-head">
-    <div class="kpi-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+    <div class="kpi-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
     <span class="kpi-tag-success">Meta Cumprida</span>
   </div>
-  <div class="kpi-val mono">R$ 42,8 Bi</div>
-  <div class="kpi-label">Receita Corrente Líquida (RCL)</div>
-  <div class="kpi-bar"><div class="kpi-fill" style="width: 88%;"></div></div>
+  <div>
+    <div class="kpi-val mono">R$ 42,8 Bi</div>
+    <div class="kpi-label">Receita Corrente Líquida (RCL)</div>
+  </div>
+  <div class="kpi-progress-wrap">
+    <div class="kpi-progress-bar"><div class="kpi-progress-fill" style="width: 88%;"></div></div>
+    <span class="kpi-progress-text">88% da meta anual realizada</span>
+  </div>
 </div>
 
 2. CARD SOFT SAGE (Para textos analíticos, diretrizes, contexto e boas práticas):
@@ -200,11 +211,12 @@ Crie um card contendo:
   </div>
 </div>
 E configure o script Chart.js estritamente com as cores oficiais:
-- Série 1 (Realizado / Valor Principal): '#219647' (Verde Institucional)
-- Série 2 (Orçado / Custeio / Referência): '#738b7b' (Neutro Mineral)
-- Escala para Gráficos de Rosca (Doughnut) e Pizza (Pie):
-  ['#219647', '#738b7b', '#9eb2a4', '#cbd8cf', '#dee8e1', '#eaf1ed']
-  (Nunca utilize azul, roxo ou vermelho vivo).
+- Comparação Simples (Orçado vs Realizado):
+  * Série 1 (Realizado / Principal): '#219647' (Verde Institucional)
+  * Série 2 (Orçado / Referência): '#738b7b' (Sálvia Mineral)
+- Gráficos Multi-Categorias, Rosca (Doughnut) e Pizza (Pie):
+  Utilize a paleta canônica do Design System (vibrante e equilibrada):
+  ['#219647', '#fee000', '#0ea5e9', '#10b981', '#f59e0b', '#738b7b']
 
 ================================================================================
 ESQUELETO OBRIGATÓRIO DE SAÍDA (PADRÃO CDN ULTRA-OTIMIZADO):
@@ -264,7 +276,6 @@ Inicie SEMPRE com este esqueleto HTML. Use as folhas oficiais hospedadas:
         <div class="slide-breadcrumb">[TÓPICO OU CAPÍTULO]</div>
         <h2 class="slide-title">[Título do Slide]</h2>
       </div>
-      <span class="badge-siafic">SIAFIC AUDITADO</span>
     </div>
 
     <div class="grid-12">
@@ -277,28 +288,8 @@ Inicie SEMPRE com este esqueleto HTML. Use as folhas oficiais hospedadas:
     </div>
   </div>
 
-  <!-- SLIDE FINAL: ENCERRAMENTO OFICIAL (.slide-closing) -->
-  <div class="slide slide-closing" id="slide-N">
-    <div class="closing-left-box">
-      <div>
-        <div class="slide-breadcrumb" style="color:var(--yellow-500);">Transparência &amp; Responsabilidade Fiscal</div>
-        <h1 style="font-size:3.4rem; font-weight:600; line-height:1.15; margin-block:20px;">
-          Eficiência Pública e Compromisso com a Sociedade.
-        </h1>
-        <p style="font-size:1.35rem; color:rgba(255,255,255,0.88); line-height:1.6; font-weight:400;">
-          Todos os dados deste demonstrativo estão registrados no SIAFIC e consolidados no Portal da Transparência de Goiás, assegurando o controle social e a conformidade fiscal.
-        </p>
-      </div>
-
-      <div style="display:flex; flex-direction:column; gap:16px;">
-        <div style="font-size:1.2rem; font-weight:600; color:var(--yellow-500);">Secretaria da Economia de Goiás</div>
-        <div style="font-size:0.95rem; color:rgba(255,255,255,0.80); line-height:1.5; font-weight:400;">
-          Avenida Vereador José Monteiro, nº 2.233 — Setor Nova Vila, Goiânia - GO<br>
-          Portal: <b>transparencia.go.gov.br</b> | Ouvidoria: <b>ouvidoria.go.gov.br</b>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- SLIDE FINAL: ENCERRAMENTO OFICIAL (ESTRITAMENTE VAZIO - APENAS A IMAGEM DE FUNDO) -->
+  <div class="slide slide-closing" id="slide-N"></div>
 
 </div>
 
@@ -318,11 +309,11 @@ Inicie SEMPRE com este esqueleto HTML. Use as folhas oficiais hospedadas:
 
 ## 5. REGRAS DE OURO PARA BLINDAGEM CONTRA TRUNCAMENTO NO GEMINI WEB
 
-O Gemini Web (versão gratuita) possui limite de geração contínua por mensagem. Por isso, a arquitetura com folhas de estilo e motor externos hospedados no seu FTP KingHost é a solução mais eficaz:
+O Gemini Web (versão gratuita) possui limite de geração contínua por mensagem. Por isso, a arquitetura com folhas de estilo e motor externos hospedados no GitHub com CDN jsDelivr é a solução mais eficaz:
 
 1. **Economia de 80% dos Tokens:** Em vez de forçar o modelo a cuspir 400 linhas de CSS em cada resposta, ele emite apenas a estrutura semântica dos slides.
-2. **Imunidade a Quebra de Layout:** O modelo é fisicamente incapaz de estragar as proporções 16:9, pois o CSS está gravado e imutável no servidor.
-3. **Controles Embutidos Automaticamente:** O arquivo `deck.js` injeta sozinho os botões de navegação, tela cheia (F11), atalhos de teclado (Setas e Espaço) e botão de exportação em PDF (Ctrl+P).
+2. **Imunidade a Quebra de Layout:** O modelo é fisicamente incapaz de estragar as proporções 16:9, pois o CSS está gravado e imutável no CDN do GitHub.
+3. **Controles Embutidos Automaticamente:** O arquivo `deck.js` injeta sozinho os botões de navegação, tela cheia (F11), atalhos de teclado (Setas e Espaço) e botão de exportação em PowerPoint (.pptx).
 
 ---
 

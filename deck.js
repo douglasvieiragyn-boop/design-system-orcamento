@@ -174,14 +174,155 @@
         <span id="slideIndicator" style="padding-inline: 8px;">Slide 1 / ${totalSlides}</span>
         <button id="btnNext">Próximo →</button>
         <button class="btn-sec btn-solar" id="btnFS">F11 Tela Cheia</button>
-        <button class="btn-sec" id="btnPrint">Salvar PDF (Ctrl+P)</button>
+        <button class="btn-sec" id="btnPPTX" title="Baixar Apresentação em PowerPoint">Exportar PPTX</button>
       `;
       document.body.appendChild(controls);
 
       document.getElementById('btnPrev').addEventListener('click', prevSlide);
       document.getElementById('btnNext').addEventListener('click', nextSlide);
       document.getElementById('btnFS').addEventListener('click', toggleFullScreen);
-      document.getElementById('btnPrint').addEventListener('click', () => window.print());
+      document.getElementById('btnPPTX').addEventListener('click', exportPPTX);
+    }
+  }
+
+  // Função utilitária para carregamento dinâmico de scripts
+  function loadScript(src) {
+    return new Promise((resolve, reject) => {
+      const existing = document.querySelector(`script[src="${src}"]`);
+      if (existing) return resolve();
+      const s = document.createElement('script');
+      s.src = src;
+      s.onload = () => resolve();
+      s.onerror = (err) => reject(err);
+      document.head.appendChild(s);
+    });
+  }
+
+  // 6. EXPORTAÇÃO INTELIGENTE DE APRESENTAÇÃO POWERPOINT (.PPTX)
+  async function exportPPTX() {
+    const btn = document.getElementById('btnPPTX');
+    const originalText = btn ? btn.innerText : 'Exportar PPTX';
+    if (btn) {
+      btn.innerText = 'Iniciando PPTX...';
+      btn.disabled = true;
+    }
+
+    try {
+      if (typeof html2canvas === 'undefined') {
+        await loadScript('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js');
+      }
+      if (typeof PptxGenJS === 'undefined') {
+        await loadScript('https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js');
+      }
+
+      const pptx = new PptxGenJS();
+      pptx.layout = 'LAYOUT_16x9';
+      pptx.author = 'Governo do Estado de Goiás — Secretaria da Economia';
+      pptx.company = 'Secretaria da Economia de Goiás';
+      pptx.title = document.title || 'Apresentação Orçamentária';
+
+      const slides = Array.from(document.querySelectorAll('.slide'));
+      const total = slides.length;
+      const originalSlide = currentSlide;
+
+      for (let i = 0; i < total; i++) {
+        const slide = slides[i];
+        if (btn) btn.innerText = `Exportando ${i + 1}/${total}...`;
+
+        // REGRA INVIOLÁVEL: Último slide (encerramento) é 100% limpo, apenas imagem
+        if (slide.classList.contains('slide-closing')) {
+          const pSlide = pptx.addSlide();
+          pSlide.addImage({
+            path: 'https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@main/apresentacao/encerramento.png',
+            x: 0,
+            y: 0,
+            w: 10,
+            h: 5.625
+          });
+          continue;
+        }
+
+        // Demais slides: captura 1920x1080 em alta fidelidade
+        const prevDisplay = slide.style.display;
+        const prevVisibility = slide.style.visibility;
+        const prevTransform = slide.style.transform;
+        const prevOpacity = slide.style.opacity;
+        const prevZIndex = slide.style.zIndex;
+        const prevPosition = slide.style.position;
+        const prevTop = slide.style.top;
+        const prevLeft = slide.style.left;
+
+        slide.style.display = 'flex';
+        slide.style.visibility = 'visible';
+        slide.style.opacity = '1';
+        slide.style.transform = 'none';
+        slide.style.position = 'fixed';
+        slide.style.top = '0';
+        slide.style.left = '0';
+        slide.style.zIndex = '99999';
+
+        try {
+          const canvas = await html2canvas(slide, {
+            width: 1920,
+            height: 1080,
+            scale: 1,
+            useCORS: true,
+            allowTaint: true,
+            logging: false,
+            backgroundColor: '#f2f6f3'
+          });
+
+          const imgData = canvas.toDataURL('image/jpeg', 0.94);
+          const pSlide = pptx.addSlide();
+          pSlide.addImage({
+            data: imgData,
+            x: 0,
+            y: 0,
+            w: 10,
+            h: 5.625
+          });
+        } catch (captureErr) {
+          console.warn(`Erro na captura do slide ${i + 1}:`, captureErr);
+          const pSlide = pptx.addSlide();
+          const isCover = slide.classList.contains('slide-cover');
+          pSlide.addImage({
+            path: isCover
+              ? 'https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@main/apresentacao/capa.png'
+              : 'https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@main/apresentacao/bg-conteudo.png',
+            x: 0,
+            y: 0,
+            w: 10,
+            h: 5.625
+          });
+        } finally {
+          slide.style.display = prevDisplay;
+          slide.style.visibility = prevVisibility;
+          slide.style.transform = prevTransform;
+          slide.style.opacity = prevOpacity;
+          slide.style.zIndex = prevZIndex;
+          slide.style.position = prevPosition;
+          slide.style.top = prevTop;
+          slide.style.left = prevLeft;
+        }
+      }
+
+      currentSlide = originalSlide;
+      updateSlides();
+
+      if (btn) btn.innerText = 'Baixando PPTX...';
+      const cleanTitle = (document.title || 'Apresentacao-Orcamentaria')
+        .replace(/[^a-zA-Z0-9À-ÿ_-]/g, '_')
+        .substring(0, 35);
+      await pptx.writeFile({ fileName: `${cleanTitle}.pptx` });
+
+    } catch (err) {
+      console.error('Falha na exportação PPTX:', err);
+      alert('Não foi possível gerar o arquivo PowerPoint. Verifique sua conexão com a internet.');
+    } finally {
+      if (btn) {
+        btn.innerText = originalText;
+        btn.disabled = false;
+      }
     }
   }
 
