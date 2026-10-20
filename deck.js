@@ -100,7 +100,7 @@
             labels: labels,
             datasets: [{
               data: values,
-              backgroundColor: ['#fee000', '#219647', '#0ea5e9', '#f43f5e', '#738b7b'],
+              backgroundColor: ['#219647', '#738b7b', '#9eb2a4', '#cbd8cf', '#dee8e1', '#eaf1ed'],
               borderRadius: 6,
               spacing: 3
             }]
@@ -116,56 +116,6 @@
         });
       }
     });
-
-    // B. Gráficos com IDs pré-definidos (Compatibilidade com modelos existentes)
-    const ctxExec = document.getElementById('chart-execucao');
-    if (ctxExec && !chartInstances['chart-execucao']) {
-      chartInstances['chart-execucao'] = new Chart(ctxExec, {
-        type: 'bar',
-        data: {
-          labels: ['Jan / Fev', 'Mar / Abr', 'Mai / Jun', 'Jul / Ago', 'Set / Out'],
-          datasets: [
-            { label: 'Receita Realizada (R$ M)', data: [42, 58, 51, 74, 92], backgroundColor: '#219647', borderRadius: 6, borderSkipped: false },
-            { label: 'Despesa Liquidada (R$ M)', data: [35, 44, 46, 62, 70], backgroundColor: '#738b7b', borderRadius: 6, borderSkipped: false }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { position: 'top', labels: { color: '#0d1711', font: { family: 'Segoe UI', weight: '600', size: 13 }, usePointStyle: true, pointStyle: 'circle' } }
-          },
-          scales: {
-            x: { grid: { display: false }, ticks: { color: '#4f6656', font: { family: 'Segoe UI', weight: '600' } } },
-            y: { grid: { color: 'rgba(20, 48, 42, 0.08)' }, ticks: { color: '#4f6656', font: { family: 'Segoe UI' }, callback: v => `R$ ${v}M` } }
-          }
-        }
-      });
-    }
-
-    const ctxFunc = document.getElementById('chart-funcoes');
-    if (ctxFunc && !chartInstances['chart-funcoes']) {
-      chartInstances['chart-funcoes'] = new Chart(ctxFunc, {
-        type: 'doughnut',
-        data: {
-          labels: ['Educação & FUNDEB', 'Saúde Pública', 'Infraestrutura Urbana', 'Segurança Pública', 'Administração & Previdência'],
-          datasets: [{
-            data: [28.1, 22.4, 18.5, 16.8, 14.2],
-            backgroundColor: ['#fee000', '#219647', '#0ea5e9', '#f43f5e', '#738b7b'],
-            borderRadius: 6,
-            spacing: 3
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          cutout: '62%',
-          plugins: {
-            legend: { position: 'right', labels: { color: '#0d1711', font: { family: 'Segoe UI', weight: '600', size: 12 }, usePointStyle: true, pointStyle: 'circle', padding: 14 } }
-          }
-        }
-      });
-    }
   }
 
   // 4. ATUALIZADOR DE SLIDES & PLAYER
