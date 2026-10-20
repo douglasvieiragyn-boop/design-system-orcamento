@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demonstrativo Fiscal LRF - 2º Quadrimestre - Governo de Goiás</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@main/deck.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@main/deck.js"></script>
+</head>
+<body>
+<div class="deck-viewport" id="deckViewport">
+
+  <!-- SLIDE 1: CAPA OFICIAL -->
+  <div class="slide slide-cover active" id="slide-1">
+    <div style="display:flex; flex-direction:column; justify-content:space-between; height:100%; max-width:1100px;">
+      <div>
+        <div class="slide-breadcrumb" style="font-size:1.1rem; margin-bottom:16px;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Governo do Estado de Goiás — Secretaria da Economia
+        </div>
+        <h1 style="font-size:3.8rem; font-weight:800; line-height:1.1; color:var(--text-primary); letter-spacing:-0.03em; margin-bottom:24px;">
+          Relatório de Gestão Fiscal &amp; Execução Orçamentária
+        </h1>
+        <p style="font-size:1.5rem; color:var(--text-secondary); line-height:1.5; font-weight:500;">
+          Acompanhamento dos Limites da Lei de Responsabilidade Fiscal (LRF), Comportamento da Arrecadação Tributária e Aplicação Constitucional.
+        </p>
+      </div>
+
+      <div style="display:flex; gap:36px; padding-top:28px; border-top:1px solid var(--border-subtle); align-items:center;">
+        <div>
+          <div style="font-size:0.85rem; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Exercício Fiscal</div>
+          <div style="font-size:1.3rem; font-weight:700; color:var(--text-primary);" class="mono">2026 / 2º Quadrimestre</div>
+        </div>
+        <div>
+          <div style="font-size:0.85rem; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Superintendência</div>
+          <div style="font-size:1.3rem; font-weight:700; color:var(--text-primary);">Orçamento &amp; Tesouro Estadual</div>
+        </div>
+        <div>
+          <div style="font-size:0.85rem; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Conformidade</div>
+          <span class="badge-siafic">SIAFIC AUDITADO</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: PAINEL MACROFISCAL (KPIS) -->
+  <div class="slide slide-content" id="slide-2">
+    <div class="slide-topbar">
+      <div>
+        <div class="slide-breadcrumb">Módulo I — Indicadores Estratégicos</div>
+        <h2 class="slide-title">Painel de Conformidade dos Limites Fiscais (LRF)</h2>
+      </div>
+      <span class="badge-siafic">Fonte: SIAFIC / SEFAZ-GO</span>
+    </div>
+
+    <div class="grid-12">
+      <div class="card-kpi" style="grid-column: span 3;">
+        <div class="kpi-head">
+          <div class="kpi-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+          <span class="kpi-tag-success">Meta Atingida</span>
+        </div>
+        <div class="kpi-val mono">R$ 42,8 Bi</div>
+        <div class="kpi-label">Receita Corrente Líquida (RCL 12m)</div>
+        <div class="kpi-bar"><div class="kpi-fill" style="width: 88%;"></div></div>
+      </div>
+
+      <div class="card-kpi" style="grid-column: span 3;">
+        <div class="kpi-head">
+          <div class="kpi-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+          <span class="kpi-tag-success">44,12% (Abaixo do Teto)</span>
+        </div>
+        <div class="kpi-val mono">44,12%</div>
+        <div class="kpi-label">Despesa com Pessoal (Limite: 49,00%)</div>
+        <div class="kpi-bar"><div class="kpi-fill" style="width: 72%; background:#10b981;"></div></div>
+      </div>
+
+      <div class="card-kpi" style="grid-column: span 3;">
+        <div class="kpi-head">
+          <div class="kpi-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+          <span class="kpi-tag-success">14,2% (Mín: 12%)</span>
+        </div>
+        <div class="kpi-val mono">R$ 3,82 Bi</div>
+        <div class="kpi-label">Aplicação em Ações de Saúde (ASPS)</div>
+        <div class="kpi-bar"><div class="kpi-fill" style="width: 95%;"></div></div>
+      </div>
+
+      <div class="card-kpi" style="grid-column: span 3;">
+        <div class="kpi-head">
+          <div class="kpi-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/></svg></div>
+          <span class="kpi-tag-success">26,4% (Mín: 25%)</span>
+        </div>
+        <div class="kpi-val mono">R$ 5,91 Bi</div>
+        <div class="kpi-label">Manutenção e Desenv. Ensino (MDE)</div>
+        <div class="kpi-bar"><div class="kpi-fill" style="width: 92%;"></div></div>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <span>Relatório de Gestão Fiscal — Secretaria da Economia de Goiás</span>
+      <span>Base Legal: <b>LRF Complementar nº 101/2000</b></span>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: ENCERRAMENTO OFICIAL -->
+  <div class="slide slide-closing" id="slide-3">
+    <div class="closing-left-box">
+      <div>
+        <div class="slide-breadcrumb" style="color:var(--yellow-500);">Transparência &amp; Eficiência Pública</div>
+        <h1 style="font-size:3.4rem; font-weight:800; line-height:1.15; margin-block:20px;">
+          Equilíbrio Fiscal e Desenvolvimento para Goiás.
+        </h1>
+        <p style="font-size:1.35rem; color:rgba(255,255,255,0.88); line-height:1.6;">
+          Todos os dados desta apresentação são consolidados pelo SIAFIC-GO e estão disponíveis para consulta pública e controle social no Portal da Transparência.
+        </p>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div style="font-size:1.15rem; font-weight:700; color:var(--yellow-500);">Secretaria da Economia de Goiás</div>
+        <div style="font-size:0.95rem; color:rgba(255,255,255,0.80); line-height:1.5;">
+          Avenida Vereador José Monteiro, nº 2.233 — Setor Nova Vila, Goiânia - GO<br>
+          Portal: <b>transparencia.go.gov.br</b> | Ouvidoria: <b>ouvidoria.go.gov.br</b>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

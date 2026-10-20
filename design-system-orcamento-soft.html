@@ -1,0 +1,3873 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design System Orçamento — Gestão Orçamentária, Fiscal &amp; Transparência Pública</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Tipografia Segoe UI do Sistema -->
+
+<style>
+  /* ==========================================================================
+     DESIGN SYSTEM ORÇAMENTO — TOKENS DE IDENTIDADE VISUAL SOFT & HIERARQUIA
+     ========================================================================== */
+  :root {
+    /* --- PALETA PRIMÁRIA: VERDE INSTITUCIONAL (#219647 - COR 500) --- */
+    --pine-50:  #edf8f0;
+    --pine-100: #d5eedc;
+    --pine-200: #ade0ba;
+    --pine-300: #7ece93;
+    --pine-400: #48b86d;
+    --pine-500: #219647; /* Cor Primária Verde 500 */
+    --pine-600: #1b7d3a;
+    --pine-700: #16642f;
+    --pine-800: #114c24;
+    --pine-900: #0b3017;
+
+    /* Aliases para compatibilidade */
+    --primary-50:  var(--pine-50);
+    --primary-100: var(--pine-100);
+    --primary-200: var(--pine-200);
+    --primary-300: var(--pine-300);
+    --primary-400: var(--pine-400);
+    --primary-500: var(--pine-500);
+    --primary-600: var(--pine-600);
+    --primary-700: var(--pine-700);
+    --primary-800: var(--pine-800);
+    --primary-900: var(--pine-900);
+
+    /* --- PALETA PRIMÁRIA: AMARELO SOLAR (#fee000 - COR 500) --- */
+    --lime-50:  #fffde6;
+    --lime-100: #fffbb8;
+    --lime-200: #fff785;
+    --lime-300: #ffee4d;
+    --lime-400: #ffe51a;
+    --lime-500: #fee000; /* Cor Primária Amarela 500 */
+    --lime-600: #d4bc00;
+    --lime-700: #a89500;
+    --lime-800: #736600;
+    --lime-900: #3d3700;
+
+    /* Aliases CTA */
+    --cta-500: var(--lime-500);
+    --yellow-500: var(--lime-500);
+    --cta-400: var(--lime-400);
+
+    /* --- TONS ORGÂNICOS SOFT (SAGE & PASTÉIS CALIBRADOS) --- */
+    --sage-50:     #f3f8f4;
+    --sage-100:    #e7f3ea;
+    --sage-200:    #d2e8d7;
+    --sage-300:    #bcd7c3;
+    --sage-bg:     #ebf5ee;  /* Fundo sálvia aveludado para cards e pill tags */
+    --sage-border: rgba(33, 150, 71, 0.12); /* Borda orgânica ultra-suave */
+    --lime-pill:   #fffadb;
+    --lime-glow:   rgba(15, 28, 24, 0.08); /* Sombra suave neutra em vez de brilho colorido */
+
+    /* --- ACENTOS SEMÂNTICOS SOFT COM CONTRASTE WCAG AA --- */
+    --coral-alert:   #f43f5e;
+    --coral-tint:    rgba(244, 63, 94, 0.09);
+    --coral-border:  rgba(244, 63, 94, 0.22);
+    --amber-warning: #f59e0b;
+    --amber-tint:    rgba(245, 158, 11, 0.10);
+    --amber-border:  rgba(245, 158, 11, 0.24);
+    --sky-invest:    #0ea5e9;
+    --sky-tint:      rgba(14, 165, 233, 0.10);
+    --sky-border:    rgba(14, 165, 233, 0.24);
+    --emerald-safe:  #10b981;
+    --emerald-tint:  rgba(16, 185, 129, 0.10);
+
+    /* --- NEUTROS MINERAIS SOFT (WARM SAGE-GRAY SCALE) --- */
+    --n-25:  #ffffff;
+    --n-50:  #f9fbf9;
+    --n-100: #f2f6f3; /* Canvas de página: névoa mineral calmante */
+    --n-150: #eaf1ed;
+    --n-200: #dee8e1;
+    --n-300: #cbd8cf;
+    --n-400: #9eb2a4;
+    --n-500: #738b7b;
+    --n-600: #4f6656; /* Texto secundário suave e legível */
+    --n-700: #35483b;
+    --n-800: #1e2c23;
+    --n-900: #0d1711; /* Texto primário carvão-esmeralda profundo */
+
+    /* --- SEMÂNTICA DE SUPERFÍCIES (MODO CLARO SOFT) --- */
+    --bg-page:        var(--n-100);
+    --bg-surface:     #ffffff;
+    --bg-surface-sub: var(--n-50);
+    --bg-sage:        var(--sage-bg);
+    --bg-dark:        var(--pine-500);
+    --bg-pill:        var(--lime-pill);
+
+    /* --- TIPOGRAFIA & TEXTO --- */
+    --text-primary:   var(--n-900);
+    --text-secondary: var(--n-600);
+    --text-muted:     var(--n-500);
+    --text-inverted:  #ffffff;
+    --text-accent:    var(--pine-500);
+
+    /* --- BORDAS SUAVES & DUPLO BISEL (HAIRLINES) --- */
+    --border-subtle:  rgba(20, 48, 42, 0.06);
+    --border:         rgba(20, 48, 42, 0.10);
+    --border-strong:  rgba(20, 48, 42, 0.18);
+    --border-focus:   var(--pine-500);
+    --border-sage:    var(--sage-border);
+    --inner-highlight: 0 0 0 transparent;
+
+    /* --- SOMBRAS SOFT EM TRIPLA DIFUSÃO (TRIPLE-DIFFUSION AMBIENT) --- */
+    --shadow-soft-xs: 0 1px 2px rgba(15, 28, 24, 0.03), 0 2px 6px rgba(15, 28, 24, 0.02);
+    --shadow-soft-sm: 0 2px 6px rgba(15, 28, 24, 0.03), 0 6px 18px rgba(15, 28, 24, 0.04);
+    --shadow-soft-md: 0 4px 12px rgba(15, 28, 24, 0.03), 0 16px 36px -4px rgba(15, 28, 24, 0.06), var(--inner-highlight);
+    --shadow-soft-lg: 0 8px 24px rgba(15, 28, 24, 0.04), 0 28px 64px -8px rgba(15, 28, 24, 0.08), var(--inner-highlight);
+    --shadow-floating: 0 16px 40px -10px rgba(15, 28, 24, 0.12), 0 32px 72px -16px rgba(15, 28, 24, 0.08);
+    --shadow-glow-lime: var(--shadow-soft-sm);
+    --shadow-glow-pine: var(--shadow-soft-md);
+
+    /* --- GLASSMORFISMO MACIO (VELVET FROSTED GLASS) --- */
+    --glass-bg:          rgba(255, 255, 255, 0.72);
+    --glass-border:      rgba(255, 255, 255, 0.85);
+    --glass-blur:        blur(20px) saturate(160%);
+    --glass-shadow:      0 12px 36px -6px rgba(15, 28, 24, 0.06), 0 2px 6px rgba(0, 0, 0, 0.02), var(--inner-highlight);
+    --glass-sage-bg:     rgba(237, 244, 235, 0.78);
+    --glass-sage-border: rgba(255, 255, 255, 0.90);
+
+    /* --- NAVEGAÇÃO FLUTUANTE --- */
+    --nav-bg:     rgba(255, 255, 255, 0.82);
+    --nav-border: rgba(20, 48, 42, 0.08);
+
+    /* --- ARREDONDAMENTO DISCRETO & SOFISTICADO (CALIBRAÇÃO MODULAR) --- */
+    --r-xs:   2px;
+    --r-sm:   4px;
+    --r-md:   8px;
+    --r-lg:   12px;
+    --r-xl:   16px;
+    --r-2xl:  24px;
+    --r-full: 999px;
+
+    /* --- ESCALA MODULAR DE ESPAÇAMENTO --- */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-7: 48px;
+    --space-8: 64px;
+    --space-9: 80px;
+
+    /* --- TRANSIÇÕES FLUIDAS (HAPTIC SPRING CURVES) --- */
+    --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-lift:   cubic-bezier(0.34, 1.4, 0.64, 1);
+    --trans-fast:  all 0.18s var(--ease-spring);
+    --trans-base:  all 0.28s var(--ease-spring);
+    --trans-slow:  all 0.45s var(--ease-spring);
+
+    --font-sans: "Segoe UI", -apple-system, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    --font-mono: var(--font-sans);
+    --max-w: 1180px;
+  }
+
+  /* ==========================================================================
+     MODO NOTURNO (DARK PUBLIC VELVET)
+     ========================================================================== */
+  html[data-theme="dark"],
+  :root[data-theme="dark"] {
+    --bg-page:        #08120b;       /* Obsidian Night profundo com sub-tom esmeralda mineral */
+    --bg-surface:     #0f1f15;       /* Superfície de card aveludada */
+    --bg-surface-sub: #13261a;
+    --bg-sage:        #152c1e;       /* Sage escuro translúcido */
+    --bg-dark:        #173822;       /* Elevação Verde Institucional Noturna */
+    --bg-pill:        #1f3d28;
+
+    --text-primary:   #f4f8f5;       /* Off-white cálido e anti-ofuscante */
+    --text-secondary: #9cb8a5;       /* Sage slate confortável */
+    --text-muted:     #63816e;
+    --text-inverted:  #08120b;
+    --text-accent:    var(--lime-400);
+
+    --border-subtle:  rgba(255, 255, 255, 0.05);
+    --border:         rgba(255, 255, 255, 0.09);
+    --border-strong:  rgba(255, 255, 255, 0.16);
+    --border-focus:   var(--lime-400);
+    --border-sage:    rgba(255, 255, 255, 0.10);
+    --inner-highlight: 0 0 0 transparent;
+
+    --shadow-soft-xs: 0 2px 4px rgba(0, 0, 0, 0.35);
+    --shadow-soft-sm: 0 4px 12px rgba(0, 0, 0, 0.40);
+    --shadow-soft-md: 0 8px 24px rgba(0, 0, 0, 0.45), var(--inner-highlight);
+    --shadow-soft-lg: 0 16px 48px rgba(0, 0, 0, 0.55), var(--inner-highlight);
+    --shadow-floating: 0 24px 60px rgba(0, 0, 0, 0.70);
+    --shadow-glow-lime: var(--shadow-soft-sm);
+
+    --glass-bg:          rgba(15, 31, 21, 0.78);
+    --glass-border:      rgba(255, 255, 255, 0.12);
+    --glass-shadow:      0 12px 36px rgba(0, 0, 0, 0.50), var(--inner-highlight);
+    --glass-sage-bg:     rgba(21, 44, 30, 0.80);
+    --glass-sage-border: rgba(255, 255, 255, 0.12);
+
+    --nav-bg:     rgba(15, 31, 21, 0.82);
+    --nav-border: rgba(255, 255, 255, 0.10);
+  }
+
+  /* ==========================================================================
+     RESET & BASE TYPOGRAPHY
+     ========================================================================== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg-page);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    line-height: 1.5;
+    transition: background 0.35s var(--ease-spring), color 0.35s var(--ease-spring);
+    overflow-x: hidden;
+  }
+  img, svg { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+  button, input, select, textarea { font: inherit; color: inherit; }
+
+  .mono {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+  .wrap {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding-inline: 32px;
+  }
+
+  /* ==========================================================================
+     FLOATING ISLAND TOPNAV (VELVET GLASS CAPSULE)
+     ========================================================================== */
+  .topnav-wrapper {
+    position: sticky;
+    top: 16px;
+    z-index: 50;
+    width: 100%;
+    max-width: var(--max-w);
+    margin: 0 auto 24px auto;
+    padding-inline: 32px;
+    pointer-events: none;
+  }
+  .topnav-island {
+    width: 100%;
+    margin: 0 auto;
+    pointer-events: auto;
+    background: var(--nav-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--nav-border);
+    border-radius: var(--r-full);
+    padding: 10px 16px 10px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    box-shadow: var(--shadow-floating);
+    transition: var(--trans-base);
+  }
+  .navlinks {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+  .navlinks a {
+    padding: 7px 14px;
+    border-radius: var(--r-full);
+    transition: var(--trans-fast);
+    position: relative;
+  }
+  .navlinks a:hover {
+    color: var(--text-primary);
+    background: rgba(20, 48, 42, 0.05);
+  }
+  html[data-theme="dark"] .navlinks a:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .topnav-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .nav-theme-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    border-radius: var(--r-full);
+    padding: 7px 14px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: var(--shadow-soft-xs);
+    transition: var(--trans-fast);
+  }
+  .nav-theme-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-soft-sm);
+    border-color: var(--pine-400);
+  }
+  .nav-theme-btn svg { width: 14px; height: 14px; color: var(--pine-500); }
+  html[data-theme="dark"] .nav-theme-btn svg { color: var(--lime-400); }
+  .nav-theme-btn .icon-sun { display: none; }
+  html[data-theme="dark"] .nav-theme-btn .icon-sun { display: block; }
+  html[data-theme="dark"] .nav-theme-btn .icon-moon { display: none; }
+
+  .theme-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: var(--r-full);
+    background: var(--bg-sage);
+    color: var(--pine-500);
+    letter-spacing: 0.04em;
+  }
+  html[data-theme="dark"] .theme-badge {
+    background: rgba(187, 244, 156, 0.16);
+    color: var(--lime-400);
+  }
+
+  /* ==========================================================================
+     HERO SECTION — VANGUARD SOFT ORÇAMENTO PÚBLICO
+     ========================================================================== */
+  .hero-section {
+    padding-top: 24px;
+    padding-bottom: 64px;
+  }
+  .hero-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--r-2xl);
+    padding: 56px 56px 48px 56px;
+    box-shadow: var(--shadow-soft-lg);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-content {
+    max-width: 100%;
+  }
+
+  h1.hero-title {
+    font-size: clamp(2.4rem, 4.4vw, 3.6rem);
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+    width: 100%;
+    max-width: 100%;
+  }
+  .hero-title em {
+    font-style: normal;
+    color: var(--pine-500);
+    background: none;
+    -webkit-background-clip: initial;
+    -webkit-text-fill-color: initial;
+  }
+  html[data-theme="dark"] .hero-title em {
+    color: var(--pine-400);
+    background: none;
+    -webkit-background-clip: initial;
+    -webkit-text-fill-color: initial;
+  }
+  .hero-lede {
+    font-size: 1.15rem;
+    line-height: 1.65;
+    color: var(--text-secondary);
+    width: 100%;
+    max-width: 100%;
+    font-weight: 400;
+    margin-bottom: 32px;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .hero-stats-strip {
+    margin-top: 40px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border-subtle);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+  .hero-stat-cell {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .hero-stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--r-lg);
+    background: var(--bg-sage);
+    border: 1px solid var(--sage-border);
+    color: var(--pine-500);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: var(--shadow-soft-xs);
+  }
+  html[data-theme="dark"] .hero-stat-icon {
+    background: rgba(187, 244, 156, 0.10);
+    border-color: rgba(187, 244, 156, 0.18);
+    color: var(--lime-400);
+  }
+  .hero-stat-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .hero-stat-val {
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: var(--pine-500);
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+  }
+  html[data-theme="dark"] .hero-stat-val {
+    color: var(--lime-400);
+  }
+  .hero-stat-lbl {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    font-weight: 500;
+  }
+
+  /* --- BOTÃO FLUTUANTE DE RETORNO AO HERO (CANTO INFERIOR DIREITO) --- */
+  .floating-back-top {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 99;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    border-radius: var(--r-full);
+    padding: 10px 18px 10px 14px;
+    box-shadow: var(--shadow-floating);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.28s var(--ease-spring);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(12px);
+  }
+  .floating-back-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  .floating-back-top:hover {
+    background: var(--pine-500);
+    color: #ffffff;
+    border-color: var(--pine-500);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-floating);
+  }
+  .floating-back-top svg {
+    color: var(--pine-500);
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+  .floating-back-top:hover svg {
+    color: #ffffff;
+    transform: translateY(-2px);
+  }
+  html[data-theme="dark"] .floating-back-top {
+    background: var(--bg-surface);
+    border-color: var(--border-strong);
+    color: var(--text-primary);
+  }
+  html[data-theme="dark"] .floating-back-top svg {
+    color: var(--lime-400);
+  }
+  html[data-theme="dark"] .floating-back-top:hover {
+    background: var(--pine-500);
+    color: #ffffff;
+    border-color: var(--pine-500);
+  }
+  html[data-theme="dark"] .floating-back-top:hover svg {
+    color: #ffffff;
+  }
+
+  /* ==========================================================================
+     SECTION STRUCTURE & TYPOGRAPHIC HEADERS
+     ========================================================================== */
+  section {
+    padding-block: 72px;
+    border-top: 1px solid var(--border-subtle);
+    position: relative;
+  }
+  .section-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 16px;
+  }
+  .section-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--pine-500);
+    margin-bottom: 6px;
+    display: block;
+  }
+  html[data-theme="dark"] .section-eyebrow {
+    color: var(--lime-400);
+  }
+  .section-head h2 {
+    font-size: 1.45rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+    line-height: 1.2;
+    margin: 0;
+  }
+  .section-head .num {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    padding: 6px 14px;
+    border-radius: var(--r-full);
+    box-shadow: var(--shadow-soft-xs);
+  }
+  .section-note {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 32px;
+  }
+
+  /* ==========================================================================
+     SEÇÃO 01: CORES & SWATCHES
+     ========================================================================== */
+  .palette-group {
+    margin-bottom: 32px;
+  }
+  .palette-label {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+  .palette-note {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 14px;
+  }
+  .swatch-row {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 8px;
+  }
+  .swatch {
+    height: 72px;
+    border-radius: var(--r-md);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 8px;
+    cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    box-shadow: var(--shadow-soft-xs);
+    transition: var(--trans-fast);
+    position: relative;
+    overflow: hidden;
+  }
+  .swatch:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: var(--shadow-soft-md);
+    z-index: 2;
+  }
+  .swatch .step {
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+  .swatch .hex-val {
+    font-size: 0.62rem;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    opacity: 0.85;
+  }
+
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+  /* ==========================================================================
+     SEÇÃO 02: SUPERFÍCIES & ELEVAÇÃO SOFT
+     ========================================================================== */
+  .surface-card {
+    border-radius: var(--r-xl);
+    padding: 24px;
+    min-height: 130px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid var(--border-subtle);
+    cursor: pointer;
+    box-shadow: var(--shadow-soft-sm);
+    transition: var(--trans-fast);
+  }
+  .surface-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-soft-lg);
+  }
+  .surface-card.page {
+    background: var(--bg-page);
+    border-color: var(--border);
+  }
+  .surface-card.surface {
+    background: var(--bg-surface);
+    border-color: var(--border-subtle);
+    box-shadow: var(--shadow-soft-md);
+  }
+  .surface-card.sage {
+    background: var(--bg-sage);
+    border-color: var(--sage-border);
+  }
+  .surface-card.dark {
+    background: var(--bg-dark);
+    color: #ffffff;
+    border-color: transparent;
+    box-shadow: var(--shadow-soft-md);
+  }
+  .surface-card.glass {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-color: var(--glass-border);
+    box-shadow: var(--glass-shadow);
+  }
+  .surface-card p.name {
+    font-size: 0.88rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .surface-card p.role {
+    font-size: 0.74rem;
+    opacity: 0.85;
+    line-height: 1.4;
+  }
+  .surface-card p.hex {
+    font-size: 0.72rem;
+    font-family: var(--font-mono);
+    font-weight: 600;
+  }
+  .surface-card:not(.dark) p.hex { color: var(--text-muted); }
+  .surface-card.dark p.hex { color: var(--lime-500); }
+
+  .shadow-demo-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--r-xl);
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
+    padding: 24px;
+    text-align: center;
+    transition: var(--trans-fast);
+  }
+  .shadow-demo-card p.name { font-size: 0.9rem; font-weight: 700; color: var(--text-primary); }
+  .shadow-demo-card p.desc { font-size: 0.75rem; color: var(--text-secondary); max-width: 26ch; }
+  .s-soft-sm { box-shadow: var(--shadow-soft-sm); }
+  .s-soft-md { box-shadow: var(--shadow-soft-md); }
+  .s-soft-lg { box-shadow: var(--shadow-soft-lg); }
+
+  /* SUB-PAINEL DO MODO NOTURNO (DARK PUBLIC VELVET) */
+  .theme-panel-soft {
+    margin-top: 36px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--r-2xl);
+    padding: 32px;
+    box-shadow: var(--shadow-soft-md);
+    transition: var(--trans-base);
+  }
+  .theme-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border-subtle);
+    flex-wrap: wrap;
+  }
+  .theme-panel-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+  .theme-panel-title svg { color: var(--pine-500); flex: none; }
+  html[data-theme="dark"] .theme-panel-title svg { color: var(--lime-400); }
+  .theme-panel-desc {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    max-width: 100%;
+    line-height: 1.6;
+  }
+  .theme-panel-control {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--bg-sage);
+    border: 1px solid var(--sage-border);
+    padding: 10px 20px;
+    border-radius: var(--r-full);
+    cursor: pointer;
+    box-shadow: var(--shadow-soft-xs);
+    transition: var(--trans-fast);
+  }
+  .theme-panel-control:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-soft-sm);
+  }
+  .theme-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-top: 24px;
+  }
+  .theme-stat-card {
+    background: var(--bg-surface-sub);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--r-lg);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: var(--trans-fast);
+  }
+  .theme-stat-val {
+    font-size: 1.45rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--pine-500);
+    letter-spacing: -0.01em;
+  }
+  html[data-theme="dark"] .theme-stat-val { color: var(--lime-400); }
+  .theme-stat-title { font-size: 0.85rem; font-weight: 600; color: var(--text-primary); }
+  .theme-stat-sub { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.45; }
+
+  /* ==========================================================================
+     SEÇÃO 03: TIPOGRAFIA & ESCALA HIERÁRQUICA
+     ========================================================================== */
+  .type-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--r-2xl);
+    padding: 32px;
+    box-shadow: var(--shadow-soft-md);
+  }
+  .type-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-start;
+    gap: 32px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .type-row:last-child { border-bottom: none; }
+  .type-label {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 140px;
+    flex: none;
+  }
+  .type-label .name { font-size: 0.78rem; font-weight: 700; color: var(--text-muted); }
+  .type-label .meta { font-size: 0.7rem; color: var(--text-muted); font-family: var(--font-mono); }
+  .type-sample { flex: 1; min-width: 0; }
+
+  .t-display { font-size: 40px; font-weight: 600; letter-spacing: -0.01em; color: var(--text-primary); line-height: 1.1; }
+  .t-h1 { font-size: 28px; font-weight: 600; letter-spacing: -0.01em; color: var(--text-primary); line-height: 1.2; }
+  .t-h2 { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; color: var(--text-primary); line-height: 1.3; }
+  .t-h3 { font-size: 17px; font-weight: 600; color: var(--text-primary); line-height: 1.4; }
+  .t-body { display: block; font-size: 15px; font-weight: 400; line-height: 1.6; color: var(--text-secondary); max-width: 68ch; text-align: left; }
+  .t-small { font-size: 13px; font-weight: 400; color: var(--text-secondary); line-height: 1.5; }
+  .t-caption { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  html[data-theme="dark"] .t-caption { color: var(--lime-400); }
+
+  .weight-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-subtle);
+  }
+  .weight-chip {
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-surface-sub);
+    border-radius: var(--r-full);
+    padding: 8px 18px;
+    font-size: 0.82rem;
+    color: var(--text-primary);
+    box-shadow: var(--shadow-soft-xs);
+  }
+  .weight-chip.highlight {
+    border-color: var(--pine-500);
+    color: var(--pine-500);
+    background: var(--bg-sage);
+    font-weight: 700;
+  }
+  html[data-theme="dark"] .weight-chip.highlight {
+    border-color: var(--lime-400);
+    color: var(--lime-400);
+    background: rgba(187, 244, 156, 0.12);
+  }
+
+  /* ==========================================================================
+     SEÇÃO 04: ESPAÇAMENTO & RAIO (SQUIRCLE GEOMETRY)
+     ========================================================================== */
+  .token-box {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--r-2xl);
+    padding: 32px;
+    box-shadow: var(--shadow-soft-md);
+  }
+  .space-list { display: flex; flex-direction: column; gap: 14px; margin-top: 14px; }
+  .space-row { display: flex; align-items: center; gap: 16px; }
+  .space-bar {
+    height: 10px;
+    background: var(--pine-500);
+    border-radius: 999px;
+    transition: width 0.4s var(--ease-spring);
+  }
+  html[data-theme="dark"] .space-bar {
+    background: var(--lime-500);
+  }
+  .space-row .lbl { width: 78px; font-size: 0.8rem; color: var(--text-secondary); font-weight: 600; flex: none; }
+  .space-row .px { font-size: 0.78rem; color: var(--text-muted); width: 44px; text-align: right; font-weight: 700; }
+
+  .radius-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px 16px;
+    margin-top: 20px;
+    justify-items: center;
+  }
+  .radius-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .radius-box {
+    width: 64px;
+    height: 64px;
+    background: var(--bg-surface);
+    border: 1.5px solid var(--border-strong);
+    transition: var(--trans-fast);
+  }
+  html[data-theme="dark"] .radius-box {
+    background: var(--bg-surface);
+    border-color: rgba(255, 255, 255, 0.20);
+  }
+  .radius-item span { font-size: 0.72rem; color: var(--text-muted); font-weight: 600; }
+
+  /* ==========================================================================
+     SEÇÃO 05: ÍCONES DE ORÇAMENTO PÚBLICO
+     ========================================================================== */
+  .icon-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 12px;
+  }
+  .icon-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-surface);
+    border-radius: var(--r-lg);
+    padding: 18px 8px;
+    cursor: pointer;
+    box-shadow: var(--shadow-soft-xs);
+    transition: var(--trans-fast);
+  }
+  .icon-cell:hover {
+    transform: translateY(-3px);
+    border-color: var(--pine-400);
+    box-shadow: var(--shadow-soft-md);
+  }
+  html[data-theme="dark"] .icon-cell:hover { border-color: var(--lime-400); }
+  .icon-cell svg {
+    width: 22px;
+    height: 22px;
+    color: var(--pine-500);
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.65;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: var(--trans-fast);
+  }
+  html[data-theme="dark"] .icon-cell svg { color: var(--lime-400); }
+  .icon-cell:hover svg { transform: scale(1.12); }
+  .icon-cell span {
+    font-size: 0.68rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-align: center;
+    word-break: break-word;
+  }
+
+  /* ==========================================================================
+     SEÇÃO 06: COMPONENTES SOFT (BUTTON-IN-BUTTON & HAPTICS)
+     ========================================================================== */
+  .comp-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--r-2xl);
+    padding: 32px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-soft-md);
+  }
+  .comp-card h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+  }
+
+  /* BOTÕES E BOTÃO-NO-BOTÃO (NESTED TRAILING ICON) */
+  .btn-row { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+  .btn {
+    font-family: inherit;
+    font-size: 0.88rem;
+    font-weight: 600;
+    border-radius: var(--r-full);
+    padding: 10px 22px;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: var(--trans-base);
+    position: relative;
+    user-select: none;
+  }
+  .btn:active { transform: scale(0.97); }
+
+  /* Botão Primário Soft com Nested Pill Icon (Verde #219647 - Sólido, sem borda) */
+  .btn-primary,
+  .btn-primary-soft {
+    background: #219647;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 8px 10px 8px 24px;
+    box-shadow: var(--shadow-soft-sm);
+    border: none !important;
+    outline: none !important;
+  }
+  .btn-primary {
+    padding: 10px 24px;
+  }
+  .btn-primary-soft:hover,
+  .btn-primary:hover {
+    background: #1b7d3a;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft-md);
+    border: none !important;
+  }
+  .btn-icon-capsule {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.20);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    transition: var(--trans-fast);
+  }
+  .btn-primary-soft:hover .btn-icon-capsule {
+    transform: translateX(2px) rotate(-15deg);
+    background: rgba(255, 255, 255, 0.32);
+  }
+  .btn-icon-capsule svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2.2; }
+
+  /* Botão CTA Primário (Amarelo Ouro Solar #fee000 - Texto em Verde #219647, Sólido, sem contorno) */
+  .btn-cta,
+  .btn-cta-soft {
+    background: #fee000;
+    color: #219647;
+    font-weight: 600;
+    padding: 10px 22px;
+    box-shadow: var(--shadow-soft-sm);
+    border: none !important;
+    outline: none !important;
+  }
+  .btn-cta:hover,
+  .btn-cta-soft:hover {
+    background: #ffe51a;
+    color: #219647;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft-md);
+    border: none !important;
+    outline: none !important;
+  }
+
+  .btn-secondary {
+    background: var(--bg-surface-sub);
+    border: 1.5px solid var(--border);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-soft-xs);
+  }
+  .btn-secondary:hover {
+    background: var(--bg-surface);
+    border-color: var(--border-strong);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-soft-sm);
+  }
+  html[data-theme="dark"] .btn-secondary {
+    background: var(--bg-surface-sub);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: var(--text-primary);
+  }
+  html[data-theme="dark"] .btn-primary,
+  html[data-theme="dark"] .btn-primary-soft {
+    background: #219647;
+    color: #ffffff;
+    border: none !important;
+  }
+  html[data-theme="dark"] .btn-primary-soft:hover,
+  html[data-theme="dark"] .btn-primary:hover {
+    background: #48b86d;
+    color: #ffffff;
+    border: none !important;
+  }
+  html[data-theme="dark"] .btn-cta,
+  html[data-theme="dark"] .btn-cta-soft {
+    background: #fee000;
+    color: #219647;
+    border: none !important;
+    outline: none !important;
+  }
+  html[data-theme="dark"] .btn-cta:hover,
+  html[data-theme="dark"] .btn-cta-soft:hover {
+    background: #ffe51a;
+    color: #219647;
+    border: none !important;
+    outline: none !important;
+  }
+
+  .btn-outline {
+    background: var(--bg-surface);
+    border: 1.5px solid var(--border);
+    color: var(--text-primary);
+  }
+  .btn-outline:hover {
+    border-color: var(--pine-500);
+    background: var(--bg-surface-sub);
+  }
+  html[data-theme="dark"] .btn-outline:hover {
+    border-color: var(--lime-400);
+    color: var(--lime-400);
+  }
+
+  .btn-ghost {
+    background: var(--bg-sage);
+    color: var(--pine-500);
+    font-weight: 700;
+  }
+  .btn-ghost:hover {
+    background: #e2ede0;
+  }
+  html[data-theme="dark"] .btn-ghost {
+    background: rgba(187, 244, 156, 0.12);
+    color: var(--lime-400);
+  }
+
+  .btn-danger {
+    background: var(--coral-alert);
+    color: #ffffff;
+    box-shadow: var(--shadow-soft-xs);
+  }
+  .btn-danger:hover {
+    filter: brightness(0.92);
+    transform: translateY(-1px);
+  }
+
+  .btn-disabled {
+    background: var(--n-200);
+    color: var(--n-500);
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+  html[data-theme="dark"] .btn-disabled {
+    background: #14221f;
+    color: #4c625c;
+  }
+
+  /* BADGES & STATUS PILLS */
+  .badge-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .badge {
+    font-size: 0.74rem;
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: var(--r-full);
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    box-shadow: var(--shadow-soft-xs);
+    transition: var(--trans-fast);
+  }
+  .badge-dot { width: 6px; height: 6px; border-radius: 50%; flex: none; }
+
+  .badge-lime {
+    background: #fee000;
+    color: #219647;
+    border: none;
+    font-weight: 700;
+  }
+  html[data-theme="dark"] .badge-lime {
+    background: #fee000;
+    color: #219647;
+    border: none;
+  }
+  .badge-sage {
+    background: var(--bg-sage);
+    color: var(--pine-500);
+    border: 1px solid var(--sage-border);
+  }
+  html[data-theme="dark"] .badge-sage {
+    background: rgba(147, 191, 183, 0.12);
+    color: var(--pine-200);
+    border-color: rgba(147, 191, 183, 0.25);
+  }
+  .badge-glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    color: var(--pine-500);
+  }
+  html[data-theme="dark"] .badge-glass {
+    color: var(--lime-400);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+  .badge-pine { background: var(--pine-500); color: #ffffff; }
+  .badge-neutral { background: var(--n-150); color: var(--n-700); border: 1px solid var(--border-subtle); }
+  html[data-theme="dark"] .badge-neutral { background: #132420; color: var(--text-secondary); }
+  .badge-success { background: var(--emerald-tint); color: #047857; border: 1px solid rgba(16, 185, 129, 0.2); }
+  html[data-theme="dark"] .badge-success { color: #34d399; }
+  .badge-error { background: var(--coral-tint); color: #e11d48; border: 1px solid var(--coral-border); }
+  html[data-theme="dark"] .badge-error { color: #fb7185; }
+  .badge-warning { background: var(--amber-tint); color: #b45309; border: 1px solid var(--amber-border); }
+  html[data-theme="dark"] .badge-warning { color: #fbbf24; }
+
+  /* FORMULÁRIOS SOFT COM INNER HIGHLIGHT */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .field { display: flex; flex-direction: column; gap: 7px; }
+  .field label { font-size: 0.78rem; font-weight: 600; color: var(--text-primary); }
+  .field input, .field select, .field textarea {
+    width: 100%;
+    border-radius: var(--r-md);
+    border: 1px solid var(--border);
+    padding: 11px 16px;
+    font-size: 0.88rem;
+    font-family: inherit;
+    background: var(--bg-surface-sub);
+    color: var(--text-primary);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+    transition: var(--trans-fast);
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: none;
+    border-color: var(--pine-500);
+    background: var(--bg-surface);
+    box-shadow: 0 0 0 3px rgba(33, 150, 71, 0.18), inset 0 1px 1px rgba(0, 0, 0, 0.02);
+  }
+  html[data-theme="dark"] .field input:focus,
+  html[data-theme="dark"] .field select:focus,
+  html[data-theme="dark"] .field textarea:focus {
+    border-color: var(--lime-400);
+    box-shadow: 0 0 0 3px rgba(33, 150, 71, 0.28);
+  }
+
+  .switch {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    border-radius: var(--r-full);
+    background: var(--n-300);
+    flex: none;
+    cursor: pointer;
+    transition: var(--trans-fast);
+  }
+  html[data-theme="dark"] .switch { background: #233e36; }
+  .switch::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: var(--trans-fast);
+  }
+  .switch.on { background: var(--pine-500); }
+  html[data-theme="dark"] .switch.on { background: var(--lime-400); }
+  .switch.on::after { transform: translateX(20px); }
+  html[data-theme="dark"] .switch.on::after { background: #08120b; }
+
+  /* AVATARES & PROGRESSO */
+  .avatar-row { display: flex; align-items: center; }
+  .avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--pine-500);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.82rem;
+    border: 3px solid var(--bg-surface);
+    margin-left: -12px;
+    box-shadow: var(--shadow-soft-xs);
+    transition: var(--trans-fast);
+  }
+  .avatar:hover { transform: translateY(-2px) scale(1.05); z-index: 2; }
+  .avatar-row .avatar:first-child { margin-left: 0; }
+  .avatar.more { background: var(--bg-sage); color: var(--pine-500); }
+  html[data-theme="dark"] .avatar.more { background: rgba(187, 244, 156, 0.15); color: var(--lime-400); }
+
+  .prog-item { display: flex; flex-direction: column; gap: 7px; margin-bottom: 16px; }
+  .prog-top { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); }
+  .prog-track {
+    height: 10px;
+    background: var(--bg-sage);
+    border-radius: 999px;
+    overflow: hidden;
+    padding: 2px;
+    border: 1px solid var(--border-subtle);
+  }
+  html[data-theme="dark"] .prog-track { background: #132420; }
+  .prog-fill { height: 100%; border-radius: 999px; transition: width 0.6s var(--ease-spring); }
+
+  /* ==========================================================================
+     MODELO DE TABELA SOFT (DATA TABLE GOVERNAMENTAL)
+     ========================================================================== */
+  .table-card-soft {
+    background: var(--bg-surface);
+    border-radius: var(--r-2xl);
+    box-shadow: var(--shadow-soft-md);
+    overflow: hidden;
+    margin-top: 24px;
+    transition: var(--trans-medium);
+  }
+  html[data-theme="dark"] .table-card-soft {
+    background: #112318;
+  }
+  .table-toolbar-soft {
+    padding: 24px 32px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .table-toolbar-info h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+  .table-toolbar-info p {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+  }
+  .table-toolbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .table-search-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-page);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--r-full);
+    padding: 8px 16px;
+    transition: var(--trans-fast);
+  }
+  .table-search-box:focus-within {
+    border-color: var(--pine-500);
+    box-shadow: 0 0 0 3px rgba(33, 150, 71, 0.18);
+  }
+  html[data-theme="dark"] .table-search-box {
+    background: #152b1e;
+  }
+  .table-search-box svg {
+    width: 15px;
+    height: 15px;
+    color: var(--text-muted);
+  }
+  .table-search-box input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family: inherit;
+    font-size: 0.82rem;
+    color: var(--text-primary);
+    width: 200px;
+  }
+  .table-search-box input::placeholder {
+    color: var(--text-muted);
+  }
+  .table-wrap-responsive {
+    width: 100%;
+    overflow-x: auto;
+  }
+  .table-soft {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.85rem;
+    text-align: left;
+  }
+  .table-soft thead th {
+    background: var(--bg-sage);
+    color: var(--text-secondary);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border-subtle);
+    white-space: nowrap;
+  }
+  html[data-theme="dark"] .table-soft thead th {
+    background: rgba(33, 150, 71, 0.12);
+    color: #a3b8aa;
+  }
+  .table-soft thead th.th-right,
+  .table-soft tbody td.td-right {
+    text-align: right;
+  }
+  .table-soft thead th.th-center,
+  .table-soft tbody td.td-center {
+    text-align: center;
+  }
+  .table-soft tbody tr {
+    transition: background 0.18s ease;
+  }
+  .table-soft tbody tr:hover {
+    background: var(--sage-50);
+  }
+  html[data-theme="dark"] .table-soft tbody tr:hover {
+    background: rgba(33, 150, 71, 0.08);
+  }
+  .table-soft tbody td {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  .table-soft tbody tr:last-child td {
+    border-bottom: none;
+  }
+  .table-code-badge {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--pine-500);
+    background: rgba(33, 150, 71, 0.08);
+    padding: 4px 8px;
+    border-radius: var(--r-md);
+    letter-spacing: 0.02em;
+    display: inline-block;
+  }
+  html[data-theme="dark"] .table-code-badge {
+    color: #48b86d;
+    background: rgba(33, 150, 71, 0.16);
+  }
+  .table-credor {
+    font-weight: 700;
+    color: var(--text-primary);
+    display: block;
+  }
+  .table-sub-detail {
+    font-size: 0.74rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .table-amount {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+  }
+  .table-btn-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--r-md);
+    background: var(--bg-page);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--trans-fast);
+  }
+  .table-btn-action:hover {
+    background: var(--pine-500);
+    border-color: var(--pine-500);
+    color: #ffffff;
+  }
+  html[data-theme="dark"] .table-btn-action {
+    background: #172f22;
+  }
+  .table-footer-soft {
+    padding: 16px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    background: var(--bg-surface-sub);
+    border-top: 1px solid var(--border-subtle);
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+  html[data-theme="dark"] .table-footer-soft {
+    background: #0e1e15;
+  }
+  .table-pagination-soft {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .table-page-btn {
+    min-width: 30px;
+    height: 30px;
+    padding: 0 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--r-md);
+    background: transparent;
+    border: 1px solid var(--border-subtle);
+    font-family: inherit;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--trans-fast);
+  }
+  .table-page-btn:hover {
+    background: var(--bg-surface);
+    color: var(--text-primary);
+  }
+  .table-page-btn.active {
+    background: var(--pine-500);
+    border-color: var(--pine-500);
+    color: #ffffff;
+    font-weight: 700;
+  }
+
+  /* ==========================================================================
+     SEÇÃO 07: CARDS SOFT — ESTRUTURA SÓLIDA E ZERO BORDAS
+     ========================================================================== */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .card-bezel-wrapper {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+  .card-bezel-wrapper:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .card-soft {
+    border-radius: var(--r-2xl) !important;
+    padding: 28px !important;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: var(--trans-fast);
+    position: relative;
+    overflow: hidden;
+    border: none !important;
+    outline: none !important;
+  }
+  .card-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+  }
+  .card-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+  }
+  .card-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+
+  /* 1. Default Surface Card - Sólido */
+  .card-soft--default {
+    background: var(--bg-surface);
+    border: none !important;
+    box-shadow: var(--shadow-soft-sm);
+  }
+  .card-soft--default .card-label { color: var(--text-muted); }
+
+  /* 2. Solid Muted Surface (antigo outlined) - 100% Sólido, sem borda */
+  .card-soft--outlined {
+    background: var(--bg-surface-sub);
+    border: none !important;
+    box-shadow: var(--shadow-soft-xs);
+  }
+  .card-soft--outlined .card-label { color: var(--text-muted); }
+
+  /* 3. Soft Sage Tint Card - Sólido, sem borda */
+  .card-soft--sage {
+    background: var(--bg-sage);
+    border: none !important;
+  }
+  .card-soft--sage .card-label { color: var(--pine-500); }
+  html[data-theme="dark"] .card-soft--sage .card-label { color: var(--lime-500); }
+
+  /* 4. Duo Protagonista: Invertido Verde & Amarelo - Sólidos e ZERO Borda */
+  .cards-duo {
+    grid-column: span 3;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .card-soft--elevated {
+    background: #219647 !important;
+    color: #ffffff !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: 0 8px 24px rgba(15, 28, 24, 0.08) !important;
+  }
+  .card-soft--elevated .card-label { color: #fee000; }
+  .card-soft--elevated .card-title { color: #ffffff; }
+  .card-soft--elevated .card-desc { color: rgba(255, 255, 255, 0.90); }
+  /* Botões em cards com fundo verde: botão branco, texto verde (#219647) */
+  .card-soft--elevated .badge,
+  .card-soft--elevated .btn,
+  .card-soft--elevated button,
+  .card-soft[style*="#219647"] .badge,
+  .card-soft[style*="#219647"] .btn {
+    background: #ffffff !important;
+    color: #219647 !important;
+    border: none !important;
+    font-weight: 600 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  }
+  html[data-theme="dark"] .card-soft--elevated {
+    background: #219647 !important;
+    color: #ffffff !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: 0 8px 24px rgba(15, 28, 24, 0.08) !important;
+  }
+  html[data-theme="dark"] .card-soft--elevated .badge,
+  html[data-theme="dark"] .card-soft--elevated .btn,
+  html[data-theme="dark"] .card-soft--elevated button {
+    background: #ffffff !important;
+    color: #219647 !important;
+    border: none !important;
+  }
+
+  /* 5. Pistachio / Amarelo Destaque - Sólido e sem borda */
+  .card-soft--lime {
+    background: #fee000 !important;
+    color: #0d1711 !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: 0 4px 18px rgba(15, 28, 24, 0.06) !important;
+  }
+  .card-soft--lime .card-label { color: #16642f !important; }
+  .card-soft--lime .card-title { color: #0d1711 !important; }
+  .card-soft--lime .card-desc { color: rgba(13, 23, 17, 0.85) !important; }
+  /* Botões em cards com fundo amarelo: botão verde (#219647), texto branco */
+  .card-soft--lime .badge,
+  .card-soft--lime .btn,
+  .card-soft--lime button,
+  .card-soft--cta .badge,
+  .card-soft--cta .btn,
+  .card-soft--cta button,
+  .card-soft[style*="#fee000"] .badge,
+  .card-soft[style*="#fee000"] .btn {
+    background: #219647 !important;
+    color: #ffffff !important;
+    border: none !important;
+    font-weight: 600 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  }
+  html[data-theme="dark"] .card-soft--lime {
+    background: #fee000 !important;
+    color: #0d1711 !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: 0 4px 18px rgba(15, 28, 24, 0.06) !important;
+  }
+  html[data-theme="dark"] .card-soft--lime .badge,
+  html[data-theme="dark"] .card-soft--lime .btn,
+  html[data-theme="dark"] .card-soft--lime button {
+    background: #219647 !important;
+    color: #ffffff !important;
+    border: none !important;
+  }
+
+  /* 6. Frosted Glass Cards - Superfícies Sólidas e sem borda */
+  .card-soft--glass {
+    background: rgba(255, 255, 255, 0.88) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: none !important;
+    outline: none !important;
+    box-shadow: 0 4px 18px rgba(15, 28, 24, 0.06) !important;
+  }
+  .card-soft--glass .card-label { color: var(--pine-500); }
+  html[data-theme="dark"] .card-soft--glass {
+    background: rgba(15, 31, 21, 0.88) !important;
+    color: #f4f8f5 !important;
+    border: none !important;
+  }
+  html[data-theme="dark"] .card-soft--glass .card-label { color: var(--lime-400); }
+
+  .card-soft--glass-sage {
+    background: rgba(235, 245, 238, 0.92) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: none !important;
+    outline: none !important;
+    box-shadow: 0 4px 18px rgba(15, 28, 24, 0.06) !important;
+  }
+  .card-soft--glass-sage .card-label { color: var(--pine-500); }
+  html[data-theme="dark"] .card-soft--glass-sage {
+    background: rgba(21, 44, 30, 0.88) !important;
+    color: #f4f8f5 !important;
+    border: none !important;
+  }
+  html[data-theme="dark"] .card-soft--glass-sage .card-label { color: var(--lime-400); }
+
+  /* 7. List Card Transacional */
+  .card-soft--list {
+    grid-column: span 3;
+    background: var(--bg-surface) !important;
+    border: none !important;
+    outline: none !important;
+    border-radius: var(--r-2xl);
+    padding: 16px 28px;
+    box-shadow: var(--shadow-soft-sm);
+  }
+  .card-soft--list .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .card-soft--list .row:last-child { border-bottom: none; }
+  .card-soft--list .name { font-size: 0.95rem; font-weight: 600; color: var(--text-primary); }
+  .card-soft--list .sub { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+  .card-soft--list .rt {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.92rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  /* 8. Cards de KPI & Indicadores Fiscais (Soft Stat Cards) */
+  .kpi-cards-grid {
+    grid-column: span 3;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 12px;
+  }
+  .card-kpi-soft {
+    background: var(--bg-surface);
+    border-radius: var(--r-xl);
+    padding: 24px;
+    border: none;
+    box-shadow: var(--shadow-soft-sm);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 180px;
+    transition: transform var(--trans-fast), box-shadow var(--trans-fast);
+  }
+  .card-kpi-soft:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft-md);
+  }
+  .kpi-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .kpi-icon-wrap {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--r-md);
+    background: var(--bg-sage);
+    border: 1px solid var(--sage-border);
+    color: var(--pine-500);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  html[data-theme="dark"] .kpi-icon-wrap {
+    background: rgba(187, 244, 156, 0.10);
+    border-color: rgba(187, 244, 156, 0.18);
+    color: var(--lime-400);
+  }
+  .kpi-val {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    margin-bottom: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+  .kpi-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    line-height: 1.35;
+  }
+  .kpi-progress-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-subtle);
+  }
+  .kpi-progress-bar {
+    width: 100%;
+    height: 5px;
+    background: var(--n-150);
+    border-radius: var(--r-full);
+    overflow: hidden;
+  }
+  html[data-theme="dark"] .kpi-progress-bar {
+    background: rgba(255, 255, 255, 0.10);
+  }
+  .kpi-progress-fill {
+    height: 100%;
+    background: var(--pine-500);
+    border-radius: var(--r-full);
+  }
+  .kpi-progress-text {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  /* ==========================================================================
+     SEÇÃO 08: APLICAÇÃO — DASHBOARD ORÇAMENTÁRIO COM IDENTIDADE SOFT
+     ========================================================================== */
+  .app-frame-soft {
+    background: var(--bg-page);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--r-2xl);
+    padding: 24px;
+    box-shadow: var(--shadow-floating);
+  }
+  .app-shell-soft {
+    display: grid;
+    grid-template-columns: 84px 1fr;
+    gap: 22px;
+  }
+  .app-sidebar-soft {
+    background: var(--pine-500);
+    border-radius: var(--r-xl);
+    padding: 26px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+    box-shadow: var(--shadow-soft-lg);
+  }
+  html[data-theme="dark"] .app-sidebar-soft {
+    background: #0f2619;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .app-sidebar-soft .av {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #fee000;
+    color: #219647;
+    font-weight: 700;
+    font-size: 0.88rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-soft-xs);
+  }
+  .app-sidebar-soft .icon {
+    width: 42px;
+    height: 42px;
+    border-radius: var(--r-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: var(--trans-fast);
+  }
+  .app-sidebar-soft .icon:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.12);
+  }
+  .app-sidebar-soft .icon.active {
+    background: #fee000;
+    color: #219647;
+    box-shadow: var(--shadow-soft-xs);
+  }
+  .app-sidebar-soft .icon svg { width: 20px; height: 20px; stroke-width: 1.8; }
+
+  .app-main-soft { display: flex; flex-direction: column; gap: 22px; }
+  .app-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--r-xl);
+    padding: 20px 24px;
+    box-shadow: var(--shadow-soft-sm);
+  }
+  .app-top-bar .greet .k {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .app-top-bar .greet .n {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--text-primary);
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .bars-chart-soft {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    height: 105px;
+    padding-top: 10px;
+  }
+  .bars-chart-soft .bar {
+    flex: 1;
+    border-radius: 4px 4px 0 0;
+    background: #738b7b;
+    transition: height 0.4s var(--ease-spring);
+  }
+  .bars-chart-soft .bar.alt {
+    background: #219647;
+    box-shadow: none;
+  }
+  html[data-theme="dark"] .bars-chart-soft .bar { background: #738b7b; }
+  html[data-theme="dark"] .bars-chart-soft .bar.alt { background: #219647; }
+
+  .cal-grid-soft {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    font-size: 0.74rem;
+    text-align: center;
+  }
+  .cal-grid-soft .dow { color: var(--text-muted); font-weight: 700; padding-bottom: 8px; }
+  .cal-grid-soft .day {
+    padding: 8px 0;
+    border-radius: var(--r-sm);
+    color: var(--text-secondary);
+    font-weight: 600;
+    transition: var(--trans-fast);
+  }
+  .cal-grid-soft .day.today {
+    background: #fee000;
+    color: #219647;
+    font-weight: 700;
+    box-shadow: var(--shadow-soft-xs);
+  }
+  .cal-grid-soft .day.sel {
+    background: var(--pine-500);
+    color: #ffffff;
+    font-weight: 700;
+  }
+  html[data-theme="dark"] .cal-grid-soft .day.sel { background: #0b3017; color: #fee000; }
+  .cal-grid-soft .day.range {
+    background: var(--bg-sage);
+    color: var(--pine-500);
+    font-weight: 700;
+  }
+  html[data-theme="dark"] .cal-grid-soft .day.range {
+    background: rgba(254, 224, 0, 0.12);
+    color: #fee000;
+  }
+
+
+  /* ==========================================================================
+     SEÇÃO 08: VISUALIZAÇÃO DE DADOS — GRÁFICOS DATACHART PRO
+     ========================================================================== */
+  .charts-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  .chart-card-pro {
+    background: var(--bg-surface);
+    border-radius: var(--r-2xl);
+    padding: 28px 32px;
+    box-shadow: var(--shadow-soft-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    overflow: hidden;
+    transition: var(--trans-fast);
+  }
+  .chart-card-pro:hover {
+    box-shadow: var(--shadow-soft-md);
+  }
+  .chart-header-pro {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .chart-title-pro {
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+    margin: 0 0 4px 0;
+  }
+  .chart-sub-pro {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+    margin: 0;
+  }
+  .chart-canvas-wrap {
+    position: relative;
+    width: 100%;
+    height: 260px;
+    min-height: 200px;
+  }
+  .chart-canvas-wrap svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    overflow: visible;
+  }
+  .chart-legend-pro {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    align-items: center;
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    margin-top: 4px;
+  }
+  .chart-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .chart-legend-chip {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    flex: none;
+  }
+  .chart-tooltip-pro {
+    position: absolute;
+    pointer-events: none;
+    background: #0d1711;
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 0.75rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    opacity: 0;
+    transform: translate(-50%, -100%);
+    transition: opacity 0.15s ease;
+    white-space: nowrap;
+  }
+  html[data-theme="dark"] .chart-tooltip-pro {
+    background: #152c1e;
+    color: #f4f8f5;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  }
+  .chart-tooltip-pro.visible {
+    opacity: 1;
+  }
+
+  /* ==========================================================================
+     FOOTER & TOAST FEEDBACK
+     ========================================================================== */
+  footer {
+    border-top: 1px solid var(--border-subtle);
+    padding-block: 40px 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(16px);
+    background: var(--pine-500);
+    color: #ffffff;
+    font-size: 0.88rem;
+    font-weight: 700;
+    padding: 12px 24px;
+    border-radius: var(--r-full);
+    opacity: 0;
+    pointer-events: none;
+    transition: var(--trans-base);
+    z-index: 100;
+    box-shadow: var(--shadow-floating);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  html[data-theme="dark"] .toast {
+    background: #143029;
+    border-color: rgba(187, 244, 156, 0.35);
+    color: #f4f8f7;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* ==========================================================================
+     RESPONSIVIDADE & MOBILE BREAKPOINTS
+     ========================================================================== */
+  @media (max-width: 960px) {
+    .hero-card { padding: 36px 32px; }
+    .hero-stats-strip { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .cards-grid { grid-template-columns: 1fr; }
+    .cards-duo { grid-template-columns: 1fr; }
+    .kpi-cards-grid { grid-column: span 1; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .grid-4, .grid-5 { grid-template-columns: repeat(2, 1fr); }
+    .swatch-row { grid-template-columns: repeat(5, 1fr); }
+    .icon-grid { grid-template-columns: repeat(5, 1fr); }
+    .app-shell-soft { grid-template-columns: 1fr; }
+    .app-sidebar-soft { flex-direction: row; justify-content: center; padding: 14px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .theme-stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .navlinks { display: none; }
+  }
+  @media (max-width: 580px) {
+    .wrap, .topnav-wrapper { padding-inline: 20px; }
+    .hero-card { padding: 28px 20px; }
+    .hero-stats-strip { grid-template-columns: 1fr; gap: 16px; }
+    .kpi-cards-grid { grid-template-columns: 1fr; }
+    .brand-badge { display: none; }
+    .swatch-row { grid-template-columns: repeat(2, 1fr); }
+    .icon-grid { grid-template-columns: repeat(4, 1fr); }
+    .theme-stats-grid { grid-template-columns: 1fr; }
+    .theme-panel-soft { padding: 20px; }
+    .card-soft--list { padding: 12px 18px; }
+  }
+</style>
+<script src="assets/chart.umd.min.js"></script>
+<script>if (typeof Chart === "undefined") { document.write('<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"><\\/script>'); }</script>
+</head>
+<body>
+
+<!-- FLOATING TOPNAV (VELVET GLASS CAPSULE COM MODO NOTURNO) -->
+<div class="topnav-wrapper">
+  <nav class="topnav-island">
+    <div class="navlinks">
+      <a href="#cores">Cores</a>
+      <a href="#superficies">Superfícies</a>
+      <a href="#tipografia">Tipografia</a>
+      <a href="#espacamento">Espaçamento</a>
+      <a href="#icones">Ícones</a>
+      <a href="#componentes">Componentes</a>
+      <a href="#cards">Cards</a>
+      <a href="#graficos">Gráficos</a>
+      <a href="#aplicacao">Aplicação</a>
+    </div>
+
+    <div class="topnav-actions">
+      <button id="themeToggleBtn" class="nav-theme-btn" aria-label="Alternar modo noturno">
+        <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <span class="theme-label">Tema</span>
+        <span class="theme-badge" id="themeBadge">CLARO</span>
+      </button>
+    </div>
+  </nav>
+</div>
+
+<div class="wrap">
+
+  <!-- HERO SECTION -->
+  <div class="hero-section" id="hero">
+    <div class="hero-card">
+      <div class="hero-content">
+        <h1 class="hero-title">Gestão orçamentária <em>precisa, transparente &amp; soft</em></h1>
+        <p class="hero-lede">Adaptação oficial do Design System Orçamento: paleta mineral suave (#f2f6f3), superfícies sólidas e limpas, tipografia Segoe UI harmonizada com demonstrativos fiscais e micro-interações aveludadas.</p>
+        <div class="hero-actions">
+          <a href="#aplicacao" class="btn btn-primary-soft">
+            <span>Explorar Aplicação Viva</span>
+            <div class="btn-icon-capsule">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+          <a href="#componentes" class="btn btn-outline">Ver Componentes</a>
+          <a href="#graficos" class="btn btn-outline">Visualizar Gráficos</a>
+        </div>
+      </div>
+
+      <div class="hero-stats-strip">
+        <div class="hero-stat-cell">
+          <div class="hero-stat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+              <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+              <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+              <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+            </svg>
+          </div>
+          <div class="hero-stat-info">
+            <span class="hero-stat-val">36</span>
+            <span class="hero-stat-lbl">Ícones Fiscais em malha SVG 24px</span>
+          </div>
+        </div>
+
+        <div class="hero-stat-cell">
+          <div class="hero-stat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 20V10"></path>
+              <path d="M12 20V4"></path>
+              <path d="M6 20v-6"></path>
+            </svg>
+          </div>
+          <div class="hero-stat-info">
+            <span class="hero-stat-val">06</span>
+            <span class="hero-stat-lbl">Gráficos Chart.js monocromáticos</span>
+          </div>
+        </div>
+
+        <div class="hero-stat-cell">
+          <div class="hero-stat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+              <path d="M3 9h18"></path>
+              <path d="M9 21V9"></path>
+            </svg>
+          </div>
+          <div class="hero-stat-info">
+            <span class="hero-stat-val">09</span>
+            <span class="hero-stat-lbl">Seções canônicas &amp; Living App Shell</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 01: CORES -->
+  <section id="cores">
+    <div class="section-head">
+      <div>
+        <span class="section-eyebrow">Seção 01</span>
+        <h2>Paleta de Cores</h2>
+      </div>
+      <span class="num">01 — paleta cromática</span>
+    </div>
+    <p class="section-note">Clique em qualquer amostra para copiar instantaneamente o código hexadecimal com feedback haptico. A escala foi calibrada para transições cromáticas sem degraus ópticos, preservando o contraste da identidade do Design System Orçamento.</p>
+
+    <!-- Primária Institucional: Verde Institucional (#219647 - 500) -->
+    <div class="palette-group">
+      <p class="palette-label">Primária Verde Institucional — #219647 (500)</p>
+      <p class="palette-note">Tom verde governamental institucional usado em cabeçalhos fiscais, empenhos, botões primários e indicadores de conformidade da LRF.</p>
+      <div class="swatch-row">
+        <div class="swatch" data-hex="#edf8f0" style="background:#edf8f0; color:#16642f;"><span class="step">50</span><span class="hex-val">#edf8f0</span></div>
+        <div class="swatch" data-hex="#d5eedc" style="background:#d5eedc; color:#16642f;"><span class="step">100</span><span class="hex-val">#d5eedc</span></div>
+        <div class="swatch" data-hex="#ade0ba" style="background:#ade0ba; color:#16642f;"><span class="step">200</span><span class="hex-val">#ade0ba</span></div>
+        <div class="swatch" data-hex="#7ece93" style="background:#7ece93; color:#0b3017;"><span class="step">300</span><span class="hex-val">#7ece93</span></div>
+        <div class="swatch" data-hex="#48b86d" style="background:#48b86d; color:#ffffff;"><span class="step">400</span><span class="hex-val">#48b86d</span></div>
+        <div class="swatch" data-hex="#219647" style="background:#219647; color:#ffffff;"><span class="step">500</span><span class="hex-val">#219647</span></div>
+        <div class="swatch" data-hex="#1b7d3a" style="background:#1b7d3a; color:#ffffff;"><span class="step">600</span><span class="hex-val">#1b7d3a</span></div>
+        <div class="swatch" data-hex="#16642f" style="background:#16642f; color:#ffffff;"><span class="step">700</span><span class="hex-val">#16642f</span></div>
+        <div class="swatch" data-hex="#114c24" style="background:#114c24; color:#ffffff;"><span class="step">800</span><span class="hex-val">#114c24</span></div>
+        <div class="swatch" data-hex="#0b3017" style="background:#0b3017; color:#ffffff;"><span class="step">900</span><span class="hex-val">#0b3017</span></div>
+      </div>
+    </div>
+
+    <!-- Primária Amarela: Amarelo Solar (#fee000 - 500) -->
+    <div class="palette-group">
+      <p class="palette-label">Primária Amarela — Amarelo Solar #fee000 (500)</p>
+      <p class="palette-note">Tom de alta visibilidade e energia para botões primários de ação/conversão, execução de ordem orçamentária e destaques fiscais.</p>
+      <div class="swatch-row">
+        <div class="swatch" data-hex="#fffde6" style="background:#fffde6; color:#736600;"><span class="step">50</span><span class="hex-val">#fffde6</span></div>
+        <div class="swatch" data-hex="#fffbb8" style="background:#fffbb8; color:#736600;"><span class="step">100</span><span class="hex-val">#fffbb8</span></div>
+        <div class="swatch" data-hex="#fff785" style="background:#fff785; color:#736600;"><span class="step">200</span><span class="hex-val">#fff785</span></div>
+        <div class="swatch" data-hex="#ffee4d" style="background:#ffee4d; color:#3d3700;"><span class="step">300</span><span class="hex-val">#ffee4d</span></div>
+        <div class="swatch" data-hex="#ffe51a" style="background:#ffe51a; color:#3d3700;"><span class="step">400</span><span class="hex-val">#ffe51a</span></div>
+        <div class="swatch" data-hex="#fee000" style="background:#fee000; color:#0d1711;"><span class="step">500</span><span class="hex-val">#fee000</span></div>
+        <div class="swatch" data-hex="#d4bc00" style="background:#d4bc00; color:#ffffff;"><span class="step">600</span><span class="hex-val">#d4bc00</span></div>
+        <div class="swatch" data-hex="#a89500" style="background:#a89500; color:#ffffff;"><span class="step">700</span><span class="hex-val">#a89500</span></div>
+        <div class="swatch" data-hex="#736600" style="background:#736600; color:#ffffff;"><span class="step">800</span><span class="hex-val">#736600</span></div>
+        <div class="swatch" data-hex="#3d3700" style="background:#3d3700; color:#ffffff;"><span class="step">900</span><span class="hex-val">#3d3700</span></div>
+      </div>
+    </div>
+
+    <!-- Neutros Minerais Suaves -->
+    <div class="palette-group">
+      <p class="palette-label">Neutros Minerais Soft (Canvas Névoa #f2f6f3 → Carvão Esmeralda #0d1711)</p>
+      <p class="palette-note">Escala neutra com matiz esmeralda calmante que elimina a frieza de cinzas sintéticos padrão.</p>
+      <div class="swatch-row">
+        <div class="swatch" data-hex="#ffffff" style="background:#ffffff; color:#556f65; border:1px solid #d0ded7;"><span class="step">25</span><span class="hex-val">#ffffff</span></div>
+        <div class="swatch" data-hex="#fbfdfc" style="background:#fbfdfc; color:#556f65; border:1px solid #d0ded7;"><span class="step">50</span><span class="hex-val">#fbfdfc</span></div>
+        <div class="swatch" data-hex="#f2f6f3" style="background:#f2f6f3; color:#4f6656; border:1px solid #cbd8cf;"><span class="step">100</span><span class="hex-val">#f2f6f3</span></div>
+        <div class="swatch" data-hex="#edf2ef" style="background:#edf2ef; color:#556f65;"><span class="step">150</span><span class="hex-val">#edf2ef</span></div>
+        <div class="swatch" data-hex="#e3ebe7" style="background:#e3ebe7; color:#384e46;"><span class="step">200</span><span class="hex-val">#e3ebe7</span></div>
+        <div class="swatch" data-hex="#d0ded7" style="background:#d0ded7; color:#1f302b;"><span class="step">300</span><span class="hex-val">#d0ded7</span></div>
+        <div class="swatch" data-hex="#a7bcb2" style="background:#a7bcb2; color:#ffffff;"><span class="step">400</span><span class="hex-val">#a7bcb2</span></div>
+        <div class="swatch" data-hex="#7b968b" style="background:#7b968b; color:#ffffff;"><span class="step">500</span><span class="hex-val">#7b968b</span></div>
+        <div class="swatch" data-hex="#556f65" style="background:#556f65; color:#ffffff;"><span class="step">600</span><span class="hex-val">#556f65</span></div>
+        <div class="swatch" data-hex="#0f1c18" style="background:#0f1c18; color:#ffffff;"><span class="step">900</span><span class="hex-val">#0f1c18</span></div>
+      </div>
+    </div>
+
+    <!-- 4 Grupos Complementares Semânticos Soft -->
+    <div class="grid-4">
+      <div class="palette-group">
+        <p class="palette-label">Sage &amp; Pistachio Tint</p>
+        <div class="swatch-row" style="grid-template-columns: repeat(2, 1fr);">
+          <div class="swatch" data-hex="#ebf5ee" style="background:#ebf5ee; color:#16642f; border:1px solid var(--sage-border);"><span class="step">Sage</span><span class="hex-val">#ebf5ee</span></div>
+          <div class="swatch" data-hex="#fffadb" style="background:#fffadb; color:#524600; border:1px solid rgba(254,224,0,0.8);"><span class="step">Pill</span><span class="hex-val">#fffadb</span></div>
+        </div>
+      </div>
+
+      <div class="palette-group">
+        <p class="palette-label">Despesas &amp; Saídas (Soft Coral)</p>
+        <div class="swatch-row" style="grid-template-columns: repeat(2, 1fr);">
+          <div class="swatch" data-hex="rgba(244,63,94,0.09)" style="background:rgba(244,63,94,0.09); color:#e11d48; border:1px solid var(--coral-border);"><span class="step">Tint</span><span class="hex-val">9% alpha</span></div>
+          <div class="swatch" data-hex="#f43f5e" style="background:#f43f5e; color:#ffffff;"><span class="step">Solid</span><span class="hex-val">#f43f5e</span></div>
+        </div>
+      </div>
+
+      <div class="palette-group">
+        <p class="palette-label">Vencimentos (Soft Amber)</p>
+        <div class="swatch-row" style="grid-template-columns: repeat(2, 1fr);">
+          <div class="swatch" data-hex="rgba(245,158,11,0.10)" style="background:rgba(245,158,11,0.10); color:#b45309; border:1px solid var(--amber-border);"><span class="step">Tint</span><span class="hex-val">10% alpha</span></div>
+          <div class="swatch" data-hex="#f59e0b" style="background:#f59e0b; color:#ffffff;"><span class="step">Solid</span><span class="hex-val">#f59e0b</span></div>
+        </div>
+      </div>
+
+      <div class="palette-group">
+        <p class="palette-label">Liquidez &amp; Investimentos (Sky)</p>
+        <div class="swatch-row" style="grid-template-columns: repeat(2, 1fr);">
+          <div class="swatch" data-hex="rgba(14,165,233,0.10)" style="background:rgba(14,165,233,0.10); color:#0369a1; border:1px solid var(--sky-border);"><span class="step">Tint</span><span class="hex-val">10% alpha</span></div>
+          <div class="swatch" data-hex="#0ea5e9" style="background:#0ea5e9; color:#ffffff;"><span class="step">Solid</span><span class="hex-val">#0ea5e9</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 02: SUPERFÍCIES & ELEVAÇÃO -->
+  <section id="superficies">
+    <div class="section-head">
+      <div>
+        <span class="section-eyebrow">Seção 02</span>
+        <h2>Superfícies &amp; Elevação</h2>
+      </div>
+      <span class="num">02 — profundidade &amp; sombras</span>
+    </div>
+    <p class="section-note">Superfícies 100% sólidas e límpidas sem bordas nos cartões e botões primários.</p>
+
+    <!-- 5 Superfícies Fundamentais -->
+    <div class="grid-5" style="margin-bottom: 32px;">
+      <div class="surface-card page" data-hex="#f2f6f3">
+        <div>
+          <p class="name">Canvas Mineral</p>
+          <p class="role">Fundo calmo e imersivo</p>
+        </div>
+        <p class="hex">#f2f6f3</p>
+      </div>
+
+      <div class="surface-card surface" data-hex="#ffffff">
+        <div>
+          <p class="name">Card Surface</p>
+          <p class="role">Branco puro sólido</p>
+        </div>
+        <p class="hex">#ffffff</p>
+      </div>
+
+      <div class="surface-card sage" data-hex="#ebf5ee">
+        <div>
+          <p class="name">Soft Sage Tint</p>
+          <p class="role">Superfície orgânica aveludada</p>
+        </div>
+        <p class="hex">#ebf5ee</p>
+      </div>
+
+      <div class="surface-card dark" data-hex="#219647">
+        <div>
+          <p class="name">Verde Governamental Invertido</p>
+          <p class="role">Card elevado de alto impacto</p>
+        </div>
+        <p class="hex">#219647</p>
+      </div>
+
+      <div class="surface-card glass" data-hex="rgba(255,255,255,0.72)">
+        <div>
+          <p class="name">Velvet Frosted Glass</p>
+          <p class="role">Translucidez de 20px + saturação</p>
+        </div>
+        <p class="hex">blur(20px) · 72%</p>
+      </div>
+    </div>
+
+    <!-- 3 Cartões de Demonstração de Sombra Soft -->
+    <div class="grid-3">
+      <div class="shadow-demo-card s-soft-sm">
+        <p class="name">Soft Ambient XS/SM</p>
+        <p class="desc">Para cartões em repouso, chips e listas financeiras sem tensão visual.</p>
+      </div>
+      <div class="shadow-demo-card s-soft-md">
+        <p class="name">Soft Ambient MD</p>
+        <p class="desc">Elevação suave ao passar o cursor ou para componentes ativos de foco.</p>
+      </div>
+      <div class="shadow-demo-card s-soft-lg">
+        <p class="name">Floating Glass LG</p>
+        <p class="desc">Para barra de navegação destacada, modais flutuantes e cartões de destaque.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 03: TIPOGRAFIA -->
+  <section id="tipografia">
+    <div class="section-head">
+      <div>
+        <span class="section-eyebrow">Seção 03</span>
+        <h2>Tipografia</h2>
+      </div>
+      <span class="num">03 — Segoe UI</span>
+    </div>
+    <p class="section-note">Uma única família cobre toda a hierarquia — variação vem do tamanho e do peso, nunca de uma segunda fonte.</p>
+
+    <div class="type-card">
+      <div class="type-row">
+        <div class="type-label">
+          <span class="name">display</span>
+          <span class="meta">600 · 40/1.1</span>
+        </div>
+        <span class="type-sample t-display">Sistema visual da marca</span>
+      </div>
+
+      <div class="type-row">
+        <div class="type-label">
+          <span class="name">h1</span>
+          <span class="meta">600 · 28</span>
+        </div>
+        <span class="type-sample t-h1">Cabeçalho de página</span>
+      </div>
+
+      <div class="type-row">
+        <div class="type-label">
+          <span class="name">h2</span>
+          <span class="meta">600 · 22</span>
+        </div>
+        <span class="type-sample t-h2">Título de seção</span>
+      </div>
+
+      <div class="type-row">
+        <div class="type-label">
+          <span class="name">h3</span>
+          <span class="meta">600 · 17</span>
+        </div>
+        <span class="type-sample t-h3">Subtítulo de card</span>
+      </div>
+
+      <div class="type-row">
+        <div class="type-label">
+          <span class="name">body</span>
+          <span class="meta">400 · 15/1.6</span>
+        </div>
+        <span class="type-sample t-body">Texto de parágrafo padrão, usado para conteúdo corrido em telas e componentes.</span>
+      </div>
+
+      <div class="type-row">
+        <div class="type-label">
+          <span class="name">small</span>
+          <span class="meta">400 · 13</span>
+        </div>
+        <span class="type-sample t-small">Texto de apoio, legendas e metadados.</span>
+      </div>
+
+      <div class="type-row">
+        <div class="type-label">
+          <span class="name">caption</span>
+          <span class="meta">600 · 11 · caps</span>
+        </div>
+        <span class="type-sample t-caption">Rótulo de categoria</span>
+      </div>
+
+      <div class="type-row">
+        <div class="type-label">
+          <span class="name">valores / métricas</span>
+          <span class="meta">700 · 24</span>
+        </div>
+        <span class="type-sample" style="font-size:24px; font-weight:700; color:var(--pine-500); letter-spacing:-0.01em;">
+          R$ 14.820.950,00 <span style="font-size:14px; color:var(--text-secondary); font-weight:400;">(+4,2% no semestre / Superávit)</span>
+        </span>
+      </div>
+
+      <div class="weight-strip">
+        <div class="weight-chip" style="font-weight:400;">400 Regular</div>
+        <div class="weight-chip" style="font-weight:600;">600 SemiBold</div>
+        <div class="weight-chip" style="font-weight:700;">700 Bold</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 04: ESPAÇAMENTO & RAIO -->
+  <section id="espacamento">
+    <div class="section-head">
+      <div>
+        <span class="section-eyebrow">Seção 04</span>
+        <h2>Espaçamento &amp; Raio</h2>
+      </div>
+      <span class="num">04 — ritmo modular</span>
+    </div>
+    <p class="section-note">Régua uniforme de proporções modulares (base 4px/8px) e escala calibrada de raios de curvatura para harmonia visual e precisão dimensional em toda a interface.</p>
+
+    <div class="grid-2">
+      <!-- Escala de Espaçamento -->
+      <div class="token-box">
+        <p class="palette-label">Escala de Espaçamento (Base Modular 4px/8px)</p>
+        <p class="palette-note">Régua uniforme de proporções para margens internas, respiros entre seções e gaps de grid.</p>
+        <div class="space-list">
+          <div class="space-row"><span class="lbl">space-1</span><div class="space-bar" style="width:4px"></div><span class="px">4px</span></div>
+          <div class="space-row"><span class="lbl">space-2</span><div class="space-bar" style="width:8px"></div><span class="px">8px</span></div>
+          <div class="space-row"><span class="lbl">space-3</span><div class="space-bar" style="width:12px"></div><span class="px">12px</span></div>
+          <div class="space-row"><span class="lbl">space-4</span><div class="space-bar" style="width:16px"></div><span class="px">16px</span></div>
+          <div class="space-row"><span class="lbl">space-5</span><div class="space-bar" style="width:24px"></div><span class="px">24px</span></div>
+          <div class="space-row"><span class="lbl">space-6</span><div class="space-bar" style="width:32px"></div><span class="px">32px</span></div>
+          <div class="space-row"><span class="lbl">space-7</span><div class="space-bar" style="width:48px"></div><span class="px">48px</span></div>
+          <div class="space-row"><span class="lbl">space-8</span><div class="space-bar" style="width:64px"></div><span class="px">64px</span></div>
+        </div>
+      </div>
+
+      <!-- Curvaturas Corner Radius -->
+      <div class="token-box">
+        <p class="palette-label">Corner radius</p>
+        <p class="palette-note">Régua uniforme de suavização para cantos de componentes, badges, cartões e superfícies táteis.</p>
+        <div class="radius-list">
+          <div class="radius-item"><div class="radius-box" style="border-radius:4px;"></div><span>sm · 4px</span></div>
+          <div class="radius-item"><div class="radius-box" style="border-radius:8px;"></div><span>md · 8px</span></div>
+          <div class="radius-item"><div class="radius-box" style="border-radius:12px;"></div><span>lg · 12px</span></div>
+          <div class="radius-item"><div class="radius-box" style="border-radius:16px;"></div><span>xl · 16px</span></div>
+          <div class="radius-item"><div class="radius-box" style="border-radius:24px;"></div><span>2xl · 24px</span></div>
+          <div class="radius-item"><div class="radius-box" style="border-radius:999px;"></div><span>full</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 05: ÍCONES -->
+  <section id="icones">
+    <div class="section-head">
+      <div>
+        <span class="section-eyebrow">Seção 05</span>
+        <h2>Ícones</h2>
+      </div>
+      <span class="num">05 — biblioteca de traço suave</span>
+    </div>
+    <p class="section-note">Conjunto de 36 pictogramas vetoriais redesenhados sob malha precisa de 24×24px, com espessura de traço uniforme de 1.65px e terminais arredondados. Os símbolos cobrem os fluxos normativos da administração financeira brasileira (PPA, LDO, LOA, estágios da despesa da Lei 4.320/64, limites da LRF e controle dos Tribunais de Contas). Clique sobre qualquer ícone para copiar seu identificador técnico.</p>
+
+        <div class="icon-grid" id="iconGrid">
+      <div class="icon-cell" data-name="painel"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v9a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1v-9"/></svg><span>Painel Geral</span></div>
+      <div class="icon-cell" data-name="orcamento"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 15h3M14 15h2"/></svg><span>Orçamento LOA</span></div>
+      <div class="icon-cell" data-name="receitas"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12l4-4 4 4"/></svg><span>Receitas</span></div>
+      <div class="icon-cell" data-name="despesas"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12l4 4 4-4"/></svg><span>Despesas</span></div>
+      <div class="icon-cell" data-name="empenho"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 13h6M9 17h4"/><circle cx="15" cy="17" r="2.5"/></svg><span>Nota Empenho</span></div>
+      <div class="icon-cell" data-name="liquidacao"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M7 12l3 3 7-7"/></svg><span>Liquidação</span></div>
+      <div class="icon-cell" data-name="pagamento"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2.5"/><line x1="2" y1="10" x2="22" y2="10"/><circle cx="7" cy="15" r="1.5"/></svg><span>Ordem Bancária</span></div>
+      <div class="icon-cell" data-name="ppa"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/><line x1="9" y1="7" x2="15" y2="7"/><line x1="9" y1="11" x2="13" y2="11"/></svg><span>Plano PPA</span></div>
+      <div class="icon-cell" data-name="ldo"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polygon points="12 3 14.5 9.5 21 12 14.5 14.5 12 21 9.5 14.5 3 12 9.5 9.5 12 3"/></svg><span>Diretrizes LDO</span></div>
+      <div class="icon-cell" data-name="loa"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg><span>Lei LOA</span></div>
+      <div class="icon-cell" data-name="transparencia"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><span>Transparência</span></div>
+      <div class="icon-cell" data-name="tribunal-contas"><svg viewBox="0 0 24 24"><path d="M12 3v18M5 7l7-3 7 3M5 7l-2 7a3 3 0 006 0L7 7M19 7l-2 7a3 3 0 006 0L21 7M9 21h6"/></svg><span>Tribunal Contas</span></div>
+      <div class="icon-cell" data-name="licitacao"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg><span>Licitação</span></div>
+      <div class="icon-cell" data-name="contrato"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg><span>Contrato</span></div>
+      <div class="icon-cell" data-name="restos-pagar"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 6 12 12 16 14"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg><span>Restos a Pagar</span></div>
+      <div class="icon-cell" data-name="superavit"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/><path d="M19 19l2 2 4-4"/></svg><span>Superávit</span></div>
+      <div class="icon-cell" data-name="deficit"><svg viewBox="0 0 24 24"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg><span>Déficit / Alerta</span></div>
+      <div class="icon-cell" data-name="saude"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M12 8v8M8 12h8"/></svg><span>Piso Saúde 15%</span></div>
+      <div class="icon-cell" data-name="educacao"><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg><span>Educação 25%</span></div>
+      <div class="icon-cell" data-name="infraestrutura"><svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4M8 6h.01M16 6h.01M12 6h.01M8 10h.01M16 10h.01M12 10h.01M8 14h.01M16 14h.01M12 14h.01"/></svg><span>Obras Públicas</span></div>
+      <div class="icon-cell" data-name="seguranca"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Segurança</span></div>
+      <div class="icon-cell" data-name="social"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg><span>Assistência</span></div>
+      <div class="icon-cell" data-name="servidores"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/><circle cx="12" cy="11" r="2"/></svg><span>Folha Pessoal</span></div>
+      <div class="icon-cell" data-name="graficos"><svg viewBox="0 0 24 24"><rect x="3" y="12" width="4" height="8" rx="1.5"/><rect x="10" y="6" width="4" height="14" rx="1.5"/><rect x="17" y="10" width="4" height="10" rx="1.5"/></svg><span>RREO &amp; RGF</span></div>
+      <div class="icon-cell" data-name="auditoria"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35M9 11l2 2 4-4"/></svg><span>Auditoria</span></div>
+      <div class="icon-cell" data-name="transferencias"><svg viewBox="0 0 24 24"><path d="M17 3L21 7L17 11"/><path d="M3 7H21"/><path d="M7 21L3 17L7 13"/><path d="M21 17H3"/></svg><span>Repasses FPE</span></div>
+      <div class="icon-cell" data-name="calendario"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2.5"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span>Desembolso</span></div>
+      <div class="icon-cell" data-name="notificacao"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><span>Alertas LRF</span></div>
+      <div class="icon-cell" data-name="buscar"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg><span>Consultar NE</span></div>
+      <div class="icon-cell" data-name="documento"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span>Diário Oficial</span></div>
+      <div class="icon-cell" data-name="exportar"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg><span>Dados Abertos</span></div>
+      <div class="icon-cell" data-name="autenticacao"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><span>Gov.br / ICP</span></div>
+      <div class="icon-cell" data-name="ajustes"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg><span>Parâmetros UG</span></div>
+      <div class="icon-cell" data-name="filtros"><svg viewBox="0 0 24 24"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg><span>Função &amp; Sub</span></div>
+      <div class="icon-cell" data-name="legislativo"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V9M9 21V9M15 21V9M19 21V9M12 3L2 9h20L12 3z"/></svg><span>Legislativo</span></div>
+      <div class="icon-cell" data-name="emendas"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><span>Emendas</span></div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 06: COMPONENTES -->
+  <section id="componentes">
+    <div class="section-head">
+      <div>
+        <span class="section-eyebrow">Seção 06</span>
+        <h2>Componentes</h2>
+      </div>
+      <span class="num">06 — biblioteca de interface</span>
+    </div>
+    <p class="section-note">Elementos fundamentais de interação governamental: botões com padrão Button-in-Button, badges semânticas de conformidade fiscal e modelo canônico de Data Table SIAFIC de alta densidade.</p>
+
+    <div class="grid-2">
+      <!-- Botões -->
+      <div class="comp-card">
+        <h3>Botões</h3>
+        <div class="btn-row">
+          <button class="btn btn-primary-soft">
+            <span>Emitir Empenho (Principal #219647)</span>
+            <div class="btn-icon-capsule">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14"/></svg>
+            </div>
+          </button>
+          <button class="btn btn-cta">Executar Ordem (CTA #fee000)</button>
+          <button class="btn btn-secondary">Aprovar Liquidação</button>
+          <button class="btn btn-outline">Filtrar LOA</button>
+          <button class="btn btn-ghost">Relatório RREO</button>
+          <button class="btn btn-danger">Anular Empenho</button>
+          <button class="btn btn-disabled" disabled>Dotação Bloqueada</button>
+        </div>
+      </div>
+
+      <!-- Badges & Status Pills -->
+      <div class="comp-card">
+        <h3>Badges</h3>
+        <div class="badge-row">
+          <span class="badge badge-sage">Sage Institucional</span>
+          <span class="badge badge-glass"><span class="badge-dot" style="background:var(--pine-500)"></span>Transparência Ativa</span>
+          <span class="badge badge-pine">Dotação Liberada</span>
+          <span class="badge badge-neutral">Fonte 1.500</span>
+          <span class="badge badge-error"><span class="badge-dot" style="background:var(--coral-alert)"></span>Glosa / Cancelado</span>
+          <span class="badge badge-warning"><span class="badge-dot" style="background:var(--amber-warning)"></span>Limite Alerta LRF</span>
+        </div>
+      </div>
+
+      <!-- Formulários -->
+      <div class="comp-card">
+        <h3>Campos de Entrada</h3>
+        <div class="form-grid">
+          <div class="field">
+            <label for="ds-name-soft">Unidade Gestora (UG)</label>
+            <input id="ds-name-soft" type="text" placeholder="230001 - Fundo Estadual de Saúde">
+          </div>
+          <div class="field">
+            <label for="ds-email-soft">Número do Empenho</label>
+            <input id="ds-email-soft" type="text" placeholder="2026NE000452">
+          </div>
+          <div class="field">
+            <label for="ds-unit-soft">Função &amp; Subfunção</label>
+            <select id="ds-unit-soft">
+              <option>10.301 - Atenção Básica de Saúde</option>
+              <option>12.361 - Ensino Fundamental Regular</option>
+              <option>15.451 - Infraestrutura Urbana</option>
+              <option>04.122 - Administração Geral</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="ds-obs-soft">Histórico / Justificativa Pública</label>
+            <textarea id="ds-obs-soft" rows="2" placeholder="Aquisição de insumos hospitalares para atendimento ambulatorial"></textarea>
+          </div>
+        </div>
+        <div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap; margin-top:16px;">
+          <label style="display:flex; align-items:center; gap:8px; font-size:0.84rem; font-weight:600; cursor:pointer;">
+            <input type="checkbox" checked style="accent-color:var(--pine-500); width:16px; height:16px;">
+            Publicar no Portal da Transparência
+          </label>
+          <div style="display:flex; align-items:center; gap:10px; font-size:0.84rem; font-weight:600;">
+            <span>Validação Prévia do Controle Interno</span>
+            <span class="switch on"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Avatares & Metas -->
+      <div class="comp-card">
+        <h3>Avatares &amp; Progresso</h3>
+        <p style="font-size:0.82rem; color:var(--text-secondary); margin-bottom:14px;">Membros autorizados e cumprimento dos pisos constitucionais:</p>
+        <div class="avatar-row" style="margin-bottom:24px;">
+          <div class="avatar" style="background:var(--pine-500); color:#ffffff;">DV</div>
+          <div class="avatar" style="background:var(--pine-700); color:#ffffff;">MG</div>
+          <div class="avatar" style="background:#fee000; color:#219647;">RS</div>
+          <div class="avatar more">+4</div>
+        </div>
+
+        <div class="prog-item">
+          <div class="prog-top"><span>Piso Constitucional da Educação (Mínimo 25%)</span><span class="mono">27,4% atingido</span></div>
+          <div class="prog-track"><div class="prog-fill" style="width:27.4%; background:var(--pine-500);"></div></div>
+        </div>
+
+        <div class="prog-item">
+          <div class="prog-top"><span>Execução da Despesa Fixada (R$ 14,8 Bi)</span><span class="mono">82% executado</span></div>
+          <div class="prog-track"><div class="prog-fill" style="width:82%; background:var(--lime-500);"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODELO DE TABELA SOFT (DATA TABLE GOVERNAMENTAL SIAFIC) -->
+    <div class="table-card-soft">
+      <div class="table-toolbar-soft">
+        <div class="table-toolbar-info">
+          <h3>Tabela de Dados</h3>
+          <p>Demonstrativo sintético de dotações, credores, emissões de NE e status de liquidação fiscal</p>
+        </div>
+        <div class="table-toolbar-actions">
+          <div class="table-search-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" placeholder="Filtrar empenho, credor ou dotação...">
+          </div>
+          <button class="btn btn-secondary" style="padding: 8px 14px; font-size: 0.78rem;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px;">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Exportar CSV
+          </button>
+        </div>
+      </div>
+
+      <div class="table-wrap-responsive">
+        <table class="table-soft">
+          <thead>
+            <tr>
+              <th>Nota de Empenho</th>
+              <th>Credor / Favorecido</th>
+              <th>Programa Orçamentário</th>
+              <th>Data Emissão</th>
+              <th class="th-right">Valor Empenhado</th>
+              <th class="th-center">Conformidade SIAFIC</th>
+              <th class="th-center">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="table-code-badge">2026NE000452</span></td>
+              <td>
+                <span class="table-credor">Hospital das Clínicas Metropolitano S/A</span>
+                <span class="table-sub-detail">CNPJ: 18.234.567/0001-89 · UG: 230001</span>
+              </td>
+              <td>
+                <span>10.301 - Atenção Básica de Saúde</span>
+                <span class="table-sub-detail">Fonte 1.500 (Recursos Ordinários)</span>
+              </td>
+              <td>18/10/2026</td>
+              <td class="td-right"><span class="table-amount">R$ 1.840.000,00</span></td>
+              <td class="td-center"><span class="badge badge-pine">Dotação Liberada</span></td>
+              <td class="td-center">
+                <button class="table-btn-action" title="Visualizar Detalhes do Empenho">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="table-code-badge">2026NE000453</span></td>
+              <td>
+                <span class="table-credor">Construtora Vias Urbanas &amp; Engenharia Ltda</span>
+                <span class="table-sub-detail">CNPJ: 04.981.233/0001-12 · UG: 150002</span>
+              </td>
+              <td>
+                <span>15.451 - Infraestrutura &amp; Mobilidade</span>
+                <span class="table-sub-detail">Fonte 1.700 (Operações de Crédito)</span>
+              </td>
+              <td>16/10/2026</td>
+              <td class="td-right"><span class="table-amount">R$ 4.250.000,00</span></td>
+              <td class="td-center"><span class="badge badge-warning">Limite Alerta LRF</span></td>
+              <td class="td-center">
+                <button class="table-btn-action" title="Visualizar Detalhes do Empenho">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="table-code-badge">2026NE000454</span></td>
+              <td>
+                <span class="table-credor">Fundação de Apoio à Tecnologia Educacional</span>
+                <span class="table-sub-detail">CNPJ: 52.110.872/0001-44 · UG: 120003</span>
+              </td>
+              <td>
+                <span>12.361 - Ensino Fundamental Regular</span>
+                <span class="table-sub-detail">Fonte 1.540 (MDE / Salário Educação)</span>
+              </td>
+              <td>15/10/2026</td>
+              <td class="td-right"><span class="table-amount">R$ 960.500,00</span></td>
+              <td class="td-center"><span class="badge badge-sage">Sage Institucional</span></td>
+              <td class="td-center">
+                <button class="table-btn-action" title="Visualizar Detalhes do Empenho">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="table-code-badge">2026NE000455</span></td>
+              <td>
+                <span class="table-credor">Distribuidora Farmacêutica Nacional SA</span>
+                <span class="table-sub-detail">CNPJ: 33.567.890/0001-20 · UG: 230001</span>
+              </td>
+              <td>
+                <span>10.302 - Assistência Hospitalar</span>
+                <span class="table-sub-detail">Fonte 1.600 (SUS Transferências)</span>
+              </td>
+              <td>14/10/2026</td>
+              <td class="td-right"><span class="table-amount">R$ 620.000,00</span></td>
+              <td class="td-center"><span class="badge badge-glass"><span class="badge-dot" style="background:var(--pine-500)"></span>Transparência Ativa</span></td>
+              <td class="td-center">
+                <button class="table-btn-action" title="Visualizar Detalhes do Empenho">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="table-code-badge">2026NE000456</span></td>
+              <td>
+                <span class="table-credor">Serviços Técnicos e Periciais Integrados</span>
+                <span class="table-sub-detail">CNPJ: 61.222.333/0001-09 · UG: 040001</span>
+              </td>
+              <td>
+                <span>04.122 - Administração Geral e Controle</span>
+                <span class="table-sub-detail">Fonte 1.500 (Recursos Ordinários)</span>
+              </td>
+              <td>12/10/2026</td>
+              <td class="td-right"><span class="table-amount">R$ 145.800,00</span></td>
+              <td class="td-center"><span class="badge badge-error"><span class="badge-dot" style="background:var(--coral-alert)"></span>Glosa / Cancelado</span></td>
+              <td class="td-center">
+                <button class="table-btn-action" title="Visualizar Detalhes do Empenho">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-footer-soft">
+        <span>Mostrando <strong>1 a 5</strong> de <strong>128</strong> notas de empenho</span>
+        <div class="table-pagination-soft">
+          <button class="table-page-btn" disabled>&lsaquo;</button>
+          <button class="table-page-btn active">1</button>
+          <button class="table-page-btn">2</button>
+          <button class="table-page-btn">3</button>
+          <button class="table-page-btn">&hellip;</button>
+          <button class="table-page-btn">26</button>
+          <button class="table-page-btn">&rsaquo;</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 07: CARDS SOFT (SUPERFÍCIES SÓLIDAS E ZERO BORDAS) -->
+  <section id="cards">
+    <div class="section-head">
+      <div>
+        <span class="section-eyebrow">Seção 07</span>
+        <h2>Cards</h2>
+      </div>
+      <span class="num">07 — variações sólidas</span>
+    </div>
+    <p class="section-note">Superfícies 100% sólidas e limpas: ausência total de bordas, contornos e molduras externas, garantindo densidade e clareza visual.</p>
+
+    <div class="cards-grid">
+      <!-- 1. Card Default Surface -->
+      <div class="card-soft card-soft--default">
+        <div>
+          <div class="card-label">Default Surface</div>
+          <p class="card-title">Card Padrão</p>
+          <p class="card-desc">Superfície sólida, limpa e plana para dados gerais, notas orçamentárias e blocos utilitários.</p>
+        </div>
+        <span class="badge badge-neutral" style="align-self:flex-start;">Uso Geral</span>
+      </div>
+
+      <!-- 2. Card Solid Muted -->
+      <div class="card-soft card-soft--outlined">
+        <div>
+          <div class="card-label">Solid Muted Surface</div>
+          <p class="card-title">Card Mineral</p>
+          <p class="card-desc">Superfície sólida em tom mineral aveludado sem borda, ideal para notas informativas secundárias.</p>
+        </div>
+        <span class="badge badge-neutral" style="align-self:flex-start;">Slot Secundário</span>
+      </div>
+
+      <!-- 3. Card Soft Sage -->
+      <div class="card-soft card-soft--sage">
+        <div>
+          <div class="card-label">Soft Sage (#ebf5ee)</div>
+          <p class="card-title">Card Sálvia</p>
+          <p class="card-desc">Assinatura mineral sólida para relatórios de prestação de contas e agrupamento de ações de governo.</p>
+        </div>
+        <span class="badge badge-sage" style="align-self:flex-start;">Destaque Sálvia</span>
+      </div>
+
+      <!-- 4. Dupla Protagonista: Verde Primário & Amarelo Primário -->
+      <div class="cards-duo">
+        <!-- Elevated Forest Pine -->
+        <div class="card-soft card-soft--elevated">
+          <div>
+            <div class="card-label">Verde Primário (#219647)</div>
+            <p class="card-title">Card Invertido</p>
+            <p class="card-desc">Fundo sólido em verde governamental institucional, tipografia contrastante em branco para dotação global e superávit.</p>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <span class="badge" style="background:#ffffff; color:#219647; font-weight:700;">Dotação LOA</span>
+            <span class="badge" style="background:#ffffff; color:#219647; font-weight:700;">Invertido</span>
+          </div>
+        </div>
+
+        <!-- Pistachio Lime Card -->
+        <div class="card-soft card-soft--lime">
+          <div>
+            <div class="card-label">Amarelo Primário (#fee000)</div>
+            <p class="card-title">Card Amarelo</p>
+            <p class="card-desc">Máxima visibilidade e contraste visual para prazos finais de empenho, fechamentos de quadrimestre e audiências públicas.</p>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <span class="badge" style="background:#219647; color:#ffffff; font-weight:700;">Ação Imediata</span>
+            <span class="badge" style="background:#219647; color:#ffffff; font-weight:700;">Prazo Fiscal</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5 & 6. Superfícies de Vidro Fosco Sólidas -->
+      <div class="cards-duo">
+        <div class="card-soft card-soft--glass">
+          <div>
+            <div class="card-label">Frosted Velvet Glass</div>
+            <p class="card-title">Card Vidro Fosco</p>
+            <p class="card-desc">Superfície aveludada sem borda para sobreposição elegante em dashboards fiscais.</p>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <span class="badge badge-glass">blur(20px)</span>
+            <span class="badge badge-lime">72% Alpha</span>
+          </div>
+        </div>
+
+        <div class="card-soft card-soft--glass-sage">
+          <div>
+            <div class="card-label">Glassmorphism Sage</div>
+            <p class="card-title">Card Vidro Sálvia</p>
+            <p class="card-desc">Combina a textura suave com o pigmento sálvia sem bordas para blocos de auditoria.</p>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <span class="badge badge-sage">Backdrop-Filter</span>
+            <span class="badge badge-pine">Solid Base</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. List Card Transacional -->
+      <div class="card-soft--list">
+        <div class="card-label" style="padding-top:10px;">Lista de Transações</div>
+        <div class="row">
+          <div>
+            <div class="name">Secretaria de Estado da Saúde</div>
+            <div class="sub">Empenho 2026NE00412 · Aquisição de Medicamentos Básicos</div>
+          </div>
+          <span class="rt mono" style="color:var(--pine-500); font-weight:700;">+ R$ 640.850,00</span>
+        </div>
+
+        <div class="row">
+          <div>
+            <div class="name">Consórcio Infraestrutura Metropolitana</div>
+            <div class="sub">Contrato 084/2026 · Pavimentação e Drenagem Urbana</div>
+          </div>
+          <span class="rt mono" style="color:var(--coral-alert); font-weight:700;">- R$ 1.250.000,00</span>
+        </div>
+
+        <div class="row">
+          <div>
+            <div class="name">Fundo de Manutenção da Educação (FUNDEB)</div>
+            <div class="sub">Repasse Constitucional · Transporte Escolar Rural</div>
+          </div>
+          <span class="rt mono" style="color:var(--pine-500); font-weight:700;">+ R$ 380.200,00</span>
+        </div>
+      </div>
+
+      <!-- 8. Cards de KPI & Indicadores Fiscais (Soft Stat Cards) -->
+      <div class="kpi-cards-grid">
+        <!-- KPI 1: Execução da Despesa -->
+        <div class="card-kpi-soft">
+          <div class="kpi-top">
+            <div class="kpi-icon-wrap">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+              </svg>
+            </div>
+            <span class="badge badge-success">+8,4% vs meta</span>
+          </div>
+          <div>
+            <div class="kpi-val">R$ 148,6 Mi</div>
+            <div class="kpi-label">Despesa Liquidada no Exercício</div>
+          </div>
+          <div class="kpi-progress-wrap">
+            <div class="kpi-progress-bar"><div class="kpi-progress-fill" style="width: 78.4%;"></div></div>
+            <span class="kpi-progress-text">78,4% da LOA autorizada</span>
+          </div>
+        </div>
+
+        <!-- KPI 2: Arrecadação Própria -->
+        <div class="card-kpi-soft">
+          <div class="kpi-top">
+            <div class="kpi-icon-wrap">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="1" x2="12" y2="23"></line>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+              </svg>
+            </div>
+            <span class="badge badge-success">+14,2% a.a.</span>
+          </div>
+          <div>
+            <div class="kpi-val">R$ 214,8 Mi</div>
+            <div class="kpi-label">Receita Tributária Realizada</div>
+          </div>
+          <div class="kpi-progress-wrap">
+            <div class="kpi-progress-bar"><div class="kpi-progress-fill" style="width: 86.2%;"></div></div>
+            <span class="kpi-progress-text">Superávit de R$ 32,4 Mi apurado</span>
+          </div>
+        </div>
+
+        <!-- KPI 3: Limite de Pessoal LRF -->
+        <div class="card-kpi-soft">
+          <div class="kpi-top">
+            <div class="kpi-icon-wrap">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
+            <span class="badge badge-sage">Regular (LRF)</span>
+          </div>
+          <div>
+            <div class="kpi-val">46,8%</div>
+            <div class="kpi-label">Comprometimento com Pessoal</div>
+          </div>
+          <div class="kpi-progress-wrap">
+            <div class="kpi-progress-bar"><div class="kpi-progress-fill" style="width: 78%; background: var(--n-500);"></div></div>
+            <span class="kpi-progress-text">Teto LRF: 54% · Prudencial: 51,3%</span>
+          </div>
+        </div>
+
+        <!-- KPI 4: Disponibilidade Financeira -->
+        <div class="card-kpi-soft">
+          <div class="kpi-top">
+            <div class="kpi-icon-wrap">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+              </svg>
+            </div>
+            <span class="badge badge-neutral">SIAFIC 100%</span>
+          </div>
+          <div>
+            <div class="kpi-val">R$ 56,2 Mi</div>
+            <div class="kpi-label">Disponibilidade de Caixa Líquida</div>
+          </div>
+          <div class="kpi-progress-wrap">
+            <div class="kpi-progress-bar"><div class="kpi-progress-fill" style="width: 92%;"></div></div>
+            <span class="kpi-progress-text">Recursos livres desvinculados</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 08: VISUALIZAÇÃO DE DADOS & GRÁFICOS ORÇAMENTÁRIOS (CHART.JS) -->
+  <section id="graficos">
+    <div class="section-head">
+      <div>
+        <span class="section-eyebrow">Seção 08</span>
+        <h2>Visualização de Dados</h2>
+      </div>
+      <span class="num">08 — gráficos fiscais</span>
+    </div>
+    <p class="section-note">Modelos analíticos de alta performance baseados na arquitetura do Chart.js (referência chart-js.framer.website), calibrados no padrão institucional hierárquico: o maior valor é destacado no Verde Primário Governamental (#219647), enquanto os demais valores decrescem harmonicamente na escala de Neutros Minerais (iniciando no tom aveludado #738b7b de Custeio Operacional): 6 modelos interativos com tooltips monetários formatados em Real (R$) e sincronização com o modo claro e noturno.</p>
+
+    <div class="charts-gallery-grid">
+      <!-- 1. Bar Chart -->
+      <div class="chart-card-pro" id="card-chartjs-bar">
+        <div class="chart-header-pro">
+          <div>
+            <h3 class="chart-title-pro">Gráfico de Barras</h3>
+            <p class="chart-sub-pro">Receita Arrecadada vs. Despesa Liquidada</p>
+          </div>
+          <span class="badge badge-neutral">Barra</span>
+        </div>
+        <div class="chart-canvas-wrap">
+          <canvas id="chartjs-bar"></canvas>
+        </div>
+      </div>
+
+      <!-- 2. Line Chart -->
+      <div class="chart-card-pro" id="card-chartjs-line">
+        <div class="chart-header-pro">
+          <div>
+            <h3 class="chart-title-pro">Gráfico de Linhas</h3>
+            <p class="chart-sub-pro">Sazonalidade e fluxo mensal com curva suave Bezier</p>
+          </div>
+          <span class="badge badge-neutral">Linha</span>
+        </div>
+        <div class="chart-canvas-wrap">
+          <canvas id="chartjs-line"></canvas>
+        </div>
+      </div>
+
+      <!-- 3. Doughnut Chart -->
+      <div class="chart-card-pro" id="card-chartjs-doughnut">
+        <div class="chart-header-pro">
+          <div>
+            <h3 class="chart-title-pro">Gráfico de Rosca</h3>
+            <p class="chart-sub-pro">Distribuição funcional com cutout 62% e cantos arredondados</p>
+          </div>
+          <span class="badge badge-neutral">Rosca</span>
+        </div>
+        <div class="chart-canvas-wrap">
+          <canvas id="chartjs-doughnut"></canvas>
+        </div>
+      </div>
+
+      <!-- 4. Pie Chart -->
+      <div class="chart-card-pro" id="card-chartjs-pie">
+        <div class="chart-header-pro">
+          <div>
+            <h3 class="chart-title-pro">Gráfico de Pizza</h3>
+            <p class="chart-sub-pro">Vinculações obrigatórias de Saúde, Educação e Custeio</p>
+          </div>
+          <span class="badge badge-neutral">Pizza</span>
+        </div>
+        <div class="chart-canvas-wrap">
+          <canvas id="chartjs-pie"></canvas>
+        </div>
+      </div>
+
+      <!-- 5. Radar Chart -->
+      <div class="chart-card-pro" id="card-chartjs-radar">
+        <div class="chart-header-pro">
+          <div>
+            <h3 class="chart-title-pro">Gráfico de Radar</h3>
+            <p class="chart-sub-pro">Avaliação multidimensional de atendimento aos índices da LRF</p>
+          </div>
+          <span class="badge badge-neutral">Radar</span>
+        </div>
+        <div class="chart-canvas-wrap">
+          <canvas id="chartjs-radar"></canvas>
+        </div>
+      </div>
+
+      <!-- 6. Polar Area Chart -->
+      <div class="chart-card-pro" id="card-chartjs-polar">
+        <div class="chart-header-pro">
+          <div>
+            <h3 class="chart-title-pro">Gráfico de Área Polar</h3>
+            <p class="chart-sub-pro">Aportes de capital e obras por secretaria governamental</p>
+          </div>
+          <span class="badge badge-neutral">Polar</span>
+        </div>
+        <div class="chart-canvas-wrap">
+          <canvas id="chartjs-polar"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 09: APLICAÇÃO (DASHBOARD ORÇAMENTÁRIO SOFT) -->
+  <section id="aplicacao">
+    <div class="section-head">
+      <div>
+        <span class="section-eyebrow">Seção 09</span>
+        <h2>Aplicação</h2>
+      </div>
+      <span class="num">09 — painel financeiro</span>
+    </div>
+    <p class="section-note">Demonstração viva do ecossistema do Design System Orçamento em ação: canvas suave, sidebar de alta usabilidade, fluxo financeiro semestral com colunas arredondadas e controle de liquidez com dados sincronizados.</p>
+
+    <div class="app-frame-soft">
+      <div class="app-shell-soft">
+        <!-- Sidebar -->
+        <div class="app-sidebar-soft">
+          <div class="av">UG</div>
+          <div class="icon active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 11l9-7 9 7"/><path d="M5 10v9a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1v-9"/></svg></div>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12V7H5a2 2 0 010-4h14v4"/><path d="M3 5v14a2 2 0 002 2h16v-5"/></svg></div>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="12" width="4" height="8"/><rect x="10" y="6" width="4" height="14"/><rect x="17" y="10" width="4" height="10"/></svg></div>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/></svg></div>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg></div>
+        </div>
+
+        <!-- Conteúdo Principal do App -->
+        <div class="app-main-soft">
+          <div class="app-top-bar">
+            <div class="greet">
+              <div class="k">Secretaria da Fazenda &amp; Planejamento Orçamentário</div>
+              <div class="n">
+                <span>Exercício Fiscal 2026</span>
+                <span class="badge badge-glass"><span class="badge-dot" style="background:var(--pine-500)"></span>SIAFIC Sincronizado</span>
+              </div>
+            </div>
+            <button class="btn btn-primary-soft">
+              <span>Emitir Nota de Empenho</span>
+              <div class="btn-icon-capsule">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14"/></svg>
+              </div>
+            </button>
+          </div>
+
+          <!-- Trinca de Cards Principais -->
+          <div class="grid-3">
+            <!-- Gráfico Semestral -->
+            <div class="card-soft card-soft--default">
+              <div class="card-label">Fluxo Semestral</div>
+              <div class="card-desc">Receita Arrecadada vs. Despesa Liquidada</div>
+              <div class="bars-chart-soft">
+                <div class="bar alt" style="height:55%"></div>
+                <div class="bar" style="height:42%"></div>
+                <div class="bar alt" style="height:70%"></div>
+                <div class="bar" style="height:50%"></div>
+                <div class="bar alt" style="height:85%"></div>
+                <div class="bar" style="height:65%"></div>
+                <div class="bar alt" style="height:95%"></div>
+                <div class="bar" style="height:78%"></div>
+              </div>
+            </div>
+
+            <!-- Card Escuro Elevado -->
+            <div class="card-soft card-soft--elevated">
+              <div class="card-label">Dotação Disponível</div>
+              <div class="card-desc">Recursos Livres e Vinculados</div>
+              <div class="num mono" style="font-size:2rem; font-weight:700; color:#ffffff; margin: 10px 0;">R$ 48.920.000</div>
+              <div style="font-size:0.75rem; color: #fee000; font-weight: 700;">✓ Superávit Financeiro Regular • LRF Cumprida</div>
+            </div>
+
+            <!-- Card Frosted Glass -->
+            <div class="card-soft card-soft--glass">
+              <div class="card-label">Índice de Execução LOA</div>
+              <div class="card-desc">Meta Anual Estabelecida na LDO</div>
+              <div class="num mono" style="font-size:2rem; font-weight:700; color:var(--pine-500); margin: 10px 0;">89,4%</div>
+              <div style="font-size:0.75rem; color:var(--pine-500); font-weight:600;">▲ +1,8% vs Previsão Quadrimestral</div>
+            </div>
+          </div>
+
+          <!-- Trinca Secundária: Atividade, Vencimentos e Calendário -->
+          <div class="grid-3">
+            <div class="card-soft card-soft--default">
+              <div class="card-label">Atividade Recente</div>
+              <div style="display:flex; flex-direction:column; gap:12px; margin-top:8px;">
+                <div style="display:flex; align-items:center; justify-content:space-between; font-size:0.82rem;">
+                  <div><strong style="display:block;">Secretaria de Saúde</strong><span style="font-size:0.72rem; color:var(--text-muted);">Medicamentos Básicos</span></div>
+                  <span class="badge badge-lime">R$ 640 mil</span>
+                </div>
+                <div style="display:flex; align-items:center; justify-content:space-between; font-size:0.82rem;">
+                  <div><strong style="display:block;">Secretaria de Educação</strong><span style="font-size:0.72rem; color:var(--text-muted);">Transporte Escolar Rural</span></div>
+                  <span class="badge badge-sage">R$ 380 mil</span>
+                </div>
+                <div style="display:flex; align-items:center; justify-content:space-between; font-size:0.82rem;">
+                  <div><strong style="display:block;">Infraestrutura Urbana</strong><span style="font-size:0.72rem; color:var(--text-muted);">Pavimentação &amp; Drenagem</span></div>
+                  <span class="badge badge-neutral">R$ 1,25 Mi</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-soft card-soft--default">
+              <div class="card-label">Restos a Pagar &amp; Obrigações</div>
+              <div class="prog-item">
+                <div class="prog-top"><span>Folha de Servidores Ativos</span><span class="mono">3 dias</span></div>
+                <div class="prog-track"><div class="prog-fill" style="width:85%; background:var(--coral-alert);"></div></div>
+              </div>
+              <div class="prog-item">
+                <div class="prog-top"><span>Duodécimo Legislativo</span><span class="mono">11 dias</span></div>
+                <div class="prog-track"><div class="prog-fill" style="width:45%; background:var(--pine-500);"></div></div>
+              </div>
+              <div class="prog-item">
+                <div class="prog-top"><span>Convênio FNDE Contrapartida</span><span class="mono">22 dias</span></div>
+                <div class="prog-track"><div class="prog-fill" style="width:20%; background:var(--lime-500);"></div></div>
+              </div>
+            </div>
+
+            <div class="card-soft card-soft--default">
+              <div class="card-label">Calendário de Prazos Fiscais</div>
+              <div class="cal-grid-soft">
+                <span class="dow">D</span><span class="dow">S</span><span class="dow">T</span><span class="dow">Q</span><span class="dow">Q</span><span class="dow">S</span><span class="dow">S</span>
+                <span class="day"></span><span class="day"></span><span class="day">1</span><span class="day">2</span><span class="day">3</span><span class="day">4</span><span class="day">5</span>
+                <span class="day">6</span><span class="day">7</span><span class="day">8</span><span class="day range">9</span><span class="day range today">10</span><span class="day range">11</span><span class="day">12</span>
+                <span class="day">13</span><span class="day">14</span><span class="day sel">15</span><span class="day">16</span><span class="day">17</span><span class="day">18</span><span class="day">19</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+
+  <!-- FOOTER -->
+  <footer>
+    <div>
+      <strong>Design System Orçamento v2.0</strong> — Gestão Orçamentária, Fiscal &amp; Transparência Pública
+    </div>
+    <div>
+      Segoe UI · Triple-Diffusion Shadows · Cor Principal #219647 &amp; Primária CTA #fee000
+    </div>
+  </footer>
+
+</div>
+
+<!-- TOAST INTERATIVO DE FEEDBACK -->
+<div class="toast" id="toast">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toastMsg">Hex copiado com sucesso</span>
+</div>
+
+<!-- FLOATING ACTION BUTTON (CANTO INFERIOR DIREITO -> RETORNO AO HERO) -->
+<a href="#hero" id="backToTopBtn" class="floating-back-top" aria-label="Voltar ao início">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 19V5M5 12l7-7 7 7"/>
+  </svg>
+  <span>Início</span>
+</a>
+
+<script>
+  (function(){
+    var toast = document.getElementById('toast');
+    var toastMsg = document.getElementById('toastMsg');
+    var timer = null;
+
+    function flash(msg){
+      if(toastMsg) toastMsg.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(timer);
+      timer = setTimeout(function(){ toast.classList.remove('show'); }, 1800);
+    }
+
+    // Copiar Hex de Swatches e Superfícies
+    document.querySelectorAll('[data-hex]').forEach(function(el){
+      el.addEventListener('click', function(e){
+        e.stopPropagation();
+        var hex = el.getAttribute('data-hex');
+        try {
+          navigator.clipboard.writeText(hex);
+          flash('Cor ' + hex + ' copiada para a área de transferência');
+        } catch(err){}
+      });
+    });
+
+    // Copiar Nome de Ícones
+    document.querySelectorAll('.icon-cell').forEach(function(el){
+      el.addEventListener('click', function(){
+        var name = el.getAttribute('data-name');
+        try {
+          navigator.clipboard.writeText(name);
+          flash('Ícone "' + name + '" copiado');
+        } catch(err){}
+      });
+    });
+
+    // Controle do Modo Noturno (Dark Public Velvet)
+    var htmlEl = document.documentElement;
+    var themeToggleBtn = document.getElementById('themeToggleBtn');
+    var themeBadge = document.getElementById('themeBadge');
+    var themeControl = document.getElementById('themeControl');
+    var themeSwitch = document.getElementById('themeSwitch');
+    var themeStatus = document.getElementById('themeStatus');
+
+    function updateThemeUI(isDark){
+      if(themeBadge){
+        themeBadge.textContent = isDark ? 'NOTURNO' : 'CLARO';
+      }
+      if(themeToggleBtn){
+        themeToggleBtn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+      }
+      if(themeSwitch){
+        if(isDark){
+          themeSwitch.classList.add('on');
+          themeSwitch.setAttribute('aria-checked', 'true');
+        } else {
+          themeSwitch.classList.remove('on');
+          themeSwitch.setAttribute('aria-checked', 'false');
+        }
+      }
+      if(themeStatus){
+        themeStatus.textContent = isDark ? 'Ativado (Modo Noturno)' : 'Desativado (Modo Claro)';
+      }
+    }
+
+    function setTheme(isDark, shouldFlash){
+      if(isDark){
+        htmlEl.setAttribute('data-theme', 'dark');
+        try{ localStorage.setItem('orcamento-theme-soft', 'dark'); }catch(e){}
+        updateThemeUI(true);
+        if(shouldFlash) flash('Modo Noturno Dark Public Velvet ativado');
+        if(window.updateAllChartsTheme) window.updateAllChartsTheme();
+      } else {
+        htmlEl.setAttribute('data-theme', 'light');
+        try{ localStorage.setItem('orcamento-theme-soft', 'light'); }catch(e){}
+        updateThemeUI(false);
+        if(shouldFlash) flash('Modo Claro Soft ativado');
+        if(window.updateAllChartsTheme) window.updateAllChartsTheme();
+      }
+    }
+
+    function toggleTheme(){
+      var current = htmlEl.getAttribute('data-theme');
+      if(current === 'dark'){
+        setTheme(false, true);
+      } else {
+        setTheme(true, true);
+      }
+    }
+
+    // Inicialização da preferência salva
+    try {
+      var saved = localStorage.getItem('orcamento-theme-soft');
+      if(saved === 'dark'){
+        setTheme(true, false);
+      } else if(saved === 'light'){
+        setTheme(false, false);
+      } else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
+        setTheme(true, false);
+      } else {
+        updateThemeUI(false);
+      }
+    } catch(err){
+      updateThemeUI(false);
+    }
+
+    if(themeToggleBtn){
+      themeToggleBtn.addEventListener('click', toggleTheme);
+    }
+    if(themeControl){
+      themeControl.addEventListener('click', toggleTheme);
+    }
+    if(themeSwitch){
+      themeSwitch.addEventListener('keydown', function(e){
+        if(e.key === 'Enter' || e.key === ' '){
+          e.preventDefault();
+          toggleTheme();
+        }
+      });
+    }
+
+    // Floating Back to Hero / Topo (Canto Inferior Direito)
+    var backTopBtn = document.getElementById('backToTopBtn');
+    if (backTopBtn) {
+      function checkBackTop() {
+        if (window.scrollY > 240) {
+          backTopBtn.classList.add('visible');
+        } else {
+          backTopBtn.classList.remove('visible');
+        }
+      }
+      window.addEventListener('scroll', checkBackTop, { passive: true });
+      checkBackTop();
+      backTopBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        var heroEl = document.getElementById('hero');
+        if (heroEl) {
+          heroEl.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+    }
+  })();
+</script>
+
+<script>
+/* ==========================================================================
+   CHART.JS ENGINE (REFERÊNCIA CHART-JS.FRAMER.WEBSITE)
+   ========================================================================== */
+(function() {
+  // Instâncias ativas
+  const instances = {};
+
+  function formatBRL(val) {
+    if (typeof val !== 'number') return val;
+    return 'R$ ' + val.toLocaleString('pt-BR');
+  }
+
+  function getThemeColors() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    return {
+      isDark,
+      grid: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(15, 28, 24, 0.06)',
+      ticks: isDark ? '#a3b8aa' : '#52685a',
+      legend: isDark ? '#f4f8f5' : '#0d1711',
+      tooltipBg: isDark ? '#152c1e' : '#0d1711',
+      cardBorder: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(15, 28, 24, 0.07)'
+    };
+  }
+
+  function initChartJS() {
+    if (typeof Chart === 'undefined') {
+      setTimeout(initChartJS, 100);
+      return;
+    }
+
+    const tc = getThemeColors();
+
+    // 1. BAR CHART
+    const ctxBar = document.getElementById('chartjs-bar');
+    if (ctxBar) {
+      if (instances.bar) instances.bar.destroy();
+      instances.bar = new Chart(ctxBar, {
+        type: 'bar',
+        data: {
+          labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+          datasets: [
+            {
+              label: 'Receita Arrecadada',
+              data: [42000, 58000, 51000, 74000, 92000, 88000],
+              backgroundColor: '#219647',
+              borderRadius: 4,
+              borderSkipped: false
+            },
+            {
+              label: 'Despesa Liquidada',
+              data: [35000, 44000, 46000, 62000, 70000, 68000],
+              backgroundColor: '#738b7b',
+              borderRadius: 4,
+              borderSkipped: false
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: { duration: 650 },
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: { color: tc.legend, font: { family: 'Segoe UI', weight: 650, size: 12 }, usePointStyle: true, pointStyle: 'circle' }
+            },
+            tooltip: {
+              backgroundColor: tc.tooltipBg,
+              titleFont: { family: 'Segoe UI', weight: 700 },
+              bodyFont: { family: 'Segoe UI' },
+              padding: 12,
+              cornerRadius: 8,
+              callbacks: {
+                label: ctx => ` ${ctx.dataset.label}: ${formatBRL(ctx.parsed.y)}`
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { color: tc.ticks, font: { family: 'Segoe UI', weight: 600 } }
+            },
+            y: {
+              grid: { color: tc.grid },
+              ticks: {
+                color: tc.ticks,
+                font: { family: 'Segoe UI' },
+                callback: v => formatBRL(v)
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // 2. LINE CHART
+    const ctxLine = document.getElementById('chartjs-line');
+    if (ctxLine) {
+      if (instances.line) instances.line.destroy();
+      instances.line = new Chart(ctxLine, {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+          datasets: [
+            {
+              label: 'Arrecadação Realizada',
+              data: [40000, 58000, 54000, 78000, 82000, 95000],
+              borderColor: '#219647',
+              backgroundColor: 'rgba(33, 150, 71, 0.16)',
+              fill: 'origin',
+              tension: 0.28,
+              pointRadius: 4,
+              pointHoverRadius: 6,
+              pointBackgroundColor: '#219647'
+            },
+            {
+              label: 'Dotação LOA Fixada',
+              data: [36000, 48000, 58000, 70000, 80000, 90000],
+              borderColor: '#738b7b',
+              backgroundColor: 'rgba(115, 139, 123, 0.16)',
+              fill: 'origin',
+              tension: 0.28,
+              pointRadius: 4,
+              pointHoverRadius: 6,
+              pointBackgroundColor: '#738b7b'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: { duration: 650 },
+          interaction: { mode: 'nearest', intersect: false },
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: { color: tc.legend, font: { family: 'Segoe UI', weight: 650, size: 12 }, usePointStyle: true, pointStyle: 'circle' }
+            },
+            tooltip: {
+              backgroundColor: tc.tooltipBg,
+              padding: 12,
+              cornerRadius: 8,
+              callbacks: {
+                label: ctx => ` ${ctx.dataset.label}: ${formatBRL(ctx.parsed.y)}`
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { color: tc.ticks, font: { family: 'Segoe UI', weight: 600 } }
+            },
+            y: {
+              grid: { color: tc.grid },
+              ticks: {
+                color: tc.ticks,
+                font: { family: 'Segoe UI' },
+                callback: v => formatBRL(v)
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // 3. DOUGHNUT CHART
+    const ctxDoughnut = document.getElementById('chartjs-doughnut');
+    if (ctxDoughnut) {
+      if (instances.doughnut) instances.doughnut.destroy();
+      instances.doughnut = new Chart(ctxDoughnut, {
+        type: 'doughnut',
+        data: {
+          labels: ['Pessoal & Encargos', 'Investimentos & Obras', 'Custeio Operacional', 'Saúde & UBS', 'Educação FUNDEB', 'Serviço da Dívida'],
+          datasets: [{
+            data: [48, 16, 14, 10, 8, 4],
+            backgroundColor: ['#219647', '#738b7b', '#9eb2a4', '#cbd8cf', '#dee8e1', '#eaf1ed'],
+            hoverBackgroundColor: ['#1b7d3a', '#5f7566', '#879b8d', '#b5c3b9', '#c9d4cd', '#dbe5de'],
+            borderRadius: 6,
+            spacing: 2,
+            hoverOffset: 10
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '62%',
+          animation: { duration: 650 },
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: { color: tc.legend, font: { family: 'Segoe UI', weight: 600, size: 11 }, usePointStyle: true, pointStyle: 'circle', padding: 14 }
+            },
+            tooltip: {
+              backgroundColor: tc.tooltipBg,
+              padding: 12,
+              cornerRadius: 8,
+              callbacks: {
+                label: ctx => ` ${ctx.label}: ${ctx.parsed}% da Despesa`
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // 4. PIE CHART
+    const ctxPie = document.getElementById('chartjs-pie');
+    if (ctxPie) {
+      if (instances.pie) instances.pie.destroy();
+      instances.pie = new Chart(ctxPie, {
+        type: 'pie',
+        data: {
+          labels: ['Educação (25%)', 'Infraestrutura Urbana (22%)', 'Segurança Pública (20%)', 'Saúde (18%)', 'Reserva de Contingência (15%)'],
+          datasets: [{
+            data: [25, 22, 20, 18, 15],
+            backgroundColor: ['#219647', '#738b7b', '#9eb2a4', '#cbd8cf', '#dee8e1'],
+            hoverBackgroundColor: ['#1b7d3a', '#5f7566', '#879b8d', '#b5c3b9', '#c9d4cd'],
+            borderRadius: 6,
+            spacing: 2,
+            hoverOffset: 10
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: { duration: 650 },
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: { color: tc.legend, font: { family: 'Segoe UI', weight: 600, size: 11 }, usePointStyle: true, pointStyle: 'circle', padding: 14 }
+            },
+            tooltip: {
+              backgroundColor: tc.tooltipBg,
+              padding: 12,
+              cornerRadius: 8,
+              callbacks: {
+                label: ctx => ` ${ctx.label}: ${ctx.parsed}% da LOA`
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // 5. RADAR CHART
+    const ctxRadar = document.getElementById('chartjs-radar');
+    if (ctxRadar) {
+      if (instances.radar) instances.radar.destroy();
+      instances.radar = new Chart(ctxRadar, {
+        type: 'radar',
+        data: {
+          labels: ['Limite de Pessoal', 'Aplicação Saúde', 'Aplicação FUNDEB', 'Disponibilidade de Caixa', 'Transparência SIAFIC', 'Previdência'],
+          datasets: [
+            {
+              label: 'Índice de Gestão Fiscal 2026',
+              data: [94, 98, 96, 88, 99, 90],
+              borderColor: '#219647',
+              backgroundColor: 'rgba(33, 150, 71, 0.22)',
+              pointRadius: 4,
+              pointBackgroundColor: '#219647'
+            },
+            {
+              label: 'Média de Referência Estadual',
+              data: [82, 85, 88, 75, 84, 78],
+              borderColor: '#738b7b',
+              backgroundColor: 'rgba(115, 139, 123, 0.20)',
+              pointRadius: 4,
+              pointBackgroundColor: '#738b7b'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: { duration: 650 },
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: { color: tc.legend, font: { family: 'Segoe UI', weight: 650, size: 11 }, usePointStyle: true, pointStyle: 'circle' }
+            },
+            tooltip: {
+              backgroundColor: tc.tooltipBg,
+              padding: 12,
+              cornerRadius: 8,
+              callbacks: {
+                label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.r} pontos`
+              }
+            }
+          },
+          scales: {
+            r: {
+              angleLines: { color: tc.grid },
+              grid: { color: tc.grid },
+              pointLabels: { color: tc.ticks, font: { family: 'Segoe UI', size: 11, weight: 600 } },
+              ticks: { display: false }
+            }
+          }
+        }
+      });
+    }
+
+    // 6. POLAR AREA CHART
+    const ctxPolar = document.getElementById('chartjs-polar');
+    if (ctxPolar) {
+      if (instances.polar) instances.polar.destroy();
+      instances.polar = new Chart(ctxPolar, {
+        type: 'polarArea',
+        data: {
+          labels: ['Transporte & Vias', 'Habitação Popular', 'Saneamento Básico', 'Tecnologia & Inovação', 'Meio Ambiente'],
+          datasets: [{
+            data: [78, 62, 54, 46, 38],
+            backgroundColor: [
+              'rgba(33, 150, 71, 0.90)',
+              'rgba(115, 139, 123, 0.88)',
+              'rgba(158, 178, 164, 0.85)',
+              'rgba(203, 216, 207, 0.85)',
+              'rgba(222, 232, 225, 0.85)'
+            ],
+            borderColor: tc.isDark ? '#12241b' : '#ffffff',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: { duration: 650 },
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: { color: tc.legend, font: { family: 'Segoe UI', weight: 600, size: 11 }, usePointStyle: true, pointStyle: 'circle', padding: 12 }
+            },
+            tooltip: {
+              backgroundColor: tc.tooltipBg,
+              padding: 12,
+              cornerRadius: 8,
+              callbacks: {
+                label: ctx => ` ${ctx.label}: R$ ${ctx.parsed.r} Mi`
+              }
+            }
+          },
+          scales: {
+            r: {
+              grid: { color: tc.grid },
+              ticks: { display: false }
+            }
+          }
+        }
+      });
+    }
+  }
+
+  // Hook global de atualização quando alterna o tema
+  window.updateAllChartsTheme = function() {
+    initChartJS();
+  };
+
+  // Inicialização no DOMContentLoaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initChartJS);
+  } else {
+    initChartJS();
+  }
+})();
+</script>
+</body>
+</html>

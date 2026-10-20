@@ -1,0 +1,459 @@
+/* ==========================================================================
+   DESIGN SYSTEM ORÇAMENTO — MOTOR DE APRESENTAÇÕES INSTITUCIONAIS
+   Governo do Estado de Goiás — Secretaria da Economia
+   Arquivo: deck.css (Imutável / Produção)
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+:root {
+  --green-500: #219647;
+  --green-700: #16642f;
+  --green-800: #114c24;
+  --green-900: #0b3017;
+  --yellow-500: #fee000;
+  --sage-bg: #ebf5ee;
+  --canvas-bg: #f2f6f3;
+  --card-surface: #ffffff;
+  --text-primary: #0d1711;
+  --text-secondary: #4f6656;
+  --text-muted: #738b7b;
+  --border-subtle: rgba(20, 48, 42, 0.10);
+  --shadow-soft: 0 4px 12px rgba(15, 28, 24, 0.03), 0 16px 36px -4px rgba(15, 28, 24, 0.06);
+}
+
+body {
+  background: #0d1711;
+  color: var(--text-primary);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* VIEWPORT WIDESCREEN 16:9 COM GPU AUTO-SCALE */
+.deck-viewport {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.slide {
+  width: 1920px !important;
+  height: 1080px !important;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(var(--scale, 1));
+  transform-origin: center center;
+  overflow: hidden;
+  background-size: 100% 100%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  box-shadow: 0 35px 100px rgba(0, 0, 0, 0.65);
+  display: none !important;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.slide.active {
+  display: flex !important;
+  opacity: 1 !important;
+}
+
+/* ==========================================================================
+   FUNDOS FIXOS & SAFE AREAS IMUTÁVEIS (À PROVA DE ERRO DE PADDING)
+   ========================================================================== */
+
+/* 1. Capa Oficial (Espaço reservado para capa.png com fallback em capa.svg e gradiente mineral) */
+.slide-cover {
+  background-color: #f2f6f3 !important;
+  background-image: url('https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@main/apresentacao/capa.png'), url('https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@main/apresentacao/capa.svg'), linear-gradient(135deg, #f9fbf9 0%, #f2f6f3 50%, #ebf5ee 100%) !important;
+  background-size: cover, cover, auto !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  border-top: 14px solid var(--green-500) !important;
+  padding: 100px 120px 80px 120px !important;
+}
+
+/* 2. Conteúdo Oficial (Protege 100% a barra verde e logo da imagem 4K) */
+.slide-content,
+.slide-content-bg {
+  background-image: url('https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@main/apresentacao/bg-conteudo.png') !important;
+  padding: 155px 95px 65px 95px !important;
+}
+
+/* 3. Encerramento Oficial (Trava o conteúdo estritamente no lado verde escuro) */
+.slide-closing,
+.slide-closing-bg {
+  background-image: url('https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@main/apresentacao/encerramento.png') !important;
+  color: #ffffff !important;
+  padding: 100px 120px 80px 120px !important;
+}
+
+/* Trava inviolável: o conteúdo do encerramento NUNCA invade o lado amarelo */
+.slide-closing > div,
+.slide-closing-bg > div,
+.closing-left-box {
+  max-width: 840px !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+/* ==========================================================================
+   ELEMENTOS DE ESTRUTURA DOS SLIDES
+   ========================================================================== */
+.slide-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.slide-breadcrumb {
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--green-500);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.slide-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.badge-siafic {
+  background: var(--sage-bg);
+  color: var(--green-500);
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 8px 20px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.slide-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  padding-top: 16px;
+  border-top: 1px solid rgba(20, 48, 42, 0.08);
+}
+.slide-footer b { color: var(--text-primary); }
+
+.grid-12 {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 28px;
+  margin-block: 22px;
+  flex: 1;
+  align-items: stretch;
+}
+
+.mono {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.015em;
+}
+
+/* ==========================================================================
+   CARDS CANÔNICOS DO DESIGN SYSTEM
+   ========================================================================== */
+
+/* 1. Card Soft Sage */
+.card-soft-sage {
+  background: var(--sage-bg);
+  border-radius: 20px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 16px;
+  box-shadow: 0 4px 18px rgba(15, 28, 24, 0.02);
+}
+.card-soft-sage-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.icon-box-sage {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--green-500);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  flex-shrink: 0;
+}
+.card-soft-sage h3 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.card-soft-sage p {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* 2. Card KPI */
+.card-kpi {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 30px;
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.kpi-head { display: flex; justify-content: space-between; align-items: center; }
+.kpi-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--sage-bg);
+  color: var(--green-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+.kpi-tag-success {
+  background: rgba(16, 185, 129, 0.12);
+  color: #047857;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+.kpi-val {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin-top: 14px;
+}
+.kpi-label { font-size: 1rem; font-weight: 600; color: var(--text-secondary); }
+.kpi-bar {
+  width: 100%;
+  height: 6px;
+  background: #dee8e1;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 14px;
+}
+.kpi-fill { height: 100%; background: var(--green-500); border-radius: 999px; }
+
+/* 3. Card Elevated Verde Institucional */
+.card-elevated-green {
+  background: var(--green-500);
+  color: #ffffff;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 8px 24px rgba(15, 28, 24, 0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.card-elevated-green .card-label {
+  color: var(--yellow-500);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.card-elevated-green .card-title { font-size: 1.85rem; font-weight: 700; margin-top: 8px; }
+.card-elevated-green .card-desc { font-size: 1.05rem; color: rgba(255, 255, 255, 0.92); line-height: 1.55; margin-top: 10px; }
+.btn-white {
+  background: #ffffff;
+  color: var(--green-500);
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 12px 26px;
+  border-radius: 999px;
+  border: none;
+  align-self: flex-start;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* 4. Card Solar CTA Amarelo */
+.card-solar-cta {
+  background: var(--yellow-500);
+  color: #0d1711;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 4px 18px rgba(15, 28, 24, 0.06);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.card-solar-cta .card-label {
+  color: #16642f;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.card-solar-cta .card-title { font-size: 1.85rem; font-weight: 700; margin-top: 8px; }
+.card-solar-cta .card-desc { font-size: 1.05rem; color: rgba(13, 23, 17, 0.85); line-height: 1.55; margin-top: 10px; }
+.btn-green-cta {
+  background: var(--green-500);
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 12px 26px;
+  border-radius: 999px;
+  border: none;
+  align-self: flex-start;
+  cursor: pointer;
+}
+
+/* 5. Contêiner de Gráfico */
+.chart-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 26px 30px;
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.chart-container-box {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 340px;
+}
+
+/* 6. Tabela SIAFIC */
+.table-box {
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+  margin-block: 16px;
+  flex: 1;
+}
+.table-siafic {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 1.05rem;
+}
+.table-siafic thead th {
+  background: var(--sage-bg);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 18px 26px;
+  border-bottom: 1px solid var(--border-subtle);
+  text-align: left;
+}
+.table-siafic tbody td {
+  padding: 18px 26px;
+  border-bottom: 1px solid rgba(20, 48, 42, 0.06);
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+.ne-badge {
+  font-family: inherit;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: var(--green-500);
+  background: rgba(31, 149, 71, 0.08);
+  padding: 6px 14px;
+  border-radius: 8px;
+}
+
+/* ==========================================================================
+   CONTROLES FLUTUANTES DO APRESENTADOR
+   ========================================================================== */
+.deck-controls {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(13, 23, 17, 0.92);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 8px 22px;
+  border-radius: 999px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  color: #ffffff;
+  z-index: 9999;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+.deck-controls button {
+  background: var(--green-500);
+  color: #ffffff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.85rem;
+  transition: background 0.2s ease;
+}
+.deck-controls button:hover { background: #16642f; }
+.deck-controls .btn-sec { background: rgba(255, 255, 255, 0.12); }
+.deck-controls .btn-solar { background: var(--yellow-500); color: var(--text-primary); }
+
+/* ==========================================================================
+   IMPRESSÃO PDF (CTRL + P)
+   ========================================================================== */
+@media print {
+  body { padding: 0; background: transparent; overflow: visible; min-height: auto; }
+  .deck-controls { display: none !important; }
+  .deck-viewport { display: block; width: auto; height: auto; }
+  .slide {
+    position: relative !important;
+    top: 0 !important;
+    left: 0 !important;
+    transform: none !important;
+    display: flex !important;
+    opacity: 1 !important;
+    page-break-after: always;
+    box-shadow: none;
+    width: 100vw !important;
+    height: 100vh !important;
+  }
+}
