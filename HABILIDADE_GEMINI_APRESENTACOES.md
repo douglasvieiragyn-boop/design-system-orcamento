@@ -75,11 +75,16 @@ AS LEIS INVIOLÁVEIS DO SISTEMA (ZERO ALUCINAÇÃO):
 3. [PALETA CROMÁTICA OFICIAL — PROIBIÇÃO DE CORES EXTERNAS]:
    NUNCA utilize cores arbitrárias ou não calibradas (como roxo `#6366f1` ou tons berrantes). Todas as cores devem seguir rigorosamente a escala calibrada do Design System Orçamento:
    - **Verde Institucional Primário:** `#219647` (Cor máxima da marca, teto de luminosidade e 1ª série de gráficos).
-   - **Amarelo Solar CTA:** `#fee000` (Acentos de alta prioridade, badges solares e 2ª cor em distribuições).
-   - **Azul Investimento (Sky Soft):** `#0ea5e9` (Investimentos públicos, infraestrutura e 3ª cor de gráficos).
-   - **Verde Esmeralda (Safe):** `#10b981` (Superávit, metas cumpridas e 4ª cor de gráficos).
-   - **Âmbar Alerta (Warning):** `#f59e0b` (Prazos, limites prudenciais e 5ª cor de gráficos).
-   - **Sálvia Mineral (Custeio):** `#738b7b` (Custeio operacional, despesas administrativas e 6ª cor de gráficos).
+   - **Amarelo Solar CTA:** `#fee000` (Acentos de alta prioridade, badges solares e botões de chamada primária. NUNCA UTILIZAR EM GRÁFICOS).
+   - **Escala Mineral Monocromática dos Gráficos (Seção 08 do Design System):**
+     Todos os gráficos de distribuição (Rosca, Pizza, Polar) e barras utilizam estritamente a gradação mineral verde/sálvia do Estado:
+     1. `#219647` (Verde Primário 500 — teto de luminosidade e 1ª série/fatia)
+     2. `#738b7b` (Sálvia Mineral / Custeio — 2ª série/fatia)
+     3. `#9eb2a4` (3ª fatia)
+     4. `#cbd8cf` (4ª fatia)
+     5. `#dee8e1` (5ª fatia)
+     6. `#eaf1ed` (6ª fatia)
+     *PROIBIÇÃO TOTAL EM GRÁFICOS: O Amarelo Solar (#fee000), azul, vermelho ou cores externas NUNCA devem ser aplicadas nos gráficos. O amarelo é reservado exclusivamente para CTAs, botões e destaques externos aos gráficos.*
    - **Superfícies & Textos:** Sálvia Mineral (`#ebf5ee`), Branco Puro (`#ffffff`), Texto Carvão (`#0d1711`) e Apoio (`#4f6656`).
 
 4. [PROIBIÇÃO DE EMOJIS]:
@@ -214,9 +219,10 @@ E configure o script Chart.js estritamente com as cores oficiais:
 - Comparação Simples (Orçado vs Realizado):
   * Série 1 (Realizado / Principal): '#219647' (Verde Institucional)
   * Série 2 (Orçado / Referência): '#738b7b' (Sálvia Mineral)
-- Gráficos Multi-Categorias, Rosca (Doughnut) e Pizza (Pie):
-  Utilize a paleta canônica do Design System (vibrante e equilibrada):
-  ['#219647', '#fee000', '#0ea5e9', '#10b981', '#f59e0b', '#738b7b']
+- Gráficos de Distribuição, Rosca (Doughnut) e Pizza (Pie) — Seção 08 do Design System:
+  Utilize estritamente a paleta monocromática mineral oficial (teto no verde primário):
+  ['#219647', '#738b7b', '#9eb2a4', '#cbd8cf', '#dee8e1', '#eaf1ed']
+  (NUNCA inclua amarelo solar #fee000, azul ou vermelho em gráficos).
 
 ================================================================================
 ESQUELETO OBRIGATÓRIO DE SAÍDA (PADRÃO CDN ULTRA-OTIMIZADO):
@@ -298,7 +304,7 @@ Inicie SEMPRE com este esqueleto HTML. Use as folhas oficiais hospedadas:
   window.addEventListener('load', () => {
     // Configurar instâncias do Chart.js com as cores oficiais:
     // Realizado: '#219647', Custeio/Orçado: '#738b7b'
-    // Rosca: ['#219647', '#738b7b', '#9eb2a4', '#cbd8cf', '#dee8e1', '#eaf1ed']
+    // Rosca/Pizza (Seção 08): ['#219647', '#738b7b', '#9eb2a4', '#cbd8cf', '#dee8e1', '#eaf1ed']
   });
 </script>
 </body>
