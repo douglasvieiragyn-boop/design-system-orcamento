@@ -507,19 +507,30 @@ body > :not(.deck-viewport):not(.deck-controls):not(script):not(style) {
   html, body {
     width: 1920px !important;
     height: auto !important;
+    min-height: auto !important;
     padding: 0 !important;
     margin: 0 !important;
     background: transparent !important;
     overflow: visible !important;
+    position: static !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
   .deck-controls { display: none !important; }
   .deck-viewport {
+    position: static !important;
     display: block !important;
     width: 1920px !important;
     height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    top: auto !important;
+    left: auto !important;
+    z-index: auto !important;
     transform: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
   .slide {
     position: relative !important;
