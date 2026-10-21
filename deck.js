@@ -100,6 +100,31 @@
     document.documentElement.style.setProperty('--scale', scale);
   }
 
+  // Correção de plataforma para Chart.js 4.x dentro de containers widescreen transformados por CSS scale()
+  // Previne double-scaling e garante medição de coordenadas em 1920x1080
+  function patchChartJsPlatform() {
+    if (typeof Chart !== 'undefined' && Chart.platforms && Chart.platforms.DomPlatform) {
+      const proto = Chart.platforms.DomPlatform.prototype;
+      if (!proto._dsPatched) {
+        const origGetMaxSize = proto.getMaximumSize;
+        proto.getMaximumSize = function (canvas, bbWidth, bbHeight, aspectRatio) {
+          if (canvas && canvas.closest && canvas.closest('.slide')) {
+            const parent = canvas.parentElement;
+            if (parent) {
+              const w = parent.clientWidth;
+              const h = parent.clientHeight;
+              if (w > 0 && h > 0) {
+                return { width: w, height: h };
+              }
+            }
+          }
+          return origGetMaxSize.call(this, canvas, bbWidth, bbHeight, aspectRatio);
+        };
+        proto._dsPatched = true;
+      }
+    }
+  }
+
   // 3. AUTO-RENDERIZADOR DECLARATIVO DE GRÁFICOS CHART.JS
   function initCharts() {
     if (typeof Chart === 'undefined') return;
@@ -183,14 +208,25 @@
 
     autoScale();
 
-    // Redimensiona instâncias do Chart.js para manter proporção
-    if (typeof Chart !== 'undefined' && Chart.instances) {
-      Object.values(Chart.instances).forEach(chart => {
-        if (chart && typeof chart.resize === 'function') chart.resize();
-      });
-    }
-    Object.values(chartInstances).forEach(chart => {
-      if (chart && typeof chart.resize === 'function') chart.resize();
+    patchChartJsPlatform();
+
+    // Desperta e renderiza todos os gráficos Chart.js contidos no slide ativo
+    requestAnimationFrame(() => {
+      const activeSlide = document.querySelector('.slide.active');
+      if (activeSlide) {
+        const canvases = activeSlide.querySelectorAll('canvas');
+        canvases.forEach(canvas => {
+          const chart = getChartInstance(canvas);
+          if (chart) {
+            canvas.style.removeProperty('width');
+            canvas.style.removeProperty('height');
+            try {
+              chart.resize();
+              chart.update('none');
+            } catch (err) {}
+          }
+        });
+      }
     });
   }
 
@@ -888,10 +924,13 @@
       setTimeout(initDeck, 30);
       return;
     }
+    patchChartJsPlatform();
     sanitizeEmojis();
     ensureControls();
     initCharts();
     updateSlides();
+    setTimeout(updateSlides, 100);
+    setTimeout(updateSlides, 300);
   }
 
   if (document.readyState === 'loading') {
