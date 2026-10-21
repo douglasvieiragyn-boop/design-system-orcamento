@@ -174,6 +174,7 @@
         <span id="slideIndicator" style="padding-inline: 8px;">Slide 1 / ${totalSlides}</span>
         <button id="btnNext">Próximo →</button>
         <button class="btn-sec btn-solar" id="btnFS">F11 Tela Cheia</button>
+        <button class="btn-sec" id="btnPDF" title="Baixar Apresentação Convertida em PDF">Exportar PDF</button>
         <button class="btn-sec" id="btnPPTX" title="Baixar Apresentação em PowerPoint">Exportar PPTX</button>
       `;
       document.body.appendChild(controls);
@@ -181,6 +182,7 @@
       document.getElementById('btnPrev').addEventListener('click', prevSlide);
       document.getElementById('btnNext').addEventListener('click', nextSlide);
       document.getElementById('btnFS').addEventListener('click', toggleFullScreen);
+      document.getElementById('btnPDF').addEventListener('click', exportPDF);
       document.getElementById('btnPPTX').addEventListener('click', exportPPTX);
     }
   }
@@ -326,7 +328,130 @@
     }
   }
 
-  // 6. TECLADO
+  // 7. EXPORTAÇÃO INTELIGENTE DE APRESENTAÇÃO EM ARQUIVO PDF NATIVO (.PDF)
+  // Converte slide por slide para documento PDF em formato 16:9 widescreen real (sem abrir janela de impressão / window.print)
+  async function exportPDF() {
+    const btn = document.getElementById('btnPDF');
+    const originalText = btn ? btn.innerText : 'Exportar PDF';
+    if (btn) {
+      btn.innerText = 'Iniciando PDF...';
+      btn.disabled = true;
+    }
+
+    try {
+      if (typeof html2canvas === 'undefined') {
+        await loadScript('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js');
+      }
+      if (typeof window.jspdf === 'undefined' && typeof jsPDF === 'undefined') {
+        await loadScript('https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js');
+      }
+
+      const { jsPDF } = window.jspdf || window;
+      const pdf = new jsPDF({
+        orientation: 'landscape',
+        unit: 'px',
+        format: [1920, 1080],
+        hotfixes: ['px_scaling']
+      });
+
+      const slides = Array.from(document.querySelectorAll('.slide'));
+      const total = slides.length;
+      const originalSlide = currentSlide;
+
+      for (let i = 0; i < total; i++) {
+        const slide = slides[i];
+        if (btn) btn.innerText = `Gerando PDF ${i + 1}/${total}...`;
+
+        if (i > 0) {
+          pdf.addPage([1920, 1080], 'landscape');
+        }
+
+        // REGRA INVIOLÁVEL: Último slide (encerramento) é 100% limpo, apenas imagem
+        if (slide.classList.contains('slide-closing')) {
+          try {
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            await new Promise((resolve) => {
+              img.onload = resolve;
+              img.onerror = resolve;
+              img.src = 'https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@main/apresentacao/encerramento.png';
+            });
+            if (img.width > 0) {
+              pdf.addImage(img, 'PNG', 0, 0, 1920, 1080, undefined, 'FAST');
+              continue;
+            }
+          } catch (e) {
+            console.warn('Fallback na renderização do encerramento:', e);
+          }
+        }
+
+        // Demais slides: captura 1920x1080 em alta fidelidade via html2canvas
+        const prevDisplay = slide.style.display;
+        const prevVisibility = slide.style.visibility;
+        const prevTransform = slide.style.transform;
+        const prevOpacity = slide.style.opacity;
+        const prevZIndex = slide.style.zIndex;
+        const prevPosition = slide.style.position;
+        const prevTop = slide.style.top;
+        const prevLeft = slide.style.left;
+
+        slide.style.display = 'flex';
+        slide.style.visibility = 'visible';
+        slide.style.opacity = '1';
+        slide.style.transform = 'none';
+        slide.style.position = 'fixed';
+        slide.style.top = '0';
+        slide.style.left = '0';
+        slide.style.zIndex = '99999';
+
+        try {
+          const canvas = await html2canvas(slide, {
+            width: 1920,
+            height: 1080,
+            scale: 1,
+            useCORS: true,
+            allowTaint: true,
+            logging: false,
+            backgroundColor: '#f2f6f3'
+          });
+
+          const imgData = canvas.toDataURL('image/jpeg', 0.94);
+          pdf.addImage(imgData, 'JPEG', 0, 0, 1920, 1080, undefined, 'FAST');
+        } catch (captureErr) {
+          console.warn(`Erro na captura do slide ${i + 1} para PDF:`, captureErr);
+        } finally {
+          slide.style.display = prevDisplay;
+          slide.style.visibility = prevVisibility;
+          slide.style.transform = prevTransform;
+          slide.style.opacity = prevOpacity;
+          slide.style.zIndex = prevZIndex;
+          slide.style.position = prevPosition;
+          slide.style.top = prevTop;
+          slide.style.left = prevLeft;
+        }
+      }
+
+      currentSlide = originalSlide;
+      updateSlides();
+
+      if (btn) btn.innerText = 'Baixando PDF...';
+      const cleanTitle = (document.title || 'Apresentacao-Orcamentaria')
+        .replace(/[^a-zA-Z0-9À-ÿ_-]/g, '_')
+        .substring(0, 35);
+      pdf.save(`${cleanTitle}.pdf`);
+
+    } catch (err) {
+      console.error('Falha na conversão para PDF:', err);
+      alert('Não foi possível converter a apresentação para PDF. Verifique sua conexão com a internet.');
+    } finally {
+      if (btn) {
+        btn.innerText = originalText;
+        btn.disabled = false;
+      }
+    }
+  }
+
+  // 8. TECLADO
   document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') nextSlide();
     if (e.key === 'ArrowLeft' || e.key === 'PageUp') prevSlide();
@@ -348,4 +473,6 @@
   window.nextSlide = nextSlide;
   window.prevSlide = prevSlide;
   window.toggleFullScreen = toggleFullScreen;
+  window.exportPDF = exportPDF;
+  window.exportPPTX = exportPPTX;
 })();

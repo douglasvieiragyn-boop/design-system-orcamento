@@ -320,7 +320,7 @@ O Gemini Web (versão gratuita) possui limite de geração contínua por mensage
 
 1. **Economia de 80% dos Tokens:** Em vez de forçar o modelo a cuspir 400 linhas de CSS em cada resposta, ele emite apenas a estrutura semântica dos slides.
 2. **Imunidade a Quebra de Layout:** O modelo é fisicamente incapaz de estragar as proporções 16:9, pois o CSS está gravado e imutável no CDN do GitHub.
-3. **Controles Embutidos Automaticamente:** O arquivo `deck.js` injeta sozinho os botões de navegação, tela cheia (F11), atalhos de teclado (Setas e Espaço) e botão de exportação em PowerPoint (.pptx).
+3. **Controles Embutidos Automaticamente:** O arquivo `deck.js` injeta sozinho os botões de navegação, tela cheia (F11), atalhos de teclado (Setas e Espaço), botão de conversão e download em PDF (.pdf) real (sem tela de impressão) e botão de exportação em PowerPoint (.pptx).
 
 ---
 
