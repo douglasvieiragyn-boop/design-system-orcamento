@@ -518,11 +518,13 @@
             let hasBorder = parseFloat(style.borderWidth) > 0 && style.borderStyle !== 'none';
 
             if (card.classList.contains('card-elevated-green')) {
-              fillHex = '0B3017';
-              borderHex = '15542A';
+              fillHex = '219647'; // #219647 Verde Primário Institucional 500
+              borderHex = '219647';
+              hasBorder = false;
             } else if (card.classList.contains('card-solar-cta')) {
-              fillHex = 'FEE000';
-              borderHex = 'D4B800';
+              fillHex = 'FEE000'; // #fee000 Amarelo Solar 500
+              borderHex = 'FEE000';
+              hasBorder = false;
             } else if (card.classList.contains('card-soft-sage')) {
               fillHex = 'EBF5EE';
               borderHex = 'C5E0D0';
@@ -644,12 +646,13 @@
             });
           });
 
-          const kpiLabels = Array.from(slide.querySelectorAll('.kpi-label, .stat-label'));
+          const kpiLabels = Array.from(slide.querySelectorAll('.kpi-label, .stat-label, .card-label'));
           kpiLabels.forEach(el => {
             if (handledElements.has(el) || el.offsetWidth <= 0) return;
             handledElements.add(el);
             const box = getBox(el, slideRect);
             const isDark = el.closest('.card-elevated-green') !== null;
+            const isSolar = el.closest('.card-solar-cta') !== null;
             pSlide.addText(el.innerText.trim().toUpperCase(), {
               x: box.x,
               y: box.y,
@@ -658,7 +661,7 @@
               fontFace: 'Segoe UI',
               fontSize: 9.5,
               bold: true,
-              color: isDark ? 'ADE0BA' : '15542A',
+              color: isDark ? 'FEE000' : (isSolar ? '736600' : '15542A'),
               margin: 0,
               valign: 'middle'
             });
@@ -964,11 +967,11 @@
             let borderRgb = parseColorToRgb(style.borderColor, [229, 231, 235]);
 
             if (card.classList.contains('card-elevated-green')) {
-              bgRgb = [11, 48, 23];
-              borderRgb = [21, 84, 42];
+              bgRgb = [33, 150, 71]; // #219647 (Verde Primário Institucional 500)
+              borderRgb = [33, 150, 71];
             } else if (card.classList.contains('card-solar-cta')) {
-              bgRgb = [254, 224, 0];
-              borderRgb = [212, 184, 0];
+              bgRgb = [254, 224, 0]; // #fee000 (Amarelo Solar 500)
+              borderRgb = [254, 224, 0];
             } else if (card.classList.contains('card-soft-sage')) {
               bgRgb = [235, 245, 238];
               borderRgb = [197, 224, 208];
@@ -1073,7 +1076,7 @@
             const isSolar = el.closest('.card-solar-cta') !== null;
             pdf.setFont('helvetica', 'bold');
             pdf.setFontSize(13);
-            if (isDark) pdf.setTextColor(173, 224, 186); // #ade0ba
+            if (isDark) pdf.setTextColor(254, 224, 0); // #fee000 Amarelo Solar 500 oficial
             else if (isSolar) pdf.setTextColor(115, 102, 0); // #736600
             else pdf.setTextColor(21, 84, 42); // #15542a
             pdf.text(el.innerText.trim().toUpperCase(), box.x, box.y + 12);
@@ -1139,17 +1142,17 @@
             const isWhite = btnEl.classList.contains('btn-white');
 
             if (isSolar) {
-              pdf.setFillColor(11, 48, 23); // #0B3017
+              pdf.setFillColor(33, 150, 71); // #219647 (Verde Primário Institucional 500)
               pdf.setTextColor(255, 255, 255);
             } else if (isWhite) {
               pdf.setFillColor(255, 255, 255);
-              pdf.setTextColor(11, 48, 23);
+              pdf.setTextColor(33, 150, 71); // #219647 (Verde Primário Institucional 500)
             } else {
               pdf.setFillColor(33, 150, 71); // #219647
               pdf.setTextColor(255, 255, 255);
             }
 
-            pdf.roundedRect(box.x, box.y, box.w, box.h, 6, 6, 'F');
+            pdf.roundedRect(box.x, box.y, box.w, box.h, box.h / 2, box.h / 2, 'F');
             pdf.setFont('helvetica', 'bold');
             pdf.setFontSize(13);
             pdf.text(btnEl.innerText.trim(), box.x + (box.w / 2), box.y + (box.h / 2) + 4, { align: 'center' });
@@ -1167,7 +1170,7 @@
 
             pdf.setFont('helvetica', 'normal');
             pdf.setFontSize(isProgressText ? 12 : 15);
-            if (isDark) pdf.setTextColor(235, 245, 238);
+            if (isDark) pdf.setTextColor(255, 255, 255); // Branco puro em card verde
             else if (isSolar) pdf.setTextColor(61, 55, 0);
             else pdf.setTextColor(75, 85, 99);
 
