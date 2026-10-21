@@ -184,6 +184,11 @@
     autoScale();
 
     // Redimensiona instâncias do Chart.js para manter proporção
+    if (typeof Chart !== 'undefined' && Chart.instances) {
+      Object.values(Chart.instances).forEach(chart => {
+        if (chart && typeof chart.resize === 'function') chart.resize();
+      });
+    }
     Object.values(chartInstances).forEach(chart => {
       if (chart && typeof chart.resize === 'function') chart.resize();
     });
@@ -272,6 +277,51 @@
       w: (r.width / slideRect.width) * 1920,
       h: (r.height / slideRect.height) * 1080
     };
+  }
+
+  // Helper para localizar instância ativa do Chart.js vinculada a um elemento <canvas>
+  function getChartInstance(canvas) {
+    if (typeof Chart === 'undefined') return null;
+    if (Chart.instances) {
+      for (const key of Object.keys(Chart.instances)) {
+        const inst = Chart.instances[key];
+        if (inst && (inst.canvas === canvas || (inst.canvas && inst.canvas.id === canvas.id))) {
+          return inst;
+        }
+      }
+    }
+    if (typeof Chart.getChart === 'function') {
+      try {
+        const c = Chart.getChart(canvas) || Chart.getChart(canvas.id);
+        if (c) return c;
+      } catch (e) {}
+    }
+    return null;
+  }
+
+  // Helper para forçar a renderização completa e síncrona de um gráfico Chart.js mesmo se criado em slide inativo
+  function prepareCanvasChart(canvas) {
+    const chart = getChartInstance(canvas);
+    const parent = canvas.parentElement;
+    const targetW = (parent && parent.clientWidth > 50) ? parent.clientWidth : (canvas.clientWidth || 750);
+    const targetH = (parent && parent.clientHeight > 50) ? parent.clientHeight : (canvas.clientHeight || 380);
+
+    // Se as dimensões do canvas estiverem zeradas devido ao slide inativo (display: none)
+    if (canvas.width === 0 || canvas.height === 0 || canvas.offsetWidth === 0 || canvas.offsetHeight === 0) {
+      canvas.style.width = targetW + 'px';
+      canvas.style.height = targetH + 'px';
+      canvas.width = targetW;
+      canvas.height = targetH;
+    }
+
+    if (chart) {
+      try {
+        chart.resize(targetW, targetH);
+        chart.update('none'); // Renderização síncrona sem animação
+      } catch (err) {}
+    }
+
+    return chart;
   }
 
   // 6. EXPORTAÇÃO INTELIGENTE DE APRESENTAÇÃO POWERPOINT (.PPTX) EM CAMADAS NATIVAS
@@ -497,17 +547,43 @@
           canvases.forEach(canvas => {
             handledElements.add(canvas);
             try {
+              prepareCanvasChart(canvas);
               const box = getBox(canvas, slideRect);
-              const dataUrl = canvas.toDataURL('image/png');
-              pSlide.addImage({
-                data: dataUrl,
-                x: box.x,
-                y: box.y,
-                w: box.w,
-                h: box.h
-              });
+              if (box.w > 0.1 && box.h > 0.1) {
+                const dataUrl = canvas.toDataURL('image/png');
+                if (dataUrl && dataUrl.length > 50 && dataUrl.startsWith('data:image/png')) {
+                  pSlide.addImage({
+                    data: dataUrl,
+                    x: box.x,
+                    y: box.y,
+                    w: box.w,
+                    h: box.h
+                  });
+                }
+              }
             } catch (err) {
               console.warn('Erro ao extrair imagem do canvas para PPTX:', err);
+            }
+          });
+
+          // CAMADA 5.1: IMAGENS EXTERNAS (IMG)
+          const images = Array.from(slide.querySelectorAll('img'));
+          images.forEach(img => {
+            if (handledElements.has(img) || img.offsetWidth <= 0 || img.offsetHeight <= 0) return;
+            handledElements.add(img);
+            try {
+              const box = getBox(img, slideRect);
+              if (box.w > 0.1 && box.h > 0.1 && img.src) {
+                pSlide.addImage({
+                  data: img.src,
+                  x: box.x,
+                  y: box.y,
+                  w: box.w,
+                  h: box.h
+                });
+              }
+            } catch (imgErr) {
+              console.warn('Erro ao inserir imagem no PPTX:', imgErr);
             }
           });
 
@@ -912,11 +988,31 @@
           canvases.forEach(canvas => {
             handledElements.add(canvas);
             try {
+              prepareCanvasChart(canvas);
               const box = getPixelBox(canvas, slideRect);
-              const dataUrl = canvas.toDataURL('image/png');
-              pdf.addImage(dataUrl, 'PNG', box.x, box.y, box.w, box.h, undefined, 'FAST');
+              if (box.w > 10 && box.h > 10) {
+                const dataUrl = canvas.toDataURL('image/png');
+                if (dataUrl && dataUrl.length > 50 && dataUrl.startsWith('data:image/png')) {
+                  pdf.addImage(dataUrl, 'PNG', box.x, box.y, box.w, box.h, undefined, 'FAST');
+                }
+              }
             } catch (canvasErr) {
               console.warn('Erro ao extrair imagem do canvas para PDF:', canvasErr);
+            }
+          });
+
+          // 4.1. IMAGENS (IMG)
+          const images = Array.from(slide.querySelectorAll('img'));
+          images.forEach(img => {
+            if (handledElements.has(img) || img.offsetWidth <= 0 || img.offsetHeight <= 0) return;
+            handledElements.add(img);
+            try {
+              const box = getPixelBox(img, slideRect);
+              if (box.w > 10 && box.h > 10 && img.src) {
+                pdf.addImage(img.src, 'PNG', box.x, box.y, box.w, box.h, undefined, 'FAST');
+              }
+            } catch (imgErr) {
+              console.warn('Erro ao inserir imagem no PDF:', imgErr);
             }
           });
 
