@@ -1022,7 +1022,7 @@
           // 5. BADGES E TAGS EM PÍLULA
           const badges = Array.from(slide.querySelectorAll('.badge, .status-badge, .ne-badge, .kpi-tag-success, .kpi-tag-alert, .kpi-tag-info, [class*="kpi-tag"]'));
           badges.forEach(badge => {
-            if (handledElements.has(badge) || badge.offsetWidth <= 0) return;
+            if (handledElements.has(badge) || badge.offsetWidth <= 0 || badge.closest('table')) return;
             handledElements.add(badge);
             badge.querySelectorAll('*').forEach(c => handledElements.add(c));
             const box = getPixelBox(badge, slideRect);
@@ -1206,20 +1206,21 @@
           tables.forEach(table => {
             handledElements.add(table);
             table.querySelectorAll('*').forEach(c => handledElements.add(c));
-            const box = getPixelBox(table, slideRect);
             const trs = Array.from(table.querySelectorAll('tr'));
             if (trs.length === 0) return;
-            let rowY = box.y;
-            const rowH = box.h / trs.length;
 
             trs.forEach((tr, rIdx) => {
               const isHeader = tr.querySelector('th') !== null || rIdx === 0;
               const cells = Array.from(tr.querySelectorAll('th, td'));
               if (cells.length === 0) return;
-              let cellX = box.x;
-              const cellW = box.w / cells.length;
 
               cells.forEach(cell => {
+                const cBox = getPixelBox(cell, slideRect);
+                const cellX = cBox.x;
+                const cellY = cBox.y;
+                const cellW = cBox.w;
+                const cellH = cBox.h;
+
                 if (isHeader) {
                   pdf.setFillColor(11, 48, 23); // #0B3017
                   pdf.setDrawColor(21, 84, 42);
@@ -1228,7 +1229,7 @@
                   pdf.setDrawColor(229, 231, 235);
                 }
                 pdf.setLineWidth(1);
-                pdf.rect(cellX, rowY, cellW, rowH, 'FD');
+                pdf.rect(cellX, cellY, cellW, cellH, 'FD');
 
                 pdf.setFont('helvetica', isHeader ? 'bold' : 'normal');
                 pdf.setFontSize(isHeader ? 12 : 11);
@@ -1237,14 +1238,12 @@
 
                 const align = cell.style.textAlign || 'left';
                 const txt = cell.innerText.trim();
-                let textX = cellX + 12;
-                if (align === 'right') textX = cellX + cellW - 12;
+                let textX = cellX + 10;
+                if (align === 'right') textX = cellX + cellW - 10;
                 else if (align === 'center') textX = cellX + (cellW / 2);
 
-                pdf.text(txt, textX, rowY + (rowH / 2) + 4, { align: align });
-                cellX += cellW;
+                pdf.text(txt, textX, cellY + (cellH / 2) + 4, { align: align });
               });
-              rowY += rowH;
             });
           });
 

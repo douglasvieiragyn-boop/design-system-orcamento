@@ -496,12 +496,31 @@ body > :not(.deck-viewport):not(.deck-controls):not(script):not(style) {
 .deck-controls .btn-solar { background: var(--yellow-500); color: var(--text-primary); }
 
 /* ==========================================================================
-   IMPRESSÃO PDF (CTRL + P)
+   IMPRESSÃO PDF NATIVA PERFEITA 1:1 (CTRL + P / SALVAR COMO PDF)
    ========================================================================== */
+@page {
+  size: 1920px 1080px;
+  margin: 0;
+}
+
 @media print {
-  body { padding: 0; background: transparent; overflow: visible; min-height: auto; }
+  html, body {
+    width: 1920px !important;
+    height: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
   .deck-controls { display: none !important; }
-  .deck-viewport { display: block; width: auto; height: auto; }
+  .deck-viewport {
+    display: block !important;
+    width: 1920px !important;
+    height: auto !important;
+    transform: none !important;
+  }
   .slide {
     position: relative !important;
     top: 0 !important;
@@ -509,9 +528,12 @@ body > :not(.deck-viewport):not(.deck-controls):not(script):not(style) {
     transform: none !important;
     display: flex !important;
     opacity: 1 !important;
-    page-break-after: always;
-    box-shadow: none;
-    width: 100vw !important;
-    height: 100vh !important;
+    page-break-after: always !important;
+    break-after: page !important;
+    box-shadow: none !important;
+    width: 1920px !important;
+    height: 1080px !important;
+    margin: 0 !important;
+    overflow: hidden !important;
   }
 }
