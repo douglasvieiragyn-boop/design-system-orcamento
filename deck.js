@@ -166,8 +166,13 @@
 
   // 5. INJEÇÃO AUTOMÁTICA DOS CONTROLES DO APRESENTADOR
   function ensureControls() {
-    if (!document.querySelector('.deck-controls')) {
-      const controls = document.createElement('div');
+    if (!document.body) {
+      setTimeout(ensureControls, 30);
+      return;
+    }
+    let controls = document.querySelector('.deck-controls');
+    if (!controls) {
+      controls = document.createElement('div');
       controls.className = 'deck-controls';
       controls.innerHTML = `
         <button id="btnPrev">← Anterior</button>
@@ -461,13 +466,24 @@
 
   window.addEventListener('resize', autoScale);
 
-  // INICIALIZAÇÃO GERAL
-  window.addEventListener('DOMContentLoaded', () => {
+  // INICIALIZAÇÃO GERAL ROBUSTA (IMUNE A ATRASO DE DOMCONTENTLOADED OU CACHE)
+  function initDeck() {
+    if (!document.body) {
+      setTimeout(initDeck, 30);
+      return;
+    }
     sanitizeEmojis();
     ensureControls();
     initCharts();
     updateSlides();
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initDeck);
+  } else {
+    initDeck();
+  }
+  window.addEventListener('load', initDeck);
 
   // Exporta funções para escopo global caso botões inline sejam usados
   window.nextSlide = nextSlide;
