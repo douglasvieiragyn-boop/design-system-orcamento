@@ -254,11 +254,15 @@
     }
 
     try {
-      if (typeof PptxGenJS === 'undefined') {
+      if (typeof window.PptxGenJS === 'undefined') {
         await loadScript('https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js');
       }
 
-      const pptx = new PptxGenJS();
+      const PptxConstructor = window.PptxGenJS;
+      if (!PptxConstructor) {
+        throw new Error('A biblioteca PptxGenJS não pôde ser inicializada no navegador.');
+      }
+      const pptx = new PptxConstructor();
       pptx.layout = 'LAYOUT_16x9';
       pptx.author = 'Governo do Estado de Goiás — Secretaria da Economia';
       pptx.company = 'Secretaria da Economia de Goiás';
@@ -746,15 +750,18 @@
     }
 
     try {
-      if (typeof html2canvas === 'undefined') {
+      if (typeof window.html2canvas === 'undefined') {
         await loadScript('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js');
       }
-      if (typeof window.jspdf === 'undefined' && typeof jsPDF === 'undefined') {
+      if (typeof window.jspdf === 'undefined' && typeof window.jsPDF === 'undefined') {
         await loadScript('https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js');
       }
 
-      const { jsPDF } = window.jspdf || window;
-      const pdf = new jsPDF({
+      const JsPdfConstructor = (window.jspdf && window.jspdf.jsPDF) || window.jsPDF;
+      if (!JsPdfConstructor) {
+        throw new Error('A biblioteca jsPDF não pôde ser inicializada no navegador.');
+      }
+      const pdf = new JsPdfConstructor({
         orientation: 'landscape',
         unit: 'px',
         format: [1920, 1080],
