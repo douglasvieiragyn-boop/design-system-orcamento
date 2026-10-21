@@ -49,6 +49,26 @@
     return defaultHex;
   }
 
+  // Utilitário para converter cores CSS para tupla [R, G, B] aceita pelo jsPDF
+  function parseColorToRgb(colorStr, defaultRgb = [255, 255, 255]) {
+    if (!colorStr) return defaultRgb;
+    colorStr = colorStr.trim();
+    if (colorStr.startsWith('#')) {
+      let hex = colorStr.replace('#', '');
+      if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+      return [
+        parseInt(hex.substring(0, 2), 16) || 0,
+        parseInt(hex.substring(2, 4), 16) || 0,
+        parseInt(hex.substring(4, 6), 16) || 0
+      ];
+    }
+    const m = colorStr.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/i);
+    if (m) {
+      return [parseInt(m[1], 10), parseInt(m[2], 10), parseInt(m[3], 10)];
+    }
+    return defaultRgb;
+  }
+
   // 1. SANITIZADOR AUTOMÁTICO DE EMOJIS (Transforma emojis informais em SVGs de Estado)
   function sanitizeEmojis() {
     const emojiMap = [
@@ -240,6 +260,17 @@
       y: ((r.top - slideRect.top) / slideRect.height) * 5.625,
       w: (r.width / slideRect.width) * 10,
       h: (r.height / slideRect.height) * 5.625
+    };
+  }
+
+  // Helper para calcular coordenadas em pixels widescreen (1920 x 1080) relativas ao slide para jsPDF
+  function getPixelBox(el, slideRect) {
+    const r = el.getBoundingClientRect();
+    return {
+      x: ((r.left - slideRect.left) / slideRect.width) * 1920,
+      y: ((r.top - slideRect.top) / slideRect.height) * 1080,
+      w: (r.width / slideRect.width) * 1920,
+      h: (r.height / slideRect.height) * 1080
     };
   }
 
@@ -733,8 +764,8 @@
     }
   }
 
-  // 7. EXPORTAÇÃO INTELIGENTE DE APRESENTAÇÃO EM ARQUIVO PDF NATIVO (.PDF)
-  // Converte slide por slide para PDF 16:9 widescreen real com fundo base64 e captura de DOM transparente (imune a erros de CORS e canvas tainted)
+  // 7. EXPORTAÇÃO INTELIGENTE DE APRESENTAÇÃO EM ARQUIVO PDF NATIVO (.PDF) EM VETOR DIRETO
+  // Decompõe elementos do DOM diretamente em instruções vetoriais do jsPDF (sem html2canvas, sem rasterização, sem canvas tainted)
   async function exportPDF() {
     const btn = document.getElementById('btnPDF');
     const originalText = btn ? btn.innerText : 'Exportar PDF';
@@ -744,9 +775,6 @@
     }
 
     try {
-      if (typeof window.html2canvas === 'undefined') {
-        await loadScript('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js');
-      }
       if (typeof window.jspdf === 'undefined' && typeof window.jsPDF === 'undefined') {
         await loadScript('https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js');
       }
@@ -774,21 +802,13 @@
           pdf.addPage([1920, 1080], 'landscape');
         }
 
-        // REGRA INVIOLÁVEL: Último slide (encerramento) é 100% limpo, apenas imagem
+        // REGRA INVIOLÁVEL: Último slide (encerramento) é 100% limpo, apenas imagem oficial
         if (slide.classList.contains('slide-closing')) {
           pdf.addImage(ASSETS.encerramento, 'PNG', 0, 0, 1920, 1080, undefined, 'FAST');
           continue;
         }
 
-        // 1. Renderiza o fundo institucional no jsPDF antes de sobrepor os elementos DOM
-        if (slide.classList.contains('slide-cover')) {
-          pdf.setFillColor(242, 246, 243);
-          pdf.rect(0, 0, 1920, 1080, 'F');
-        } else {
-          pdf.addImage(ASSETS.bgConteudo, 'PNG', 0, 0, 1920, 1080, undefined, 'FAST');
-        }
-
-        // 2. Prepara o slide para captura transparente via html2canvas
+        // Prepara slide temporariamente para medições exatas em 1920x1080
         const prevActive = slide.classList.contains('active');
         slides.forEach(s => s.classList.remove('active'));
         slide.classList.add('active');
@@ -803,48 +823,369 @@
         slide.style.setProperty('width', '1920px', 'important');
         slide.style.setProperty('height', '1080px', 'important');
         slide.style.setProperty('z-index', '99999', 'important');
-        slide.style.setProperty('background-image', 'none', 'important');
-        slide.style.setProperty('background-color', 'transparent', 'important');
 
         try {
-          const canvas = await window.html2canvas(slide, {
-            width: 1920,
-            height: 1080,
-            scale: 1,
-            useCORS: false,
-            allowTaint: false,
-            logging: true,
-            backgroundColor: null,
-            onclone: (clonedDoc) => {
-              const cs = clonedDoc.querySelectorAll('.slide');
-              cs.forEach(s => {
-                s.style.setProperty('background-image', 'none', 'important');
-                s.style.setProperty('background-color', 'transparent', 'important');
-                s.style.setProperty('box-shadow', 'none', 'important');
-              });
-              const target = clonedDoc.getElementById(slide.id) || clonedDoc.querySelectorAll('.slide')[i];
-              if (target) {
-                target.classList.add('active');
-                target.style.setProperty('display', 'flex', 'important');
-                target.style.setProperty('visibility', 'visible', 'important');
-                target.style.setProperty('opacity', '1', 'important');
-                target.style.setProperty('transform', 'none', 'important');
-                target.style.setProperty('position', 'relative', 'important');
-                target.style.setProperty('top', '0', 'important');
-                target.style.setProperty('left', '0', 'important');
-                target.style.setProperty('width', '1920px', 'important');
-                target.style.setProperty('height', '1080px', 'important');
-                target.style.setProperty('background-image', 'none', 'important');
-                target.style.setProperty('background-color', 'transparent', 'important');
+          const slideRect = slide.getBoundingClientRect();
+          const isCover = slide.classList.contains('slide-cover');
+          const handledElements = new Set();
+
+          // Ignora SVGs e caixas decorativas de ícone como texto direto
+          slide.querySelectorAll('svg, .icon-box-sage, .kpi-icon').forEach(el => handledElements.add(el));
+
+          // 1. FUNDO OFICIAL DO SLIDE
+          if (isCover) {
+            pdf.setFillColor(242, 246, 243);
+            pdf.rect(0, 0, 1920, 1080, 'F');
+          } else {
+            pdf.addImage(ASSETS.bgConteudo, 'PNG', 0, 0, 1920, 1080, undefined, 'FAST');
+          }
+
+          // 2. CABEÇALHO / TOPBAR (BREADCRUMB, TÍTULO, SUBTÍTULO)
+          const breadcrumb = slide.querySelector('.slide-breadcrumb, .breadcrumb');
+          if (breadcrumb && breadcrumb.innerText.trim()) {
+            handledElements.add(breadcrumb);
+            breadcrumb.querySelectorAll('*').forEach(c => handledElements.add(c));
+            const box = getPixelBox(breadcrumb, slideRect);
+            pdf.setFont('helvetica', 'bold');
+            pdf.setFontSize(13);
+            pdf.setTextColor(21, 84, 42); // #15542A
+            pdf.text(breadcrumb.innerText.trim().toUpperCase(), box.x, box.y + 13);
+          }
+
+          const titleEl = slide.querySelector('.slide-title, .slide-header h2, .slide-header h1, h1');
+          if (titleEl && titleEl.innerText.trim()) {
+            handledElements.add(titleEl);
+            titleEl.querySelectorAll('*').forEach(c => handledElements.add(c));
+            const box = getPixelBox(titleEl, slideRect);
+            pdf.setFont('helvetica', 'bold');
+            pdf.setFontSize(isCover ? 38 : 28);
+            pdf.setTextColor(11, 48, 23); // #0B3017
+            const titleLines = pdf.splitTextToSize(titleEl.innerText.trim(), box.w > 50 ? box.w : 1400);
+            pdf.text(titleLines, box.x, box.y + (isCover ? 34 : 26));
+          }
+
+          const subEl = slide.querySelector('.slide-topbar p, .slide-subtitle, .header-desc');
+          if (subEl && subEl.innerText.trim()) {
+            handledElements.add(subEl);
+            subEl.querySelectorAll('*').forEach(c => handledElements.add(c));
+            const box = getPixelBox(subEl, slideRect);
+            pdf.setFont('helvetica', 'normal');
+            pdf.setFontSize(15);
+            pdf.setTextColor(75, 85, 99);
+            const subLines = pdf.splitTextToSize(subEl.innerText.trim(), box.w > 50 ? box.w : 1400);
+            pdf.text(subLines, box.x, box.y + 14);
+          }
+
+          // 3. CARDS E CONTAINERS (FORMAS VETORIAIS COM BORDAS E CANTOS ARREDONDADOS)
+          const cardSelectors = '.card, .card-soft-sage, .card-elevated-green, .card-solar-cta, .card-kpi, .chart-card, .table-box, .stat-card, .highlight-box';
+          const cards = Array.from(slide.querySelectorAll(cardSelectors));
+          cards.forEach(card => {
+            if (card.offsetWidth <= 0 || card.offsetHeight <= 0) return;
+            const box = getPixelBox(card, slideRect);
+            const style = window.getComputedStyle(card);
+
+            let bgRgb = parseColorToRgb(style.backgroundColor, [255, 255, 255]);
+            let borderRgb = parseColorToRgb(style.borderColor, [229, 231, 235]);
+
+            if (card.classList.contains('card-elevated-green')) {
+              bgRgb = [11, 48, 23];
+              borderRgb = [21, 84, 42];
+            } else if (card.classList.contains('card-solar-cta')) {
+              bgRgb = [254, 224, 0];
+              borderRgb = [212, 184, 0];
+            } else if (card.classList.contains('card-soft-sage')) {
+              bgRgb = [235, 245, 238];
+              borderRgb = [197, 224, 208];
+            } else if (card.classList.contains('card-kpi') || card.classList.contains('chart-card') || card.classList.contains('table-box')) {
+              bgRgb = [255, 255, 255];
+              borderRgb = [229, 231, 235];
+            }
+
+            pdf.setFillColor(bgRgb[0], bgRgb[1], bgRgb[2]);
+            pdf.setDrawColor(borderRgb[0], borderRgb[1], borderRgb[2]);
+            pdf.setLineWidth(1.5);
+            pdf.roundedRect(box.x, box.y, box.w, box.h, 10, 10, 'FD');
+          });
+
+          // 4. GRÁFICOS TRANSPARENTES (CHART.JS CANVAS VIA 2D BITMAP)
+          const canvases = Array.from(slide.querySelectorAll('canvas'));
+          canvases.forEach(canvas => {
+            handledElements.add(canvas);
+            try {
+              const box = getPixelBox(canvas, slideRect);
+              const dataUrl = canvas.toDataURL('image/png');
+              pdf.addImage(dataUrl, 'PNG', box.x, box.y, box.w, box.h, undefined, 'FAST');
+            } catch (canvasErr) {
+              console.warn('Erro ao extrair imagem do canvas para PDF:', canvasErr);
+            }
+          });
+
+          // 5. BADGES E TAGS EM PÍLULA
+          const badges = Array.from(slide.querySelectorAll('.badge, .status-badge, .ne-badge, .kpi-tag-success, .kpi-tag-alert, .kpi-tag-info, [class*="kpi-tag"]'));
+          badges.forEach(badge => {
+            if (handledElements.has(badge) || badge.offsetWidth <= 0) return;
+            handledElements.add(badge);
+            badge.querySelectorAll('*').forEach(c => handledElements.add(c));
+            const box = getPixelBox(badge, slideRect);
+            const style = window.getComputedStyle(badge);
+
+            let bgRgb = parseColorToRgb(style.backgroundColor, [237, 248, 240]);
+            let borderRgb = parseColorToRgb(style.borderColor, [173, 224, 186]);
+            let textRgb = parseColorToRgb(style.color, [22, 100, 47]);
+
+            if (badge.classList.contains('kpi-tag-success')) {
+              bgRgb = [237, 248, 240];
+              borderRgb = [173, 224, 186];
+              textRgb = [22, 100, 47];
+            } else if (badge.classList.contains('kpi-tag-alert')) {
+              bgRgb = [254, 242, 242];
+              borderRgb = [254, 202, 202];
+              textRgb = [185, 28, 28];
+            }
+
+            pdf.setFillColor(bgRgb[0], bgRgb[1], bgRgb[2]);
+            pdf.setDrawColor(borderRgb[0], borderRgb[1], borderRgb[2]);
+            pdf.setLineWidth(1);
+            pdf.roundedRect(box.x, box.y, box.w, box.h, box.h / 2, box.h / 2, 'FD');
+
+            pdf.setFont('helvetica', 'bold');
+            pdf.setFontSize(11);
+            pdf.setTextColor(textRgb[0], textRgb[1], textRgb[2]);
+            pdf.text(badge.innerText.trim(), box.x + (box.w / 2), box.y + (box.h / 2) + 4, { align: 'center' });
+          });
+
+          // 6. INDICADORES E MÉTRICAS KPI (NATIVAS)
+          const kpiVals = Array.from(slide.querySelectorAll('.kpi-val, .kpi-value, .stat-value'));
+          kpiVals.forEach(el => {
+            if (handledElements.has(el) || el.offsetWidth <= 0) return;
+            handledElements.add(el);
+            const box = getPixelBox(el, slideRect);
+            const isDark = el.closest('.card-elevated-green') !== null;
+            pdf.setFont('helvetica', 'bold');
+            pdf.setFontSize(36);
+            if (isDark) pdf.setTextColor(255, 255, 255);
+            else pdf.setTextColor(11, 48, 23);
+            pdf.text(el.innerText.trim(), box.x, box.y + 32);
+          });
+
+          const kpiLabels = Array.from(slide.querySelectorAll('.kpi-label, .stat-label, .card-label'));
+          kpiLabels.forEach(el => {
+            if (handledElements.has(el) || el.offsetWidth <= 0) return;
+            handledElements.add(el);
+            const box = getPixelBox(el, slideRect);
+            const isDark = el.closest('.card-elevated-green') !== null;
+            const isSolar = el.closest('.card-solar-cta') !== null;
+            pdf.setFont('helvetica', 'bold');
+            pdf.setFontSize(13);
+            if (isDark) pdf.setTextColor(173, 224, 186); // #ade0ba
+            else if (isSolar) pdf.setTextColor(115, 102, 0); // #736600
+            else pdf.setTextColor(21, 84, 42); // #15542a
+            pdf.text(el.innerText.trim().toUpperCase(), box.x, box.y + 12);
+          });
+
+          const kpiSubs = Array.from(slide.querySelectorAll('.kpi-sub, .stat-sub'));
+          kpiSubs.forEach(el => {
+            if (handledElements.has(el) || el.offsetWidth <= 0) return;
+            handledElements.add(el);
+            const box = getPixelBox(el, slideRect);
+            const isDark = el.closest('.card-elevated-green') !== null;
+            pdf.setFont('helvetica', 'normal');
+            pdf.setFontSize(12);
+            if (isDark) pdf.setTextColor(235, 245, 238);
+            else pdf.setTextColor(107, 114, 128);
+            pdf.text(el.innerText.trim(), box.x, box.y + 12);
+          });
+
+          // 7. BARRAS DE PROGRESSO KPI VETORIAIS
+          const progressBars = Array.from(slide.querySelectorAll('.kpi-progress-bar'));
+          progressBars.forEach(pBar => {
+            if (handledElements.has(pBar) || pBar.offsetWidth <= 0) return;
+            handledElements.add(pBar);
+            pBar.querySelectorAll('*').forEach(c => handledElements.add(c));
+            const box = getPixelBox(pBar, slideRect);
+            pdf.setFillColor(229, 231, 235); // #E5E7EB
+            pdf.roundedRect(box.x, box.y, box.w, box.h, box.h / 2, box.h / 2, 'F');
+            const fillEl = pBar.querySelector('.kpi-progress-fill');
+            if (fillEl) {
+              const fillW = Math.min(box.w, (fillEl.offsetWidth / (pBar.offsetWidth || 1)) * box.w);
+              if (fillW > 0) {
+                pdf.setFillColor(33, 150, 71); // #219647
+                pdf.roundedRect(box.x, box.y, fillW, box.h, box.h / 2, box.h / 2, 'F');
               }
             }
           });
 
-          console.log(`[PDF] Slide ${i + 1} capturado com sucesso! Canvas: ${canvas.width}x${canvas.height}`);
-          const imgData = canvas.toDataURL('image/png');
-          pdf.addImage(imgData, 'PNG', 0, 0, 1920, 1080, undefined, 'FAST');
+          // 8. TÍTULOS DE CARDS E SUB-SEÇÕES (H2, H3, H4, .CARD-TITLE)
+          const headings = Array.from(slide.querySelectorAll('h2, h3, h4, .card-title'));
+          headings.forEach(el => {
+            if (handledElements.has(el) || el.offsetWidth <= 0 || !el.innerText.trim()) return;
+            handledElements.add(el);
+            const box = getPixelBox(el, slideRect);
+            const isDark = el.closest('.card-elevated-green') !== null;
+            const isSolar = el.closest('.card-solar-cta') !== null;
+            pdf.setFont('helvetica', 'bold');
+            pdf.setFontSize(18);
+            if (isDark) pdf.setTextColor(255, 255, 255);
+            else if (isSolar) pdf.setTextColor(11, 48, 23);
+            else pdf.setTextColor(11, 48, 23);
+            const lines = pdf.splitTextToSize(el.innerText.trim(), box.w > 40 ? box.w : 500);
+            pdf.text(lines, box.x, box.y + 18);
+          });
+
+          // 9. BOTÕES DE AÇÃO (.BTN-WHITE, .BTN-GREEN-CTA, .BTN)
+          const actionButtons = Array.from(slide.querySelectorAll('button, .btn, .btn-white, .btn-green-cta, .cta-btn'));
+          actionButtons.forEach(btnEl => {
+            if (handledElements.has(btnEl) || btnEl.offsetWidth <= 0 || !btnEl.innerText.trim()) return;
+            handledElements.add(btnEl);
+            btnEl.querySelectorAll('*').forEach(c => handledElements.add(c));
+            const box = getPixelBox(btnEl, slideRect);
+            const isSolar = btnEl.classList.contains('btn-green-cta');
+            const isWhite = btnEl.classList.contains('btn-white');
+
+            if (isSolar) {
+              pdf.setFillColor(11, 48, 23); // #0B3017
+              pdf.setTextColor(255, 255, 255);
+            } else if (isWhite) {
+              pdf.setFillColor(255, 255, 255);
+              pdf.setTextColor(11, 48, 23);
+            } else {
+              pdf.setFillColor(33, 150, 71); // #219647
+              pdf.setTextColor(255, 255, 255);
+            }
+
+            pdf.roundedRect(box.x, box.y, box.w, box.h, 6, 6, 'F');
+            pdf.setFont('helvetica', 'bold');
+            pdf.setFontSize(13);
+            pdf.text(btnEl.innerText.trim(), box.x + (box.w / 2), box.y + (box.h / 2) + 4, { align: 'center' });
+          });
+
+          // 10. PARÁGRAFOS E TEXTOS DESCRITIVOS (P, .CARD-DESC, .KPI-PROGRESS-TEXT)
+          const paragraphs = Array.from(slide.querySelectorAll('p, .card-desc, .kpi-progress-text'));
+          paragraphs.forEach(el => {
+            if (handledElements.has(el) || el.offsetWidth <= 0 || !el.innerText.trim()) return;
+            handledElements.add(el);
+            const box = getPixelBox(el, slideRect);
+            const isDark = el.closest('.card-elevated-green') !== null;
+            const isSolar = el.closest('.card-solar-cta') !== null;
+            const isProgressText = el.classList.contains('kpi-progress-text');
+
+            pdf.setFont('helvetica', 'normal');
+            pdf.setFontSize(isProgressText ? 12 : 15);
+            if (isDark) pdf.setTextColor(235, 245, 238);
+            else if (isSolar) pdf.setTextColor(61, 55, 0);
+            else pdf.setTextColor(75, 85, 99);
+
+            const lines = pdf.splitTextToSize(el.innerText.trim(), box.w > 30 ? box.w : 500);
+            pdf.text(lines, box.x, box.y + (isProgressText ? 11 : 14));
+          });
+
+          // 11. LISTAS (UL, OL COM BULLETS)
+          const lists = Array.from(slide.querySelectorAll('ul, ol'));
+          lists.forEach(list => {
+            if (handledElements.has(list) || list.offsetWidth <= 0) return;
+            handledElements.add(list);
+            const items = Array.from(list.querySelectorAll('li'));
+            if (items.length === 0) return;
+            const isDark = list.closest('.card-elevated-green') !== null;
+            pdf.setFont('helvetica', 'normal');
+            pdf.setFontSize(14);
+            if (isDark) pdf.setTextColor(235, 245, 238);
+            else pdf.setTextColor(75, 85, 99);
+
+            let curY = getPixelBox(list, slideRect).y + 14;
+            items.forEach(li => {
+              handledElements.add(li);
+              const text = '• ' + li.innerText.trim();
+              const lines = pdf.splitTextToSize(text, getPixelBox(list, slideRect).w);
+              pdf.text(lines, getPixelBox(list, slideRect).x, curY);
+              curY += (lines.length * 20);
+            });
+          });
+
+          // 12. TABELAS NATIVAS EDITÁVEIS
+          const tables = Array.from(slide.querySelectorAll('table'));
+          tables.forEach(table => {
+            handledElements.add(table);
+            table.querySelectorAll('*').forEach(c => handledElements.add(c));
+            const box = getPixelBox(table, slideRect);
+            const trs = Array.from(table.querySelectorAll('tr'));
+            if (trs.length === 0) return;
+            let rowY = box.y;
+            const rowH = box.h / trs.length;
+
+            trs.forEach((tr, rIdx) => {
+              const isHeader = tr.querySelector('th') !== null || rIdx === 0;
+              const cells = Array.from(tr.querySelectorAll('th, td'));
+              if (cells.length === 0) return;
+              let cellX = box.x;
+              const cellW = box.w / cells.length;
+
+              cells.forEach(cell => {
+                if (isHeader) {
+                  pdf.setFillColor(11, 48, 23); // #0B3017
+                  pdf.setDrawColor(21, 84, 42);
+                } else {
+                  pdf.setFillColor(rIdx % 2 === 0 ? 249 : 255, rIdx % 2 === 0 ? 251 : 255, rIdx % 2 === 0 ? 249 : 255);
+                  pdf.setDrawColor(229, 231, 235);
+                }
+                pdf.setLineWidth(1);
+                pdf.rect(cellX, rowY, cellW, rowH, 'FD');
+
+                pdf.setFont('helvetica', isHeader ? 'bold' : 'normal');
+                pdf.setFontSize(isHeader ? 12 : 11);
+                if (isHeader) pdf.setTextColor(255, 255, 255);
+                else pdf.setTextColor(13, 23, 17);
+
+                const align = cell.style.textAlign || 'left';
+                const txt = cell.innerText.trim();
+                let textX = cellX + 12;
+                if (align === 'right') textX = cellX + cellW - 12;
+                else if (align === 'center') textX = cellX + (cellW / 2);
+
+                pdf.text(txt, textX, rowY + (rowH / 2) + 4, { align: align });
+                cellX += cellW;
+              });
+              rowY += rowH;
+            });
+          });
+
+          // 13. RODAPÉS INSTITUCIONAIS
+          const footers = Array.from(slide.querySelectorAll('.slide-footer span, .slide-footer div'));
+          footers.forEach(el => {
+            if (handledElements.has(el) || el.offsetWidth <= 0 || !el.innerText.trim()) return;
+            handledElements.add(el);
+            const box = getPixelBox(el, slideRect);
+            pdf.setFont('helvetica', 'normal');
+            pdf.setFontSize(12);
+            pdf.setTextColor(107, 114, 128); // #6B7280
+            pdf.text(el.innerText.trim(), box.x, box.y + 12);
+          });
+
+          // 14. TEXTOS RESIDUAIS / METADADOS DE CAPA
+          const otherTexts = Array.from(slide.querySelectorAll('span, strong, b, em, label, small'));
+          otherTexts.forEach(el => {
+            if (handledElements.has(el) || el.offsetWidth <= 0 || !el.innerText.trim()) return;
+            let parent = el.parentElement;
+            let ancestorHandled = false;
+            while (parent && parent !== slide) {
+              if (handledElements.has(parent)) { ancestorHandled = true; break; }
+              parent = parent.parentElement;
+            }
+            if (ancestorHandled) return;
+
+            handledElements.add(el);
+            const box = getPixelBox(el, slideRect);
+            const isDark = el.closest('.card-elevated-green') !== null;
+            pdf.setFont('helvetica', (el.tagName === 'STRONG' || el.tagName === 'B') ? 'bold' : 'normal');
+            pdf.setFontSize(13);
+            if (isDark) pdf.setTextColor(235, 245, 238);
+            else pdf.setTextColor(75, 85, 99);
+            const lines = pdf.splitTextToSize(el.innerText.trim(), box.w > 30 ? box.w : 400);
+            pdf.text(lines, box.x, box.y + 12);
+          });
+
         } catch (captureErr) {
-          console.error(`Erro na captura do slide ${i + 1} para PDF:`, captureErr);
+          console.error(`Erro na composição em vetor do slide ${i + 1} para PDF:`, captureErr);
         } finally {
           slide.style.removeProperty('display');
           slide.style.removeProperty('visibility');
@@ -856,8 +1197,6 @@
           slide.style.removeProperty('width');
           slide.style.removeProperty('height');
           slide.style.removeProperty('z-index');
-          slide.style.removeProperty('background-image');
-          slide.style.removeProperty('background-color');
           if (!prevActive) slide.classList.remove('active');
         }
       }
@@ -870,6 +1209,7 @@
         .replace(/[^a-zA-Z0-9À-ÿ_-]/g, '_')
         .substring(0, 35);
       pdf.save(`${cleanTitle}.pdf`);
+      return pdf;
 
     } catch (err) {
       console.error('Falha na conversão para PDF:', err);
