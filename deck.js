@@ -290,27 +290,20 @@
         }
 
         // Prepara slide temporariamente para medições exatas em 1920x1080
-        const prevDisplay = slide.style.display;
-        const prevVisibility = slide.style.visibility;
-        const prevTransform = slide.style.transform;
-        const prevOpacity = slide.style.opacity;
-        const prevZIndex = slide.style.zIndex;
-        const prevPosition = slide.style.position;
-        const prevTop = slide.style.top;
-        const prevLeft = slide.style.left;
-        const prevWidth = slide.style.width;
-        const prevHeight = slide.style.height;
+        const prevActive = slide.classList.contains('active');
+        slides.forEach(s => s.classList.remove('active'));
+        slide.classList.add('active');
 
-        slide.style.display = 'flex';
-        slide.style.visibility = 'visible';
-        slide.style.opacity = '1';
-        slide.style.transform = 'none';
-        slide.style.position = 'fixed';
-        slide.style.top = '0';
-        slide.style.left = '0';
-        slide.style.width = '1920px';
-        slide.style.height = '1080px';
-        slide.style.zIndex = '99999';
+        slide.style.setProperty('display', 'flex', 'important');
+        slide.style.setProperty('visibility', 'visible', 'important');
+        slide.style.setProperty('opacity', '1', 'important');
+        slide.style.setProperty('transform', 'none', 'important');
+        slide.style.setProperty('position', 'fixed', 'important');
+        slide.style.setProperty('top', '0', 'important');
+        slide.style.setProperty('left', '0', 'important');
+        slide.style.setProperty('width', '1920px', 'important');
+        slide.style.setProperty('height', '1080px', 'important');
+        slide.style.setProperty('z-index', '99999', 'important');
 
         try {
           const slideRect = slide.getBoundingClientRect();
@@ -706,16 +699,17 @@
         } catch (captureErr) {
           console.warn(`Erro na exportação em camadas do slide ${i + 1}:`, captureErr);
         } finally {
-          slide.style.display = prevDisplay;
-          slide.style.visibility = prevVisibility;
-          slide.style.transform = prevTransform;
-          slide.style.opacity = prevOpacity;
-          slide.style.zIndex = prevZIndex;
-          slide.style.position = prevPosition;
-          slide.style.top = prevTop;
-          slide.style.left = prevLeft;
-          slide.style.width = prevWidth;
-          slide.style.height = prevHeight;
+          slide.style.removeProperty('display');
+          slide.style.removeProperty('visibility');
+          slide.style.removeProperty('opacity');
+          slide.style.removeProperty('transform');
+          slide.style.removeProperty('position');
+          slide.style.removeProperty('top');
+          slide.style.removeProperty('left');
+          slide.style.removeProperty('width');
+          slide.style.removeProperty('height');
+          slide.style.removeProperty('z-index');
+          if (!prevActive) slide.classList.remove('active');
         }
       }
 
@@ -794,58 +788,77 @@
           pdf.addImage(ASSETS.bgConteudo, 'PNG', 0, 0, 1920, 1080, undefined, 'FAST');
         }
 
-        // 2. Prepara o slide para captura transparente via html2canvas (removendo fundo externo para evitar taint)
-        const prevDisplay = slide.style.display;
-        const prevVisibility = slide.style.visibility;
-        const prevTransform = slide.style.transform;
-        const prevOpacity = slide.style.opacity;
-        const prevZIndex = slide.style.zIndex;
-        const prevPosition = slide.style.position;
-        const prevTop = slide.style.top;
-        const prevLeft = slide.style.left;
-        const prevWidth = slide.style.width;
-        const prevHeight = slide.style.height;
-        const prevBgImg = slide.style.backgroundImage;
+        // 2. Prepara o slide para captura transparente via html2canvas
+        const prevActive = slide.classList.contains('active');
+        slides.forEach(s => s.classList.remove('active'));
+        slide.classList.add('active');
 
-        slide.style.display = 'flex';
-        slide.style.visibility = 'visible';
-        slide.style.opacity = '1';
-        slide.style.transform = 'none';
-        slide.style.position = 'fixed';
-        slide.style.top = '0';
-        slide.style.left = '0';
-        slide.style.width = '1920px';
-        slide.style.height = '1080px';
-        slide.style.zIndex = '99999';
-        slide.style.backgroundImage = 'none';
+        slide.style.setProperty('display', 'flex', 'important');
+        slide.style.setProperty('visibility', 'visible', 'important');
+        slide.style.setProperty('opacity', '1', 'important');
+        slide.style.setProperty('transform', 'none', 'important');
+        slide.style.setProperty('position', 'fixed', 'important');
+        slide.style.setProperty('top', '0', 'important');
+        slide.style.setProperty('left', '0', 'important');
+        slide.style.setProperty('width', '1920px', 'important');
+        slide.style.setProperty('height', '1080px', 'important');
+        slide.style.setProperty('z-index', '99999', 'important');
+        slide.style.setProperty('background-image', 'none', 'important');
+        slide.style.setProperty('background-color', 'transparent', 'important');
 
         try {
-          const canvas = await html2canvas(slide, {
+          const canvas = await window.html2canvas(slide, {
             width: 1920,
             height: 1080,
             scale: 1,
             useCORS: false,
             allowTaint: false,
-            logging: false,
-            backgroundColor: null // Canvas transparente imune a CORS
+            logging: true,
+            backgroundColor: null,
+            onclone: (clonedDoc) => {
+              const cs = clonedDoc.querySelectorAll('.slide');
+              cs.forEach(s => {
+                s.style.setProperty('background-image', 'none', 'important');
+                s.style.setProperty('background-color', 'transparent', 'important');
+                s.style.setProperty('box-shadow', 'none', 'important');
+              });
+              const target = clonedDoc.getElementById(slide.id) || clonedDoc.querySelectorAll('.slide')[i];
+              if (target) {
+                target.classList.add('active');
+                target.style.setProperty('display', 'flex', 'important');
+                target.style.setProperty('visibility', 'visible', 'important');
+                target.style.setProperty('opacity', '1', 'important');
+                target.style.setProperty('transform', 'none', 'important');
+                target.style.setProperty('position', 'relative', 'important');
+                target.style.setProperty('top', '0', 'important');
+                target.style.setProperty('left', '0', 'important');
+                target.style.setProperty('width', '1920px', 'important');
+                target.style.setProperty('height', '1080px', 'important');
+                target.style.setProperty('background-image', 'none', 'important');
+                target.style.setProperty('background-color', 'transparent', 'important');
+              }
+            }
           });
 
+          console.log(`[PDF] Slide ${i + 1} capturado com sucesso! Canvas: ${canvas.width}x${canvas.height}`);
           const imgData = canvas.toDataURL('image/png');
           pdf.addImage(imgData, 'PNG', 0, 0, 1920, 1080, undefined, 'FAST');
         } catch (captureErr) {
-          console.warn(`Erro na captura do slide ${i + 1} para PDF:`, captureErr);
+          console.error(`Erro na captura do slide ${i + 1} para PDF:`, captureErr);
         } finally {
-          slide.style.display = prevDisplay;
-          slide.style.visibility = prevVisibility;
-          slide.style.transform = prevTransform;
-          slide.style.opacity = prevOpacity;
-          slide.style.zIndex = prevZIndex;
-          slide.style.position = prevPosition;
-          slide.style.top = prevTop;
-          slide.style.left = prevLeft;
-          slide.style.width = prevWidth;
-          slide.style.height = prevHeight;
-          slide.style.backgroundImage = prevBgImg;
+          slide.style.removeProperty('display');
+          slide.style.removeProperty('visibility');
+          slide.style.removeProperty('opacity');
+          slide.style.removeProperty('transform');
+          slide.style.removeProperty('position');
+          slide.style.removeProperty('top');
+          slide.style.removeProperty('left');
+          slide.style.removeProperty('width');
+          slide.style.removeProperty('height');
+          slide.style.removeProperty('z-index');
+          slide.style.removeProperty('background-image');
+          slide.style.removeProperty('background-color');
+          if (!prevActive) slide.classList.remove('active');
         }
       }
 
