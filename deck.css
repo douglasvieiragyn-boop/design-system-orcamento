@@ -2,7 +2,7 @@
    DESIGN SYSTEM ORÇAMENTO — MOTOR DE APRESENTAÇÕES INSTITUCIONAIS
    Governo do Estado de Goiás — Secretaria da Economia
    Arquivo: deck.css (Imutável / Produção)
-   Versão: 3.4.4 — Blindagem de Topbar, Badge Superior & Rótulos com Escudo Anti-Sobreposição
+   Versão: 3.4.6 — Padronização Oficial de Badges (Sage, Pine, Lime) & Expurgamento de Emerald
    ========================================================================== */
 
 * {
@@ -431,13 +431,79 @@ body > :not(.deck-viewport):not(.deck-controls):not(script):not(style) {
   font-weight: 700;
   flex-shrink: 0;
 }
-.kpi-tag-success {
-  background: rgba(16, 185, 129, 0.12);
-  color: #047857;
-  font-size: 0.82rem;
+/* ==========================================================================
+   BADGES & STATUS PILLS OFICIAIS DO DESIGN SYSTEM ORÇAMENTO
+   ========================================================================== */
+.badge {
+  font-size: 0.74rem;
   font-weight: 700;
   padding: 4px 12px;
-  border-radius: 999px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1.2;
+  letter-spacing: normal;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex: none;
+}
+.badge-sage {
+  background: var(--sage-bg);
+  color: var(--green-700);
+  border: 1px solid rgba(33, 150, 71, 0.16);
+}
+.badge-pine {
+  background: var(--green-500);
+  color: #ffffff;
+  border: 1px solid var(--green-500);
+}
+.badge-lime {
+  background: var(--yellow-500);
+  color: var(--green-800);
+  border: none;
+  font-weight: 700;
+}
+.badge-glass {
+  background: rgba(255, 255, 255, 0.80);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(33, 150, 71, 0.18);
+  color: var(--green-700);
+}
+.badge-neutral {
+  background: rgba(20, 48, 42, 0.06);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+}
+.badge-warning {
+  background: rgba(245, 158, 11, 0.12);
+  color: #b45309;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+.badge-error {
+  background: rgba(225, 29, 72, 0.12);
+  color: #be123c;
+  border: 1px solid rgba(225, 29, 72, 0.25);
+}
+
+/* Compatibilidade retroativa para tags antigas geradas como kpi-tag-success */
+.kpi-tag-success {
+  background: var(--sage-bg) !important;
+  color: var(--green-700) !important;
+  border: 1px solid rgba(33, 150, 71, 0.16) !important;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1.2;
 }
 .kpi-val {
   font-size: 2.2rem;

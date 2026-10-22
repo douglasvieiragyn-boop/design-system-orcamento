@@ -3,7 +3,7 @@
  * DESIGN SYSTEM ORÇAMENTO — RUNTIME ENGINE DE APRESENTAÇÕES INSTITUCIONAIS
  * Governo do Estado de Goiás — Secretaria da Economia
  * Arquivo: deck.js (Imutável / Produção)
- * Versão: 3.4.5 — Legendas Circulares (pointStyle circle), Rótulos Numéricos (+30%) & Escudo Anti-Sobreposição
+ * Versão: 3.4.6 — Padronização Oficial de Badges (Sage, Pine, Lime) & Expurgamento de Emerald
  * ==========================================================================
  */
 

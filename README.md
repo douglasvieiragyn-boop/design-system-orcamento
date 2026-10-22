@@ -57,7 +57,7 @@ Elimina a frieza de cinzas sintéticos padrão por meio de uma matriz mineral co
 ### 2.5 Acentos Semânticos de Gestão Pública
 | Papel Semântico | Cor Sólida | Tint / Alpha | Aplicação no Orçamento |
 | :--- | :--- | :--- | :--- |
-| **Superávit / Receitas** | `#10b981` | `rgba(16, 185, 129, 0.10)` | Arrecadação dentro da meta, superávit apurado, contas aprovadas |
+| **Superávit / Regularidade** | `#219647` / `#ebf5ee` | `rgba(33, 150, 71, 0.12)` | Arrecadação dentro da meta, superávit apurado, contas aprovadas |
 | **Alerta / LRF** | `#f59e0b` | `rgba(245, 158, 11, 0.10)` | Limite prudencial de pessoal (LRF), prazos de empenho |
 | **Déficit / Bloqueio** | `#f43f5e` | `rgba(244, 63, 94, 0.09)` | Anulação de empenho, glosa contratual, estouro orçamentário |
 | **Investimentos / PPA** | `#0284c7` | `rgba(2, 132, 199, 0.10)` | Projetos estruturantes, obras públicas, convênios |

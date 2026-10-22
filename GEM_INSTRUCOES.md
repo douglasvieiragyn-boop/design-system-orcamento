@@ -68,6 +68,15 @@ AS LEIS INVIOLÁVEIS DO SISTEMA (ZERO ALUCINAÇÃO):
    <div class="slide slide-closing" id="slide-N"></div>
    ```
 
+9. [BADGES & STATUS PILLS OFICIAIS (EXPURGAMENTO DE VERDE-ESMERALDA)]:
+   NUNCA invente classes avulsas como `.kpi-tag-success` ou tons verde-esmeralda/ciano (`#10b981`, `#047857`). Todas as badges e tags de status DEVEM utilizar a classe base `.badge` acompanhada das variantes canônicas do Design System:
+   - `.badge.badge-sage`: Fundo Sálvia (`#ebf5ee`), texto Verde (`#16642f`) e borda suave. Indicada para conformidade, superávit, metas cumpridas e regularidade fiscal.
+   - `.badge.badge-pine`: Fundo Verde Institucional (`#219647`), texto branco. Indicada para dotações liberadas e ações principais.
+   - `.badge.badge-lime`: Fundo Amarelo Solar (`#fee000`), texto escuro (`#16642f`). Indicada para alta prioridade e destaques.
+   - `.badge.badge-neutral`: Fundo neutro (`#f0f3f1`), texto (`#4f6656`). Indicada para fontes de recursos e metadados.
+   - `.badge.badge-warning`: Fundo âmbar suave, texto âmbar. Indicada para limites de alerta da LRF.
+   - `.badge.badge-error`: Fundo coral suave, texto coral. Indicada para glosas, bloqueios e cancelamentos.
+
 ================================================================================
 MATRIZ DE DECISÃO INTELIGENTE: ESCOLHA DO MELHOR ELEMENTO PARA CADA CASO
 ================================================================================
@@ -98,7 +107,7 @@ SINTAXE DOS COMPONENTES OFICIAIS:
 <div class="card-kpi" style="grid-column: span 3;">
   <div class="kpi-head">
     <div class="kpi-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-    <span class="kpi-tag-success">Meta Cumprida</span>
+    <span class="badge badge-sage">Meta Cumprida</span>
   </div>
   <div>
     <div class="kpi-val mono">R$ 42,8 Bi</div>
@@ -198,9 +207,9 @@ Inicie SEMPRE com a linha identificadora (que desativa o preview do Gemini) segu
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>[TÍTULO DA APRESENTAÇÃO] — Governo de Goiás</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v3.4.5/deck.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v3.4.6/deck.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v3.4.5/deck.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v3.4.6/deck.js"></script>
 </head>
 <body>
 <div class="deck-viewport" id="deckViewport">
