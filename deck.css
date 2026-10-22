@@ -2,6 +2,7 @@
    DESIGN SYSTEM ORÇAMENTO — MOTOR DE APRESENTAÇÕES INSTITUCIONAIS
    Governo do Estado de Goiás — Secretaria da Economia
    Arquivo: deck.css (Imutável / Produção)
+   Versão: 3.0 — Capa Oficial Widescreen com Safe Area Ancorada à Base
    ========================================================================== */
 
 * {
@@ -87,15 +88,126 @@ body > :not(.deck-viewport):not(.deck-controls):not(script):not(style) {
    FUNDOS FIXOS & SAFE AREAS IMUTÁVEIS (À PROVA DE ERRO DE PADDING)
    ========================================================================== */
 
-/* 1. Capa Oficial (Espaço reservado para capa.png com fallback em capa.svg e gradiente mineral) */
+/* 1. Capa Oficial (Arte Oficial 1920x1080 com Safe Area Exclusiva 622x754px Ancorada à Base) */
 .slide-cover {
-  background-color: #f2f6f3 !important;
-  background-image: url('https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@main/apresentacao/capa.png'), url('https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@main/apresentacao/capa.svg'), linear-gradient(135deg, #f9fbf9 0%, #f2f6f3 50%, #ebf5ee 100%) !important;
-  background-size: cover, cover, auto !important;
-  background-position: center !important;
+  background-color: var(--green-500) !important;
+  background-image: url('https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@main/apresentacao/capa.png') !important;
+  background-size: 100% 100% !important;
+  background-position: center center !important;
   background-repeat: no-repeat !important;
-  border-top: 14px solid var(--green-500) !important;
-  padding: 100px 120px 80px 120px !important;
+  border-top: none !important;
+  padding: 0 !important;
+  position: relative !important;
+}
+
+/* Blindagem da Safe Area de Títulos da Capa (Delimitada via ref_texto_capa.png: x=80px, w=622px, y=246px a 1000px, bottom=80px) */
+.slide-cover-content,
+.slide-cover > div:first-child {
+  position: absolute !important;
+  left: 80px !important;
+  bottom: 80px !important;
+  width: 622px !important;
+  max-width: 622px !important;
+  height: 754px !important;
+  max-height: 754px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-end !important;
+  box-sizing: border-box !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden;
+  z-index: 2 !important;
+}
+
+/* Oculta barras de topo e rodapé comuns se forem inseridas por engano na capa */
+.slide-cover .slide-topbar,
+.slide-cover .slide-footer {
+  display: none !important;
+}
+
+/* Tipografia de Alto Contraste da Capa Oficial (Fundo Verde Institucional) */
+.slide-cover .slide-breadcrumb {
+  color: var(--yellow-500) !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  margin-bottom: 14px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.slide-cover h1,
+.slide-cover .slide-title {
+  color: #ffffff !important;
+  font-size: 3.2rem !important;
+  font-weight: 600 !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.02em !important;
+  margin: 0 0 16px 0 !important;
+}
+
+.slide-cover p,
+.slide-cover .slide-subtitle {
+  color: rgba(255, 255, 255, 0.92) !important;
+  font-size: 1.25rem !important;
+  line-height: 1.5 !important;
+  font-weight: 400 !important;
+  margin: 0 0 24px 0 !important;
+}
+
+.slide-cover .cover-meta,
+.slide-cover .slide-cover-meta {
+  display: flex !important;
+  gap: 32px !important;
+  padding-top: 20px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.25) !important;
+  align-items: center !important;
+}
+
+.slide-cover .cover-meta-label {
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  color: rgba(255, 255, 255, 0.75) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+}
+
+.slide-cover .cover-meta-val {
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+}
+
+.slide-cover .badge-siafic {
+  background: var(--yellow-500) !important;
+  color: var(--text-primary) !important;
+  font-weight: 700 !important;
+  font-size: 0.8rem !important;
+  padding: 6px 14px !important;
+  border-radius: 6px !important;
+  letter-spacing: 0.04em !important;
+  display: inline-block !important;
+}
+
+/* Proteção contra herança de variáveis escuras geradas com inline styles antigos */
+.slide-cover [style*="color:var(--text-primary)"],
+.slide-cover [style*="color: var(--text-primary)"] {
+  color: #ffffff !important;
+}
+.slide-cover [style*="color:var(--text-secondary)"],
+.slide-cover [style*="color: var(--text-secondary)"] {
+  color: rgba(255, 255, 255, 0.92) !important;
+}
+.slide-cover [style*="color:var(--text-muted)"],
+.slide-cover [style*="color: var(--text-muted)"] {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+.slide-cover [style*="border-top:1px solid var(--border-subtle)"],
+.slide-cover [style*="border-top: 1px solid var(--border-subtle)"] {
+  border-top-color: rgba(255, 255, 255, 0.25) !important;
 }
 
 /* 2. Conteúdo Oficial (Protege 100% a barra verde e logo da imagem 4K) */

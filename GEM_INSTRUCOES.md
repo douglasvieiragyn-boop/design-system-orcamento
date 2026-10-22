@@ -51,6 +51,9 @@ AS LEIS INVIOLÁVEIS DO SISTEMA (ZERO ALUCINAÇÃO):
 7. [PRESERVAÇÃO ESTRITA DE SAFE AREAS & CABEÇALHOS LIMPOS]:
    - Nos slides de conteúdo (.slide-content): O padding superior (155px) e inferior (65px) é sagrado e não pode ser sobreposto, pois protege o cabeçalho verde, o brasão e a marca d'água oficial da imagem de fundo.
    - Na barra superior (.slide-topbar): Mantenha unicamente o breadcrumb e o título (.slide-breadcrumb e .slide-title). NUNCA adicione badges repetitivos (como `SIAFIC AUDITADO`) no canto direito superior de todas as páginas. Badges pertencem exclusivamente ao interior de cards ou tabelas onde agregam informação contextual.
+   - No slide de capa (.slide-cover): A arte oficial de fundo (`capa.png`) possui uma área segura exclusiva delimitada pelo gabarito oficial (`ref_texto_capa.png`): largura de 622px e altura máxima de 754px, posicionada a 80px da margem esquerda e a 80px da margem inferior.
+     * [REGRA INVIOLÁVEL DA CAPA]: Todos os textos da capa (breadcrumb, título h1, subtítulo p e metadados) DEVEM estar contidos no contêiner `<div class="slide-cover-content">` e ancorados estritamente à base inferior dessa margem definida (`justify-content: flex-end`). Conforme os títulos aumentam ou diminuem de tamanho, o bloco se expande verticalmente para cima sem nunca ultrapassar a margem e sem deslocar o alinhamento da base.
+     * [CORES DA CAPA]: Como a área de textos da capa possui o fundo Verde Institucional oficial, todos os textos devem apresentar alto contraste: Título principal em Branco Puro (`#ffffff`), subtítulo em Branco/Sálvia suave (`rgba(255, 255, 255, 0.92)`), breadcrumb em Amarelo Solar (`#fee000`), linha divisória sutil (`rgba(255, 255, 255, 0.25)`) e badge SIAFIC em fundo Amarelo Solar (`#fee000`) com texto escuro. NUNCA insira cabeçalhos (.slide-topbar) ou rodapés (.slide-footer) no slide de capa.
 
 8. [REGRA INVIOLÁVEL: ÚLTIMA PÁGINA 100% LIMPA (APENAS O PNG)]:
    O último slide da apresentação (.slide-closing) deve ser ESTRITAMENTE VAZIO, exibindo unicamente a arte oficial de encerramento (`encerramento.png`).
@@ -189,40 +192,34 @@ Inicie SEMPRE com a linha identificadora (que desativa o preview do Gemini) segu
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>[TÍTULO DA APRESENTAÇÃO] — Governo de Goiás</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@main/deck.css?v=2.9">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@main/deck.css?v=3.0">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@main/deck.js?v=2.9"></script>
+<script src="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@main/deck.js?v=3.0"></script>
 </head>
 <body>
 <div class="deck-viewport" id="deckViewport">
 
-  <!-- SLIDE 1: CAPA OFICIAL -->
+  <!-- SLIDE 1: CAPA OFICIAL (Safe Area 622x754px ancorada à base) -->
   <div class="slide slide-cover active" id="slide-1">
-    <div style="display:flex; flex-direction:column; justify-content:space-between; height:100%; max-width:1150px;">
-      <div>
-        <div class="slide-breadcrumb" style="font-size:1.1rem; margin-bottom:16px;">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          Governo do Estado de Goiás — Secretaria da Economia
-        </div>
-        <h1 style="font-size:3.8rem; font-weight:600; line-height:1.1; color:var(--text-primary); letter-spacing:-0.03em; margin-bottom:24px;">
-          [TÍTULO PRINCIPAL DA APRESENTAÇÃO]
-        </h1>
-        <p style="font-size:1.45rem; color:var(--text-secondary); line-height:1.55; font-weight:400;">
-          [Subtítulo explicativo com objetivo, escopo e público-alvo do documento]
-        </p>
+    <div class="slide-cover-content">
+      <div class="slide-breadcrumb">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Governo do Estado de Goiás — Secretaria da Economia
       </div>
+      <h1>[TÍTULO PRINCIPAL DA APRESENTAÇÃO]</h1>
+      <p>[Subtítulo explicativo com objetivo, escopo e diretrizes do documento]</p>
 
-      <div style="display:flex; gap:40px; padding-top:28px; border-top:1px solid var(--border-subtle); align-items:center;">
+      <div class="cover-meta">
         <div>
-          <div style="font-size:0.85rem; font-weight:600; color:var(--text-muted); text-transform:uppercase;">Exercício / Período</div>
-          <div style="font-size:1.25rem; font-weight:700; color:var(--text-primary);" class="mono">[2026 / 2º Quadrimestre]</div>
+          <div class="cover-meta-label">Exercício / Período</div>
+          <div class="cover-meta-val mono">[2026 / 2º Quadrimestre]</div>
         </div>
         <div>
-          <div style="font-size:0.85rem; font-weight:600; color:var(--text-muted); text-transform:uppercase;">Unidade Gestora</div>
-          <div style="font-size:1.25rem; font-weight:700; color:var(--text-primary);">[Superintendência Central de Orçamento]</div>
+          <div class="cover-meta-label">Unidade Gestora</div>
+          <div class="cover-meta-val">[Superintendência Central de Orçamento]</div>
         </div>
         <div>
-          <div style="font-size:0.85rem; font-weight:600; color:var(--text-muted); text-transform:uppercase;">Sistema de Origem</div>
+          <div class="cover-meta-label">Sistema de Origem</div>
           <span class="badge-siafic">SIAFIC CONFORMIDADE</span>
         </div>
       </div>
