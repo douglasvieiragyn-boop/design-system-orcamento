@@ -3,7 +3,7 @@
  * DESIGN SYSTEM ORÇAMENTO — RUNTIME ENGINE DE APRESENTAÇÕES INSTITUCIONAIS
  * Governo do Estado de Goiás — Secretaria da Economia
  * Arquivo: deck.js (Imutável / Produção)
- * Versão: 3.4.6 — Padronização Oficial de Badges (Sage, Pine, Lime) & Expurgamento de Emerald
+ * Versão: 3.4.7 — Controles do Apresentador Compactos & Invisíveis com Auto-Hide Hover
  * ==========================================================================
  */
 
@@ -397,6 +397,7 @@
 
     const indicator = document.getElementById('slideIndicator');
     if (indicator) indicator.innerText = `Slide ${currentSlide} / ${totalSlides}`;
+    pingControls(1500);
 
     autoScale();
 
@@ -444,7 +445,20 @@
     }
   }
 
-  // 5. INJEÇÃO AUTOMÁTICA DOS CONTROLES DO APRESENTADOR
+  let _controlsHideTimer = null;
+  function pingControls(ms = 2200) {
+    const controls = document.querySelector('.deck-controls');
+    if (!controls) return;
+    controls.classList.add('visible');
+    clearTimeout(_controlsHideTimer);
+    _controlsHideTimer = setTimeout(() => {
+      if (!controls.matches(':hover')) {
+        controls.classList.remove('visible');
+      }
+    }, ms);
+  }
+
+  // 5. INJEÇÃO AUTOMÁTICA DOS CONTROLES DO APRESENTADOR (COMPACTO & AUTO-HIDE HOVER)
   function ensureControls() {
     if (!document.body) {
       setTimeout(ensureControls, 30);
@@ -456,7 +470,7 @@
       controls.className = 'deck-controls';
       controls.innerHTML = `
         <button id="btnPrev">← Anterior</button>
-        <span id="slideIndicator" style="padding-inline: 8px;">Slide 1 / ${totalSlides}</span>
+        <span id="slideIndicator">Slide 1 / ${totalSlides}</span>
         <button id="btnNext">Próximo →</button>
         <button class="btn-sec btn-solar" id="btnFS">F11 Tela Cheia</button>
         <button class="btn-sec" id="btnPDF" title="Salvar Apresentação em PDF (Ctrl + P)">Exportar PDF</button>
@@ -467,6 +481,26 @@
       document.getElementById('btnNext').addEventListener('click', nextSlide);
       document.getElementById('btnFS').addEventListener('click', toggleFullScreen);
       document.getElementById('btnPDF').addEventListener('click', exportPDF);
+
+      // Mousemove: revela suavemente ao aproximar o cursor dos 80px inferiores da tela
+      window.addEventListener('mousemove', (e) => {
+        if (window.innerHeight - e.clientY <= 80) {
+          pingControls(2200);
+        } else if (!controls.matches(':hover')) {
+          controls.classList.remove('visible');
+        }
+      });
+
+      controls.addEventListener('mouseenter', () => {
+        controls.classList.add('visible');
+        clearTimeout(_controlsHideTimer);
+      });
+
+      controls.addEventListener('mouseleave', () => {
+        _controlsHideTimer = setTimeout(() => {
+          controls.classList.remove('visible');
+        }, 500);
+      });
     }
   }
 

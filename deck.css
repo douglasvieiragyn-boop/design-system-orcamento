@@ -2,7 +2,7 @@
    DESIGN SYSTEM ORÇAMENTO — MOTOR DE APRESENTAÇÕES INSTITUCIONAIS
    Governo do Estado de Goiás — Secretaria da Economia
    Arquivo: deck.css (Imutável / Produção)
-   Versão: 3.4.6 — Padronização Oficial de Badges (Sage, Pine, Lime) & Expurgamento de Emerald
+   Versão: 3.4.7 — Controles do Apresentador Compactos & Invisíveis com Auto-Hide Hover
    ========================================================================== */
 
 * {
@@ -687,41 +687,70 @@ body > :not(.deck-viewport):not(.deck-controls):not(script):not(style) {
 }
 
 /* ==========================================================================
-   CONTROLES FLUTUANTES DO APRESENTADOR
+   CONTROLES FLUTUANTES DO APRESENTADOR (COMPACTO & AUTO-HIDE HOVER)
    ========================================================================== */
 .deck-controls {
   position: fixed;
-  bottom: 24px;
+  bottom: 14px;
   left: 50%;
-  transform: translateX(-50%);
-  background: rgba(13, 23, 17, 0.92);
+  transform: translateX(-50%) translateY(8px);
+  opacity: 0;
+  pointer-events: none;
+  background: rgba(13, 23, 17, 0.94);
   backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  padding: 8px 22px;
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  padding: 4px 10px;
   border-radius: 999px;
   display: flex;
-  gap: 14px;
+  gap: 6px;
   align-items: center;
   color: #ffffff;
   z-index: 9999;
-  font-size: 0.9rem;
+  font-size: 0.74rem;
   font-weight: 600;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+  transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.deck-controls::before {
+  content: '';
+  position: absolute;
+  inset: -14px -16px -10px -16px;
+  background: transparent;
+  pointer-events: auto;
+}
+.deck-controls:hover,
+.deck-controls.visible,
+.deck-controls:focus-within {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
 }
 .deck-controls button {
   background: var(--green-500);
   color: #ffffff;
   border: none;
-  padding: 8px 18px;
+  padding: 4px 10px;
   border-radius: 999px;
   cursor: pointer;
   font-weight: 700;
-  font-size: 0.85rem;
-  transition: background 0.2s ease;
+  font-size: 0.72rem;
+  line-height: 1.2;
+  transition: background 0.15s ease, transform 0.1s ease;
+  white-space: nowrap;
 }
 .deck-controls button:hover { background: #16642f; }
+.deck-controls button:active { transform: scale(0.97); }
 .deck-controls .btn-sec { background: rgba(255, 255, 255, 0.12); }
+.deck-controls .btn-sec:hover { background: rgba(255, 255, 255, 0.22); }
 .deck-controls .btn-solar { background: var(--yellow-500); color: var(--text-primary); }
+.deck-controls .btn-solar:hover { background: #e5ca00; }
+#slideIndicator {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0 4px;
+  white-space: nowrap;
+}
 
 /* ==========================================================================
    IMPRESSÃO PDF NATIVA PERFEITA 1:1 (CTRL + P / SALVAR COMO PDF)
