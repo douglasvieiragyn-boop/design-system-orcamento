@@ -3,7 +3,7 @@
  * DESIGN SYSTEM ORÇAMENTO — RUNTIME ENGINE DE APRESENTAÇÕES INSTITUCIONAIS
  * Governo do Estado de Goiás — Secretaria da Economia
  * Arquivo: deck.js (Imutável / Produção)
- * Versão: 3.4 — Runtime Widescreen 16:9 & Rótulos Nativos em Gráficos com Ocultação Dinâmica
+ * Versão: 3.4.1 — Badge Institucional na Faixa Verde Superior & Rótulos Nativos em Gráficos com Ocultação Dinâmica
  * ==========================================================================
  */
 
@@ -503,9 +503,37 @@
 
   window.addEventListener('resize', autoScale);
 
-  // Limpeza de eventuais elementos injetados indevidamente no slide-topbar
-  function cleanupTopbars() {
-    document.querySelectorAll('.slide-topbar .slide-header-badge').forEach(el => el.remove());
+  // 9. INJEÇÃO E SINCRONIZAÇÃO AUTOMÁTICA DO BADGE DE CABEÇALHO (TÍTULO DA APRESENTAÇÃO NA FAIXA VERDE SUPERIOR)
+  function ensureHeaderBadges() {
+    const coverTitleEl = document.querySelector('.slide-cover h1, .slide-cover .slide-title');
+    let presentationTitle = '';
+    if (coverTitleEl && coverTitleEl.innerText.trim()) {
+      presentationTitle = coverTitleEl.innerText.trim();
+    } else if (document.title) {
+      presentationTitle = document.title.split('—')[0].split('-')[0].trim();
+    }
+
+    if (!presentationTitle) return;
+
+    const contentSlides = document.querySelectorAll('.slide.slide-content, .slide:not(.slide-cover):not(.slide-closing)');
+    contentSlides.forEach(slide => {
+      if (slide.classList.contains('slide-cover') || slide.classList.contains('slide-closing')) return;
+
+      // Limpeza de badge indevido dentro do topbar
+      slide.querySelectorAll('.slide-topbar .slide-header-badge').forEach(b => b.remove());
+
+      let badge = slide.querySelector(':scope > .slide-header-badge');
+      if (!badge) {
+        badge = document.createElement('div');
+        badge.className = 'slide-header-badge';
+        badge.innerText = presentationTitle;
+        badge.title = presentationTitle;
+        slide.appendChild(badge);
+      } else if (!badge.innerText.trim()) {
+        badge.innerText = presentationTitle;
+        badge.title = presentationTitle;
+      }
+    });
   }
 
   // INICIALIZAÇÃO GERAL ROBUSTA
@@ -518,7 +546,7 @@
     registerDataLabelsPlugin();
     sanitizeEmojis();
     ensureControls();
-    cleanupTopbars();
+    ensureHeaderBadges();
     initCharts();
     updateSlides();
     setTimeout(updateSlides, 100);

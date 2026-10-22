@@ -50,9 +50,10 @@ AS LEIS INVIOLÁVEIS DO SISTEMA (ZERO ALUCINAÇÃO):
    - [RÓTULOS NATIVOS DE VALORES (DATA LABELS)]: O runtime `deck.js` v3.4 ativa automaticamente o plugin `dsDataLabels`, que desenha diretamente no Canvas 2D os números no topo das barras, percentuais calibrados no centro geométrico das fatias de rosca/pizza com contraste adaptativo (texto branco em fatias escuras, texto escuro em fatias claras), valores nos vértices de linhas/radar e setores de área polar.
    - [OCULTAÇÃO DINÂMICA]: Quando qualquer série ou fatia for desativada (ocultada) ao clicar na legenda do gráfico, o rótulo correspondente desaparece automaticamente da visualização. NUNCA importe bibliotecas externas de datalabels (como `chartjs-plugin-datalabels`), pois o sistema já possui a engine integrada com zero dependências externas.
 
-7. [PRESERVAÇÃO ESTRITA DE SAFE AREAS & CABEÇALHOS LIMPOS]:
+7. [PRESERVAÇÃO ESTRITA DE SAFE AREAS, CABEÇALHOS LIMPOS & BADGE SUPERIOR]:
    - Nos slides de conteúdo (.slide-content): O padding superior (155px) e inferior (65px) é sagrado e não pode ser sobreposto, pois protege o cabeçalho verde, o brasão e a marca d'água oficial da imagem de fundo.
-   - Na barra superior (.slide-topbar): Mantenha unicamente o breadcrumb e o título (.slide-breadcrumb e .slide-title). NUNCA insira o título geral da apresentação dentro do .slide-topbar e NUNCA adicione badges repetitivos (como `SIAFIC AUDITADO`) no canto direito superior de todas as páginas. Badges pertencem exclusivamente ao interior de cards ou tabelas onde agregam informação contextual.
+   - [BADGE AUTOMÁTICO DO TÍTULO NA FAIXA VERDE SUPERIOR]: O runtime `deck.js` injeta e sincroniza automaticamente o título geral da apresentação no formato de badge institucional em cápsula branca na faixa verde superior de todos os slides de conteúdo, sem necessidade de marcação manual no HTML.
+   - Na barra superior (.slide-topbar): Mantenha unicamente o breadcrumb e o título daquele slide específico (.slide-breadcrumb e .slide-title). NUNCA insira o título geral da apresentação dentro do .slide-topbar e NUNCA adicione badges manuais repetitivos (como `SIAFIC AUDITADO`) no canto direito superior de todas as páginas. Badges manuais pertencem exclusivamente ao interior de cards ou tabelas onde agregam informação contextual.
    - No slide de capa (.slide-cover): A arte oficial de fundo (`capa.png`) possui uma área segura exclusiva delimitada pelo gabarito oficial (`ref_texto_capa.png`): largura de 622px e altura máxima de 754px, posicionada a 80px da margem esquerda e a 80px da margem inferior.
      * [REGRA INVIOLÁVEL DA CAPA]: Todos os textos da capa (breadcrumb, título h1, subtítulo p e metadados) DEVEM estar contidos no contêiner `<div class="slide-cover-content">` e ancorados estritamente à base inferior dessa margem definida (`justify-content: flex-end`). Conforme os títulos aumentam ou diminuem de tamanho, o bloco se expande verticalmente para cima sem nunca ultrapassar a margem e sem deslocar o alinhamento da base.
      * [CORES DA CAPA]: Como a área de textos da capa possui o fundo Verde Institucional oficial, todos os textos devem apresentar alto contraste: Título principal em Branco Puro (`#ffffff`), subtítulo em Branco/Sálvia suave (`rgba(255, 255, 255, 0.92)`), breadcrumb em Amarelo Solar (`#fee000`), linha divisória sutil (`rgba(255, 255, 255, 0.25)`) e badge SIAFIC em fundo Amarelo Solar (`#fee000`) com texto escuro. NUNCA insira cabeçalhos (.slide-topbar) ou rodapés (.slide-footer) no slide de capa.
@@ -194,9 +195,9 @@ Inicie SEMPRE com a linha identificadora (que desativa o preview do Gemini) segu
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>[TÍTULO DA APRESENTAÇÃO] — Governo de Goiás</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v3.4.0/deck.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v3.4.1/deck.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v3.4.0/deck.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v3.4.1/deck.js"></script>
 </head>
 <body>
 <div class="deck-viewport" id="deckViewport">
