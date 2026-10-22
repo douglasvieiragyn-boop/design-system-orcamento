@@ -3,7 +3,7 @@
  * DESIGN SYSTEM ORÇAMENTO — RUNTIME ENGINE DE APRESENTAÇÕES INSTITUCIONAIS
  * Governo do Estado de Goiás — Secretaria da Economia
  * Arquivo: deck.js (Imutável / Produção)
- * Versão: 3.4.9 — Blindagem e Confiabilidade dos Controles Flutuantes (Z-Index Stacking & Disabled States)
+ * Versão: 3.5.0 — Suporte 1:1 a Pré-visualização Gemini Web & Iframes (Auto-Scale Reativo & Containment)
  * ==========================================================================
  */
 
@@ -53,12 +53,14 @@
     });
   }
 
-  // 2. AUTO-SCALE GPU 16:9
+  // 2. AUTO-SCALE GPU 16:9 (Com suporte ultra-resiliente a iframes, Canvas e Gemini Web)
   function autoScale() {
-    const stageW = window.innerWidth;
-    const stageH = window.innerHeight;
+    const stageW = window.innerWidth || (document.documentElement ? document.documentElement.clientWidth : 1920) || 1920;
+    const stageH = window.innerHeight || (document.documentElement ? document.documentElement.clientHeight : 1080) || 1080;
     const scale = Math.min(stageW / 1920, stageH / 1080);
-    document.documentElement.style.setProperty('--scale', scale);
+    if (scale > 0 && !isNaN(scale)) {
+      document.documentElement.style.setProperty('--scale', scale);
+    }
   }
 
   // Correção de plataforma para Chart.js 4.x dentro de containers widescreen transformados por CSS scale()
@@ -743,8 +745,41 @@
     updateFooters();
     initCharts();
     updateSlides();
-    setTimeout(updateSlides, 100);
-    setTimeout(updateSlides, 300);
+
+    // Ativação ultra-resiliente para iframes, Canvas e previews (Gemini, Claude, Web)
+    if (typeof ResizeObserver !== 'undefined' && !window._dsResizeObserved) {
+      const ro = new ResizeObserver(() => {
+        autoScale();
+      });
+      ro.observe(document.documentElement);
+      if (document.body) ro.observe(document.body);
+      window._dsResizeObserved = true;
+    }
+
+    if (typeof IntersectionObserver !== 'undefined' && !window._dsIntersectObserved) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            autoScale();
+            updateSlides();
+          }
+        });
+      });
+      const vp = document.getElementById('deckViewport') || document.body;
+      if (vp) io.observe(vp);
+      window._dsIntersectObserved = true;
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        autoScale();
+        updateSlides();
+      }
+    });
+
+    window.addEventListener('focus', autoScale);
+
+    [50, 100, 200, 350, 600, 1000, 2000].forEach(ms => setTimeout(autoScale, ms));
   }
 
   if (document.readyState === 'loading') {
