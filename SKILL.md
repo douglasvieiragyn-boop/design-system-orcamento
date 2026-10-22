@@ -12,7 +12,14 @@ Esta habilidade ensina e capacita qualquer modelo de IA (Google Gemini, Anthropi
 
 ## 1. REGRAS INVIOLÁVEIS DO SISTEMA (ZERO ALUCINAÇÃO)
 
-### 1.1 Compatibilidade Universal 1:1 (Gemini Canvas, Claude Artifacts, ChatGPT & Navegadores)
+### 1.1 Forçamento Obrigatório do Visualizador HTML em Toda Atualização / Edição
+- **Acionamento Mandatório do Visualizador em TODA Interação**: Quando o usuário solicitar qualquer alteração, inclusão, exclusão, correção de dados ou reestruturação de layout via chat (mesmo um ajuste pontual como "mude a cor", "reduza os cards do slide 3" ou "coloque um texto explicativo abaixo"), o modelo DEVE OBRIGATORIAMENTE acionar e manter aberto o visualizador HTML (`web_code_canvas` no Gemini Web, Artifact interativo no Claude, Canvas no ChatGPT) contendo o arquivo HTML5 COMPLETO (`index.html`) atualizado do `<!DOCTYPE html>` ao `</html>`.
+- **Proibição Absoluta de Respostas Conversacionais Sem o Visualizador Aberto**: É TERMINANTEMENTE PROIBIDO responder apenas com texto explicativo, resumos em prosa ou mensagens soltas como `index.html [generated with web_code_canvas tool]`. Se o visualizador não for iniciado e renderizado com o código completo executável, a resposta é considerada UMA FALHA GRAVE DO ASSISTENTE.
+- **Proibição de Preâmbulos em Inglês ou Conversas Pré-Código**: NUNCA inicie a resposta com frases conversacionais em inglês (como *"I will update the HTML file to adjust..."*) ou confirmações preliminares que adiem o carregamento da tela. O modelo DEVE iniciar imediatamente sua resposta atualizando o visualizador. Breves explicações em português sobre o que foi ajustado devem vir estritamente APÓS a entrega do código no visualizador.
+- **Emissão Integral sem Truncamento (Anti-Diff)**: NUNCA forneça apenas o trecho alterado (diff), NUNCA use comentários de omissão (`<!-- restante do código continua igual -->`), e NUNCA divida em múltiplos blocos. O visualizador precisa receber a árvore DOM íntegra para poder renderizar os 10 slides, inicializar os gráficos Chart.js e acionar o script de auto-escala 16:9.
+- **Garantia de Acionamento por Bloco Markdown ````html`: Em qualquer plataforma (Gemini, Claude, ChatGPT), a emissão do bloco completo de código markdown ````html <!DOCTYPE html> ... ```` no corpo da mensagem atua como gatilho determinístico para a interface abrir automaticamente o painel de preview / visualização visual lado a lado.
+
+### 1.2 Compatibilidade Universal 1:1 (Gemini Canvas, Claude Artifacts, ChatGPT & Navegadores)
 - **Monolítico & Auto-Contido**: Toda a apresentação deve ser entregue em **EXATAMENTE UM ÚNICO bloco de código markdown contínuo** (`<!DOCTYPE html>` até `</html>`), sem fragmentações ou explicações intercaladas.
 - **Bootstrap Inline Obrigatório de Auto-Scale (0ms)**: Todo arquivo gerado DEVE conter no `<head>` o script inline de auto-escala reativa. Ele garante que a artboard de 1920×1080 se ajuste perfeitamente em 0ms ao tamanho real do iframe do Gemini Web, Claude Artifacts ou qualquer dispositivo, eliminando cortes, barras de rolagem e distorções:
 ```html
@@ -26,7 +33,7 @@ Esta habilidade ensina e capacita qualquer modelo de IA (Google Gemini, Anthropi
   - Engine Chart.js: `https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js`
   - Engine JS: `https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v3.5.0/deck.js`
 
-### 1.2 Tipografia Oficial Exclusiva — Segoe UI
+### 1.3 Tipografia Oficial Exclusiva — Segoe UI
 - NUNCA utilize fontes secundárias como Consolas, Monospace, Courier, Inter, Roboto ou serifadas.
 - A família tipográfica oficial é unicamente a **Segoe UI** (`"Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif`).
 - Métricas fiscais, valores em R$, notas de empenho e datas numéricas devem utilizar estritamente a **Segoe UI com `font-variant-numeric: tabular-nums`** (aplicada via classe `.mono`).
@@ -36,7 +43,7 @@ Esta habilidade ensina e capacita qualquer modelo de IA (Google Gemini, Anthropi
   - `700 Bold`: Estritamente para valores monetários de destaque, números de indicadores fiscais e badges.
   - *(Proibição total de pesos 500 Medium e 800 ExtraBold).*
 
-### 1.3 Paleta Cromática Oficial (Proibição de Cores Externas)
+### 1.4 Paleta Cromática Oficial (Proibição de Cores Externas)
 NUNCA utilize cores arbitrárias (como roxo `#6366f1` ou tons berrantes). Siga a escala calibrada oficial:
 - **Verde Institucional Primário:** `#219647` (Cor máxima da marca, teto de luminosidade e 1ª série de gráficos).
 - **Amarelo Solar CTA:** `#fee000` (Acentos de alta prioridade, badges solares e botões de chamada primária. NUNCA UTILIZAR EM GRÁFICOS).
@@ -51,25 +58,25 @@ NUNCA utilize cores arbitrárias (como roxo `#6366f1` ou tons berrantes). Siga a
   *(Proibição total em gráficos: amarelo solar #fee000, azul ou vermelho são proibidos em gráficos fiscais).*
 - **Superfícies & Textos:** Sálvia Mineral (`#ebf5ee`), Branco Puro (`#ffffff`), Texto Carvão (`#0d1711`) e Apoio (`#4f6656`).
 
-### 1.4 Proibição Total de Emojis e Imagens Inventadas
+### 1.5 Proibição Total de Emojis e Imagens Inventadas
 - NUNCA utilize emojis (📈, 💰, ⚖️, 🛡️, 📌, ⚠️, 🏛️, 📊, 🚀). Emojis desqualificam documentos de Estado.
 - Utilize exclusivamente **ícones vetoriais SVG de traço fino de 24px** (`stroke="currentColor"`, `stroke-width="2"`).
 - NUNCA invente tags `<img>` soltas, ilustrações ou links externos de imagens (Unsplash/Pexels). Os fundos institucionais oficiais já são injetados pelo CSS/JS do sistema.
 
-### 1.5 Gráficos Fiscais (Chart.js 4.x & Data Labels Shield)
+### 1.6 Gráficos Fiscais (Chart.js 4.x & Data Labels Shield)
 - NUNCA desenhe gráficos manuais usando `<div>` flexbox ou círculos CSS. Todos os gráficos utilizam `<canvas id="...">` via Chart.js 4.4.1 dentro de `<div class="chart-container-box">`.
 - **Rótulos Numéricos Nativos (Data Labels Plugin)**: O runtime `deck.js` desenha no Canvas 2D os números no topo das barras, percentuais no centro de roscas/pizzas, e valores com tipografia legível ampliada (+30% / 14px Bold Segoe UI).
 - **Escudo Anti-Sobreposição (Halo Shield)**: Em linhas e radar, os números recebem um halo protetor de 4.5px na cor do card e projeção vetorial radial para que linhas e eixos nunca cortem os números.
 - **Legendas com Circunferências**: Todas as legendas de gráficos exibem marcadores circulares (`pointStyle: 'circle'`).
 - **Cantos Arredondados nos Gráficos**: Gráficos de barras, rosca e pizza aplicam SEMPRE `borderRadius: 8` no dataset.
 
-### 1.6 Safe Areas, Cabeçalhos e Badges Superiores
+### 1.7 Safe Areas, Cabeçalhos e Badges Superiores
 - **Slides de Conteúdo (`.slide-content`)**: O padding superior (155px) e inferior (65px) é inviolável para proteger a arte oficial de fundo (`bg-conteudo.png`).
 - **Badge Automático Superior**: O runtime `deck.js` injeta o título geral da apresentação em cápsula branca na faixa verde superior de todos os slides de conteúdo automaticamente.
 - **Slide de Capa (`.slide-cover`)**: Arte oficial `capa.png` com Safe Area ancorada estritamente à base inferior (`left: 80px; bottom: 80px; width: 622px; max-height: 754px; justify-content: flex-end;`). Textos brancos de alto contraste e breadcrumb em amarelo solar. NUNCA coloque cabeçalho ou rodapé na capa.
 - **Slide Final (`.slide-closing`)**: ESTRITAMENTE VAZIO (`<div class="slide slide-closing" id="slide-N"></div>`). É terminantemente proibido inserir qualquer texto ou elemento HTML no slide de encerramento.
 
-### 1.7 Badges & Status Pills Oficiais
+### 1.8 Badges & Status Pills Oficiais
 NUNCA invente classes avulsas como `.kpi-tag-success` ou tons verde-esmeralda/ciano (`#10b981`, `#047857`). Use as variantes canônicas:
 - `.badge.badge-sage`: Fundo Sálvia (`#ebf5ee`), texto Verde (`#16642f`). Para conformidade, superávit e metas cumpridas.
 - `.badge.badge-pine`: Fundo Verde Institucional (`#219647`), texto branco. Para ações principais e dotações liberadas.
@@ -78,7 +85,7 @@ NUNCA invente classes avulsas como `.kpi-tag-success` ou tons verde-esmeralda/ci
 - `.badge.badge-warning`: Fundo âmbar suave, texto âmbar. Para limites de alerta da LRF.
 - `.badge.badge-error`: Fundo coral suave, texto coral. Para glosas, bloqueios e cancelamentos.
 
-### 1.8 Rodapé Padronizado (.slide-footer)
+### 1.9 Rodapé Padronizado (.slide-footer)
 Em todos os slides de conteúdo, o rodapé DEVE conter estritamente:
 ```html
 <div class="slide-footer">
@@ -87,7 +94,7 @@ Em todos os slides de conteúdo, o rodapé DEVE conter estritamente:
 </div>
 ```
 
-### 1.9 Controles Flutuantes do Apresentador (.deck-controls)
+### 1.10 Controles Flutuantes do Apresentador (.deck-controls)
 Injetados dinamicamente pelo runtime com:
 - `[← Anterior]`: Desabilitado automaticamente no Slide 1 (`opacity: 0.35`).
 - `[Slide X / Y]`: Contador em tempo real.
