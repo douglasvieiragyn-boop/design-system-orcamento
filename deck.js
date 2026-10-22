@@ -3,7 +3,7 @@
  * DESIGN SYSTEM ORÇAMENTO — RUNTIME ENGINE DE APRESENTAÇÕES INSTITUCIONAIS
  * Governo do Estado de Goiás — Secretaria da Economia
  * Arquivo: deck.js (Imutável / Produção)
- * Versão: 3.4.3 — Border-Radius Aumentado (8px) em Barras e Rosca/Pizza, Escudo Anti-Sobreposição & Badge Superior
+ * Versão: 3.4.4 — Rótulos Numéricos Ampliados (+30%), Border-Radius (8px) & Escudo Anti-Sobreposição
  * ==========================================================================
  */
 
@@ -147,7 +147,7 @@
 
             if (chartType === 'bar') {
               const isRealizado = (datasetIndex === 0);
-              ctx.font = 'bold 11px "Segoe UI", system-ui, sans-serif';
+              ctx.font = 'bold 14px "Segoe UI", system-ui, sans-serif';
               ctx.textAlign = 'center';
               ctx.textBaseline = 'bottom';
 
@@ -164,13 +164,13 @@
 
               // Halo protetor contra linhas de grade
               ctx.strokeStyle = haloColor;
-              ctx.lineWidth = 3.5;
+              ctx.lineWidth = 4;
               ctx.lineJoin = 'round';
               ctx.miterLimit = 2;
-              ctx.strokeText(formatted, element.x, element.y - 4);
+              ctx.strokeText(formatted, element.x, element.y - 5);
 
               ctx.fillStyle = isDark ? '#7ece93' : (isRealizado ? '#16642f' : '#4f6656');
-              ctx.fillText(formatted, element.x, element.y - 4);
+              ctx.fillText(formatted, element.x, element.y - 5);
 
             } else if (chartType === 'doughnut' || chartType === 'pie') {
               let pct = val;
@@ -184,9 +184,9 @@
                 }
               }
 
-              if (pct >= 5) {
+              if (pct >= 4) {
                 const center = element.getCenterPoint();
-                ctx.font = 'bold 11.5px "Segoe UI", system-ui, sans-serif';
+                ctx.font = 'bold 15px "Segoe UI", system-ui, sans-serif';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
 
@@ -197,16 +197,16 @@
 
             } else if (chartType === 'line') {
               if (datasetIndex === 0 || dataset.datalabels?.display === true) {
-                ctx.font = 'bold 10.5px "Segoe UI", system-ui, sans-serif';
+                ctx.font = 'bold 14px "Segoe UI", system-ui, sans-serif';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'bottom';
 
                 let formatted = typeof val === 'number' ? (val >= 1000 ? `${(val / 1000).toFixed(0)}k` : `${val}`) : val;
-                const labelY = element.y - 9;
+                const labelY = element.y - 11;
 
                 // REGRA ANTI-SOBREPOSIÇÃO: Halo de proteção opaco (corta qualquer linha sob o número)
                 ctx.strokeStyle = haloColor;
-                ctx.lineWidth = 4;
+                ctx.lineWidth = 4.5;
                 ctx.lineJoin = 'round';
                 ctx.miterLimit = 2;
                 ctx.strokeText(formatted, element.x, labelY);
@@ -217,7 +217,7 @@
 
             } else if (chartType === 'radar') {
               if (datasetIndex === 0 || dataset.datalabels?.display === true) {
-                ctx.font = 'bold 10.5px "Segoe UI", system-ui, sans-serif';
+                ctx.font = 'bold 13.5px "Segoe UI", system-ui, sans-serif';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
 
@@ -234,11 +234,11 @@
                 if (dist > 0) {
                   const ux = dx / dist;
                   const uy = dy / dist;
-                  // Desloca 10px radialmente para fora da teia polar
-                  labelX += ux * 10;
-                  labelY += uy * 10;
+                  // Desloca 12px radialmente para fora da teia polar
+                  labelX += ux * 12;
+                  labelY += uy * 12;
                 } else {
-                  labelY -= 10;
+                  labelY -= 12;
                 }
 
                 // REGRA ANTI-SOBREPOSIÇÃO: Halo de proteção opaco de 4.5px que elimina sobreposição de qualquer aresta
@@ -254,7 +254,7 @@
 
             } else if (chartType === 'polararea') {
               const center = element.getCenterPoint();
-              ctx.font = 'bold 11px "Segoe UI", system-ui, sans-serif';
+              ctx.font = 'bold 14px "Segoe UI", system-ui, sans-serif';
               ctx.textAlign = 'center';
               ctx.textBaseline = 'middle';
               const bg = Array.isArray(dataset.backgroundColor) ? dataset.backgroundColor[index] : dataset.backgroundColor;

@@ -47,8 +47,8 @@ AS LEIS INVIOLÁVEIS DO SISTEMA (ZERO ALUCINAÇÃO):
 
 6. [PROIBIÇÃO DE GRÁFICOS IMPROVISADOS EM DIV & RÓTULOS NATIVOS OBRIGATÓRIOS (DATA LABELS)]:
    - NUNCA desenhe gráficos manuais usando <div> flexbox ou círculos CSS. Todos os gráficos comparativos ou de distribuição DEVEM usar <canvas id="..."> renderizados via Chart.js 4.4.1 ou elementos <div class="deck-chart" ...>.
-   - [RÓTULOS NATIVOS DE VALORES (DATA LABELS)]: O runtime `deck.js` v3.4.3 ativa automaticamente o plugin `dsDataLabels`, que desenha diretamente no Canvas 2D os números no topo das barras, percentuais calibrados no centro geométrico das fatias de rosca/pizza com contraste adaptativo (texto branco em fatias escuras, texto escuro em fatias claras), valores nos vértices de linhas/radar e setores de área polar.
-   - [REGRA ANTI-SOBREPOSIÇÃO DE LINHAS (DATA LABELS SHIELD & VETOR RADIAL)]: Em gráficos de Linhas e Radar, os rótulos de valores numéricos NUNCA podem ser cortados ou sobrepostos por linhas de séries, eixos ou arestas de polígonos. O motor `deck.js` v3.4.3 aplica automaticamente um escudo de proteção opaco (halo de 4.5px na cor da superfície do card) e cálculo vetorial radial inteligente que projeta os números para fora do polígono no gráfico de radar e a 9px de elevação no gráfico de linhas, garantindo 100% de legibilidade inclusive em exportações estáticas para PDF.
+   - [RÓTULOS NATIVOS DE VALORES (DATA LABELS)]: O runtime `deck.js` v3.4.4 ativa automaticamente o plugin `dsDataLabels`, que desenha diretamente no Canvas 2D os números no topo das barras, percentuais calibrados no centro geométrico das fatias de rosca/pizza com contraste adaptativo (texto branco em fatias escuras, texto escuro em fatias claras), valores nos vértices de linhas/radar e setores de área polar, com tipografia legível ampliada (+30% / 14-15px Bold Segoe UI).
+   - [REGRA ANTI-SOBREPOSIÇÃO DE LINHAS (DATA LABELS SHIELD & VETOR RADIAL)]: Em gráficos de Linhas e Radar, os rótulos de valores numéricos NUNCA podem ser cortados ou sobrepostos por linhas de séries, eixos ou arestas de polígonos. O motor `deck.js` v3.4.4 aplica automaticamente um escudo de proteção opaco (halo de 4.5px na cor da superfície do card) e cálculo vetorial radial inteligente que projeta os números para fora do polígono no gráfico de radar e a 11px de elevação no gráfico de linhas, garantindo 100% de legibilidade inclusive em exportações estáticas para PDF.
    - [OCULTAÇÃO DINÂMICA]: Quando qualquer série ou fatia for desativada (ocultada) ao clicar na legenda do gráfico, o rótulo correspondente desaparece automaticamente da visualização. NUNCA importe bibliotecas externas de datalabels (como `chartjs-plugin-datalabels`), pois o sistema já possui a engine integrada com zero dependências externas.
 
 7. [PRESERVAÇÃO ESTRITA DE SAFE AREAS, CABEÇALHOS LIMPOS & BADGE SUPERIOR]:
@@ -197,9 +197,9 @@ Inicie SEMPRE com a linha identificadora (que desativa o preview do Gemini) segu
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>[TÍTULO DA APRESENTAÇÃO] — Governo de Goiás</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v3.4.3/deck.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v3.4.4/deck.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v3.4.3/deck.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v3.4.4/deck.js"></script>
 </head>
 <body>
 <div class="deck-viewport" id="deckViewport">
