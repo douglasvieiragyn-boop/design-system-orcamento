@@ -3,7 +3,7 @@
  * DESIGN SYSTEM ORÇAMENTO — RUNTIME ENGINE DE APRESENTAÇÕES INSTITUCIONAIS
  * Governo do Estado de Goiás — Secretaria da Economia
  * Arquivo: deck.js (Imutável / Produção)
- * Versão: 3.3 — Runtime Widescreen 16:9 & Rótulos Nativos em Gráficos (Data Labels Zero-Dep)
+ * Versão: 3.4 — Runtime Widescreen 16:9 & Rótulos Nativos em Gráficos com Ocultação Dinâmica
  * ==========================================================================
  */
 
@@ -122,15 +122,23 @@
         }
 
         const { ctx } = chart;
-        const chartType = chart.config.type;
+        const chartType = (chart.config.type || '').toLowerCase();
         const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
 
         chart.data.datasets.forEach((dataset, datasetIndex) => {
           if (dataset.datalabels && dataset.datalabels.display === false) return;
           const meta = chart.getDatasetMeta(datasetIndex);
-          if (!meta || meta.hidden) return;
+          // 1. Se o dataset inteiro foi ocultado na legenda (Barras, Linhas, Radar):
+          if (!meta || meta.hidden || (typeof chart.isDatasetVisible === 'function' && !chart.isDatasetVisible(datasetIndex))) {
+            return;
+          }
 
           meta.data.forEach((element, index) => {
+            // 2. Se a fatia/item individual foi ocultado na legenda (Rosca, Pizza, Área Polar):
+            if (element.hidden || element.skip || (typeof chart.getDataVisibility === 'function' && !chart.getDataVisibility(index))) {
+              return;
+            }
+
             const val = dataset.data[index];
             if (val === null || val === undefined) return;
 
@@ -158,7 +166,10 @@
             } else if (chartType === 'doughnut' || chartType === 'pie') {
               let pct = val;
               if (typeof val === 'number') {
-                const total = dataset.data.reduce((a, b) => a + (typeof b === 'number' ? b : 0), 0);
+                const total = dataset.data.reduce((acc, curr, i) => {
+                  const isVis = (typeof chart.getDataVisibility === 'function') ? chart.getDataVisibility(i) : true;
+                  return acc + (isVis && typeof curr === 'number' ? curr : 0);
+                }, 0);
                 if (total > 0 && Math.round(total) !== 100) {
                   pct = Math.round((val / total) * 100);
                 }
@@ -195,7 +206,7 @@
                 ctx.fillText(`${val}`, element.x, element.y - 5);
               }
 
-            } else if (chartType === 'polarArea') {
+            } else if (chartType === 'polararea') {
               const center = element.getCenterPoint();
               ctx.font = 'bold 11px "Segoe UI", system-ui, sans-serif';
               ctx.textAlign = 'center';
@@ -214,6 +225,30 @@
 
     try {
       Chart.register(dsDataLabelsPlugin);
+    } catch (e) {}
+  }
+
+  // Chamada imediata e hook reativo para garantir registro instantâneo mesmo se Chart.js carregar de forma assíncrona
+  if (typeof Chart !== 'undefined') {
+    registerDataLabelsPlugin();
+  }
+  if (typeof window !== 'undefined') {
+    let _chartHolder = window.Chart;
+    if (_chartHolder && typeof _chartHolder.register === 'function') {
+      try { _chartHolder.register(dsDataLabelsPlugin); } catch (e) {}
+    }
+    try {
+      Object.defineProperty(window, 'Chart', {
+        configurable: true,
+        enumerable: true,
+        get() { return _chartHolder; },
+        set(newChart) {
+          _chartHolder = newChart;
+          if (_chartHolder && typeof _chartHolder.register === 'function') {
+            try { _chartHolder.register(dsDataLabelsPlugin); } catch (e) {}
+          }
+        }
+      });
     } catch (e) {}
   }
 
@@ -468,34 +503,9 @@
 
   window.addEventListener('resize', autoScale);
 
-  // 9. INJEÇÃO E SINCRONIZAÇÃO AUTOMÁTICA DO BADGE DE CABEÇALHO (TÍTULO DA APRESENTAÇÃO NA FAIXA VERDE)
-  function ensureHeaderBadges() {
-    const coverTitleEl = document.querySelector('.slide-cover h1, .slide-cover .slide-title');
-    let presentationTitle = '';
-    if (coverTitleEl && coverTitleEl.innerText.trim()) {
-      presentationTitle = coverTitleEl.innerText.trim();
-    } else if (document.title) {
-      presentationTitle = document.title.split('—')[0].split('-')[0].trim();
-    }
-
-    if (!presentationTitle) return;
-
-    const contentSlides = document.querySelectorAll('.slide.slide-content, .slide:not(.slide-cover):not(.slide-closing)');
-    contentSlides.forEach(slide => {
-      if (slide.classList.contains('slide-cover') || slide.classList.contains('slide-closing')) return;
-
-      let badge = slide.querySelector('.slide-header-badge');
-      if (!badge) {
-        badge = document.createElement('div');
-        badge.className = 'slide-header-badge';
-        badge.innerText = presentationTitle;
-        badge.title = presentationTitle;
-        slide.insertBefore(badge, slide.firstChild);
-      } else if (!badge.innerText.trim()) {
-        badge.innerText = presentationTitle;
-        badge.title = presentationTitle;
-      }
-    });
+  // Limpeza de eventuais elementos injetados indevidamente no slide-topbar
+  function cleanupTopbars() {
+    document.querySelectorAll('.slide-topbar .slide-header-badge').forEach(el => el.remove());
   }
 
   // INICIALIZAÇÃO GERAL ROBUSTA
@@ -508,7 +518,7 @@
     registerDataLabelsPlugin();
     sanitizeEmojis();
     ensureControls();
-    ensureHeaderBadges();
+    cleanupTopbars();
     initCharts();
     updateSlides();
     setTimeout(updateSlides, 100);

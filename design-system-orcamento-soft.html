@@ -3563,15 +3563,23 @@
         }
 
         const { ctx } = chart;
-        const chartType = chart.config.type;
+        const chartType = (chart.config.type || '').toLowerCase();
         const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
 
         chart.data.datasets.forEach((dataset, datasetIndex) => {
           if (dataset.datalabels && dataset.datalabels.display === false) return;
           const meta = chart.getDatasetMeta(datasetIndex);
-          if (!meta || meta.hidden) return;
+          // Se o dataset inteiro foi ocultado na legenda (Barras, Linhas, Radar):
+          if (!meta || meta.hidden || (typeof chart.isDatasetVisible === 'function' && !chart.isDatasetVisible(datasetIndex))) {
+            return;
+          }
 
           meta.data.forEach((element, index) => {
+            // Se a fatia/item individual foi ocultado na legenda (Rosca, Pizza, Área Polar):
+            if (element.hidden || element.skip || (typeof chart.getDataVisibility === 'function' && !chart.getDataVisibility(index))) {
+              return;
+            }
+
             const val = dataset.data[index];
             if (val === null || val === undefined) return;
 
@@ -3599,7 +3607,10 @@
             } else if (chartType === 'doughnut' || chartType === 'pie') {
               let pct = val;
               if (typeof val === 'number') {
-                const total = dataset.data.reduce((a, b) => a + (typeof b === 'number' ? b : 0), 0);
+                const total = dataset.data.reduce((acc, curr, i) => {
+                  const isVis = (typeof chart.getDataVisibility === 'function') ? chart.getDataVisibility(i) : true;
+                  return acc + (isVis && typeof curr === 'number' ? curr : 0);
+                }, 0);
                 if (total > 0 && Math.round(total) !== 100) {
                   pct = Math.round((val / total) * 100);
                 }
@@ -3636,7 +3647,7 @@
                 ctx.fillText(`${val}`, element.x, element.y - 5);
               }
 
-            } else if (chartType === 'polarArea') {
+            } else if (chartType === 'polararea') {
               const center = element.getCenterPoint();
               ctx.font = 'bold 11px "Segoe UI", system-ui, sans-serif';
               ctx.textAlign = 'center';

@@ -2,7 +2,7 @@
    DESIGN SYSTEM ORÇAMENTO — MOTOR DE APRESENTAÇÕES INSTITUCIONAIS
    Governo do Estado de Goiás — Secretaria da Economia
    Arquivo: deck.css (Imutável / Produção)
-   Versão: 3.2 — Calibração do Badge (+30% / Sem Sombra) & Correção de Centralização
+   Versão: 3.4 — Blindagem de Topbar & Suporte a Rótulos Nativos em Gráficos
    ========================================================================== */
 
 * {
@@ -260,9 +260,10 @@ body > :not(.deck-viewport):not(.deck-controls):not(script):not(style) {
   box-shadow: none !important;
 }
 
-/* Ocultação mandatória na capa e no encerramento */
+/* Ocultação mandatória na capa e no encerramento, e blindagem do slide-topbar */
 .slide-cover .slide-header-badge,
-.slide-closing .slide-header-badge {
+.slide-closing .slide-header-badge,
+.slide-topbar .slide-header-badge {
   display: none !important;
 }
 
