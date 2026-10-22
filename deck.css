@@ -2,7 +2,7 @@
    DESIGN SYSTEM ORÇAMENTO — MOTOR DE APRESENTAÇÕES INSTITUCIONAIS
    Governo do Estado de Goiás — Secretaria da Economia
    Arquivo: deck.css (Imutável / Produção)
-   Versão: 3.1 — Badge de Cabeçalho Institucional na Faixa Verde Superior
+   Versão: 3.2 — Calibração do Badge (+30% / Sem Sombra) & Correção de Centralização
    ========================================================================== */
 
 * {
@@ -62,11 +62,11 @@ body > :not(.deck-viewport):not(.deck-controls):not(script):not(style) {
 .slide {
   width: 1920px !important;
   height: 1080px !important;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(var(--scale, 1));
-  transform-origin: center center;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) scale(var(--scale, 1)) !important;
+  transform-origin: center center !important;
   overflow: hidden;
   background-size: 100% 100%;
   background-position: center center;
@@ -97,7 +97,6 @@ body > :not(.deck-viewport):not(.deck-controls):not(script):not(style) {
   background-repeat: no-repeat !important;
   border-top: none !important;
   padding: 0 !important;
-  position: relative !important;
 }
 
 /* Blindagem da Safe Area de Títulos da Capa (Delimitada via ref_texto_capa.png: x=80px, w=622px, y=246px a 1000px, bottom=80px) */
@@ -215,7 +214,6 @@ body > :not(.deck-viewport):not(.deck-controls):not(script):not(style) {
 .slide-content-bg {
   background-image: url('https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@main/apresentacao/bg-conteudo.png') !important;
   padding: 155px 95px 65px 95px !important;
-  position: relative;
 }
 
 /* Badge de Cabeçalho Institucional (Título da Apresentação na Faixa Verde Superior 120px) */
@@ -225,17 +223,17 @@ body > :not(.deck-viewport):not(.deck-controls):not(script):not(style) {
   top: 60px !important;
   transform: translateY(-50%) !important;
   background: #ffffff !important;
-  border: 1px solid rgba(20, 48, 42, 0.08) !important;
+  border: none !important;
   color: var(--green-700) !important;
-  font-size: 0.82rem !important;
+  font-size: 1.05rem !important;
   font-weight: 700 !important;
-  padding: 6px 16px !important;
+  padding: 8px 22px !important;
   border-radius: 999px !important;
   letter-spacing: 0.02em !important;
   display: inline-flex !important;
   align-items: center !important;
-  gap: 8px !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10) !important;
+  gap: 10px !important;
+  box-shadow: none !important;
   max-width: 950px !important;
   white-space: nowrap !important;
   overflow: hidden !important;
@@ -251,7 +249,7 @@ body > :not(.deck-viewport):not(.deck-controls):not(script):not(style) {
   -webkit-backdrop-filter: blur(8px) !important;
   border: 1px solid rgba(255, 255, 255, 0.32) !important;
   color: #ffffff !important;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08) !important;
+  box-shadow: none !important;
 }
 
 /* Variação Amarelo Solar */
@@ -259,7 +257,7 @@ body > :not(.deck-viewport):not(.deck-controls):not(script):not(style) {
   background: var(--yellow-500) !important;
   color: #0d1711 !important;
   border: none !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10) !important;
+  box-shadow: none !important;
 }
 
 /* Ocultação mandatória na capa e no encerramento */

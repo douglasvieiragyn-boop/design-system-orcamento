@@ -3,7 +3,7 @@
  * DESIGN SYSTEM ORÇAMENTO — RUNTIME ENGINE DE APRESENTAÇÕES INSTITUCIONAIS
  * Governo do Estado de Goiás — Secretaria da Economia
  * Arquivo: deck.js (Imutável / Produção)
- * Versão: 3.1 — Runtime Widescreen 16:9 & Auto-Injeção de Badge de Cabeçalho
+ * Versão: 3.2 — Runtime Widescreen 16:9 & Centralização Estrita GPU
  * ==========================================================================
  */
 
