@@ -3,7 +3,7 @@
  * DESIGN SYSTEM ORÇAMENTO — RUNTIME ENGINE DE APRESENTAÇÕES INSTITUCIONAIS
  * Governo do Estado de Goiás — Secretaria da Economia
  * Arquivo: deck.js (Imutável / Produção)
- * Versão: 3.4.2 — Regra Anti-Sobreposição de Linhas em Gráficos (Data Labels Shield) & Badge Superior
+ * Versão: 3.4.3 — Border-Radius Aumentado (8px) em Barras e Rosca/Pizza, Escudo Anti-Sobreposição & Badge Superior
  * ==========================================================================
  */
 
@@ -320,8 +320,8 @@
           data: {
             labels: labels,
             datasets: [
-              { label: s1.label, data: s1.data, backgroundColor: '#219647', borderRadius: 6, borderSkipped: false },
-              { label: s2.label, data: s2.data, backgroundColor: '#738b7b', borderRadius: 6, borderSkipped: false }
+              { label: s1.label, data: s1.data, backgroundColor: '#219647', borderRadius: 8, borderSkipped: false },
+              { label: s2.label, data: s2.data, backgroundColor: '#738b7b', borderRadius: 8, borderSkipped: false }
             ]
           },
           options: {
@@ -347,7 +347,7 @@
             datasets: [{
               data: values,
               backgroundColor: ['#219647', '#738b7b', '#9eb2a4', '#cbd8cf', '#dee8e1', '#eaf1ed'],
-              borderRadius: 6,
+              borderRadius: 8,
               spacing: 3
             }]
           },
