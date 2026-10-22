@@ -3583,6 +3583,7 @@
             const val = dataset.data[index];
             if (val === null || val === undefined) return;
 
+            const haloColor = isDark ? '#14302a' : '#ffffff';
             ctx.save();
 
             if (chartType === 'bar') {
@@ -3590,7 +3591,6 @@
               ctx.font = 'bold 11px "Segoe UI", system-ui, sans-serif';
               ctx.textAlign = 'center';
               ctx.textBaseline = 'bottom';
-              ctx.fillStyle = isDark ? '#7ece93' : (isRealizado ? '#16642f' : '#4f6656');
 
               let formatted;
               if (chart.options.plugins?.datalabels?.formatter) {
@@ -3602,6 +3602,15 @@
               } else {
                 formatted = val;
               }
+
+              // Halo protetor contra linhas de grade
+              ctx.strokeStyle = haloColor;
+              ctx.lineWidth = 3.5;
+              ctx.lineJoin = 'round';
+              ctx.miterLimit = 2;
+              ctx.strokeText(formatted, element.x, element.y - 4);
+
+              ctx.fillStyle = isDark ? '#7ece93' : (isRealizado ? '#16642f' : '#4f6656');
               ctx.fillText(formatted, element.x, element.y - 4);
 
             } else if (chartType === 'doughnut' || chartType === 'pie') {
@@ -3632,19 +3641,56 @@
                 ctx.font = 'bold 10.5px "Segoe UI", system-ui, sans-serif';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'bottom';
-                ctx.fillStyle = isDark ? '#7ece93' : '#16642f';
 
                 let formatted = typeof val === 'number' ? (val >= 1000 ? `${(val / 1000).toFixed(0)}k` : `${val}`) : val;
-                ctx.fillText(formatted, element.x, element.y - 7);
+                const labelY = element.y - 9;
+
+                // REGRA ANTI-SOBREPOSIÇÃO: Halo de proteção opaco (corta qualquer linha sob o número)
+                ctx.strokeStyle = haloColor;
+                ctx.lineWidth = 4;
+                ctx.lineJoin = 'round';
+                ctx.miterLimit = 2;
+                ctx.strokeText(formatted, element.x, labelY);
+
+                ctx.fillStyle = isDark ? '#7ece93' : '#16642f';
+                ctx.fillText(formatted, element.x, labelY);
               }
 
             } else if (chartType === 'radar') {
               if (datasetIndex === 0 || dataset.datalabels?.display === true) {
-                ctx.font = 'bold 10px "Segoe UI", system-ui, sans-serif';
+                ctx.font = 'bold 10.5px "Segoe UI", system-ui, sans-serif';
                 ctx.textAlign = 'center';
-                ctx.textBaseline = 'bottom';
+                ctx.textBaseline = 'middle';
+
+                // REGRA ANTI-SOBREPOSIÇÃO RADAR: Deslocamento radial inteligente para fora do polígono
+                const cx = chart.scales.r?.xCenter ?? (chart.chartArea ? (chart.chartArea.left + chart.chartArea.right) / 2 : element.x);
+                const cy = chart.scales.r?.yCenter ?? (chart.chartArea ? (chart.chartArea.top + chart.chartArea.bottom) / 2 : element.y);
+                const dx = element.x - cx;
+                const dy = element.y - cy;
+                const dist = Math.hypot(dx, dy);
+
+                let labelX = element.x;
+                let labelY = element.y;
+
+                if (dist > 0) {
+                  const ux = dx / dist;
+                  const uy = dy / dist;
+                  // Desloca 10px radialmente para fora da teia polar
+                  labelX += ux * 10;
+                  labelY += uy * 10;
+                } else {
+                  labelY -= 10;
+                }
+
+                // REGRA ANTI-SOBREPOSIÇÃO: Halo de proteção opaco de 4.5px que elimina sobreposição de qualquer aresta
+                ctx.strokeStyle = haloColor;
+                ctx.lineWidth = 4.5;
+                ctx.lineJoin = 'round';
+                ctx.miterLimit = 2;
+                ctx.strokeText(`${val}`, labelX, labelY);
+
                 ctx.fillStyle = isDark ? '#7ece93' : '#16642f';
-                ctx.fillText(`${val}`, element.x, element.y - 5);
+                ctx.fillText(`${val}`, labelX, labelY);
               }
 
             } else if (chartType === 'polararea') {
