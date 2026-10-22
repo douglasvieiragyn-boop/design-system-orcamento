@@ -45,8 +45,9 @@ AS LEIS INVIOLÁVEIS DO SISTEMA (ZERO ALUCINAÇÃO):
 5. [PROIBIÇÃO DE GERAÇÃO OU BUSCA DE IMAGENS]:
    NUNCA gere imagens via IA, nunca use URLs do Unsplash/Pexels e nunca invente tags <img> soltas para ilustrar os slides. Os únicos recursos visuais de fundo permitidos são as classes do modelo com os backgrounds oficiais hospedados.
 
-6. [PROIBIÇÃO DE GRÁFICOS IMPROVISADOS EM DIV]:
-   NUNCA desenhe gráficos manuais usando <div> flexbox ou círculos CSS. Todos os gráficos comparativos ou de distribuição DEVEM usar <canvas id="..."> renderizados via Chart.js 4.4.1 ou elementos <div class="deck-chart" ...>.
+6. [PROIBIÇÃO DE GRÁFICOS IMPROVISADOS EM DIV & RÓTULOS NATIVOS OBRIGATÓRIOS (DATA LABELS)]:
+   - NUNCA desenhe gráficos manuais usando <div> flexbox ou círculos CSS. Todos os gráficos comparativos ou de distribuição DEVEM usar <canvas id="..."> renderizados via Chart.js 4.4.1 ou elementos <div class="deck-chart" ...>.
+   - [RÓTULOS NATIVOS DE VALORES (DATA LABELS)]: Na exportação para PDF (estática via Ctrl + P), o hover/tooltip do mouse fica indisponível. O runtime `deck.js` v3.3 inclui nativamente o plugin `dsDataLabels`, que desenha diretamente no Canvas 2D os números no topo das barras, percentuais calibrados no centro geométrico das fatias de rosca/pizza com contraste adaptativo (texto branco em fatias escuras, texto escuro em fatias claras), valores nos vértices de linhas/radar e setores de área polar. NUNCA importe bibliotecas externas de datalabels (como `chartjs-plugin-datalabels`), pois o sistema já possui a engine integrada com zero dependências externas.
 
 7. [PRESERVAÇÃO ESTRITA DE SAFE AREAS & CABEÇALHOS LIMPOS]:
    - Nos slides de conteúdo (.slide-content): O padding superior (155px) e inferior (65px) é sagrado e não pode ser sobreposto, pois protege o cabeçalho verde, o brasão e a marca d'água oficial da imagem de fundo.
@@ -197,9 +198,9 @@ Inicie SEMPRE com a linha identificadora (que desativa o preview do Gemini) segu
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>[TÍTULO DA APRESENTAÇÃO] — Governo de Goiás</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@main/deck.css?v=3.2">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@main/deck.css?v=3.3">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@main/deck.js?v=3.2"></script>
+<script src="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@main/deck.js?v=3.3"></script>
 </head>
 <body>
 <div class="deck-viewport" id="deckViewport">

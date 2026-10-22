@@ -3114,7 +3114,7 @@
       </div>
       <span class="num">08 — gráficos fiscais</span>
     </div>
-    <p class="section-note">Modelos analíticos de alta performance baseados na arquitetura do Chart.js (referência chart-js.framer.website), calibrados no padrão institucional hierárquico: o maior valor é destacado no Verde Primário Governamental (#219647), enquanto os demais valores decrescem harmonicamente na escala de Neutros Minerais (iniciando no tom aveludado #738b7b de Custeio Operacional): 6 modelos interativos com tooltips monetários formatados em Real (R$) e sincronização com o modo claro e noturno.</p>
+    <p class="section-note">Modelos analíticos de alta performance baseados na arquitetura do Chart.js (referência chart-js.framer.website), calibrados no padrão institucional hierárquico: o maior valor é destacado no Verde Primário Governamental (#219647), enquanto os demais valores decrescem harmonicamente na escala de Neutros Minerais (iniciando no tom aveludado #738b7b de Custeio Operacional): 6 modelos analíticos completos com rótulos numéricos nativos e percentuais calibrados no Canvas 2D (Data Labels permanentes para exportação estática em PDF via Ctrl + P sem perda de informação), tooltips monetários formatados em Real (R$) e sincronização com o modo claro e noturno.</p>
 
     <div class="charts-gallery-grid">
       <!-- 1. Bar Chart -->
@@ -3529,11 +3529,142 @@
     };
   }
 
+  // PLUGIN NATIVO DE RÓTULOS DE DADOS (DATA LABELS) PARA CHART.JS (ZERO DEPENDÊNCIAS / PDF FRIENDLY)
+  function registerDataLabelsPlugin() {
+    if (typeof Chart === 'undefined') return;
+    if (Chart.registry && Chart.registry.plugins && Chart.registry.plugins.get('dsDataLabels')) return;
+
+    function getContrast(colorStr) {
+      if (!colorStr) return '#0d1711';
+      let c = colorStr.replace('#', '');
+      if (c.length === 3) c = c.split('').map(x => x + x).join('');
+      if (c.length === 6) {
+        const r = parseInt(c.substr(0, 2), 16);
+        const g = parseInt(c.substr(2, 2), 16);
+        const b = parseInt(c.substr(4, 2), 16);
+        const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+        return (yiq >= 148) ? '#0d1711' : '#ffffff';
+      }
+      if (colorStr.startsWith('rgb')) {
+        const m = colorStr.match(/\d+/g);
+        if (m && m.length >= 3) {
+          const yiq = ((parseInt(m[0]) * 299) + (parseInt(m[1]) * 587) + (parseInt(m[2]) * 114)) / 1000;
+          return (yiq >= 148) ? '#0d1711' : '#ffffff';
+        }
+      }
+      return '#ffffff';
+    }
+
+    const dsDataLabelsPlugin = {
+      id: 'dsDataLabels',
+      afterDatasetsDraw(chart) {
+        if (chart.options.plugins && chart.options.plugins.datalabels && chart.options.plugins.datalabels.display === false) {
+          return;
+        }
+
+        const { ctx } = chart;
+        const chartType = chart.config.type;
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+
+        chart.data.datasets.forEach((dataset, datasetIndex) => {
+          if (dataset.datalabels && dataset.datalabels.display === false) return;
+          const meta = chart.getDatasetMeta(datasetIndex);
+          if (!meta || meta.hidden) return;
+
+          meta.data.forEach((element, index) => {
+            const val = dataset.data[index];
+            if (val === null || val === undefined) return;
+
+            ctx.save();
+
+            if (chartType === 'bar') {
+              const isRealizado = (datasetIndex === 0);
+              ctx.font = 'bold 11px "Segoe UI", system-ui, sans-serif';
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'bottom';
+              ctx.fillStyle = isDark ? '#7ece93' : (isRealizado ? '#16642f' : '#4f6656');
+
+              let formatted;
+              if (chart.options.plugins?.datalabels?.formatter) {
+                formatted = chart.options.plugins.datalabels.formatter(val, { dataset, datasetIndex, dataIndex: index });
+              } else if (typeof val === 'number') {
+                if (val >= 1000000) formatted = `${(val / 1000000).toLocaleString('pt-BR', { maximumFractionDigits: 1 })}M`;
+                else if (val >= 1000) formatted = `${(val / 1000).toFixed(0)}k`;
+                else formatted = `${val}`;
+              } else {
+                formatted = val;
+              }
+              ctx.fillText(formatted, element.x, element.y - 4);
+
+            } else if (chartType === 'doughnut' || chartType === 'pie') {
+              let pct = val;
+              if (typeof val === 'number') {
+                const total = dataset.data.reduce((a, b) => a + (typeof b === 'number' ? b : 0), 0);
+                if (total > 0 && Math.round(total) !== 100) {
+                  pct = Math.round((val / total) * 100);
+                }
+              }
+
+              if (pct >= 5) {
+                const center = element.getCenterPoint();
+                ctx.font = 'bold 11.5px "Segoe UI", system-ui, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+
+                const bg = Array.isArray(dataset.backgroundColor) ? dataset.backgroundColor[index] : dataset.backgroundColor;
+                ctx.fillStyle = getContrast(bg);
+                ctx.fillText(`${pct}%`, center.x, center.y);
+              }
+
+            } else if (chartType === 'line') {
+              if (datasetIndex === 0 || dataset.datalabels?.display === true) {
+                ctx.font = 'bold 10.5px "Segoe UI", system-ui, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'bottom';
+                ctx.fillStyle = isDark ? '#7ece93' : '#16642f';
+
+                let formatted = typeof val === 'number' ? (val >= 1000 ? `${(val / 1000).toFixed(0)}k` : `${val}`) : val;
+                ctx.fillText(formatted, element.x, element.y - 7);
+              }
+
+            } else if (chartType === 'radar') {
+              if (datasetIndex === 0 || dataset.datalabels?.display === true) {
+                ctx.font = 'bold 10px "Segoe UI", system-ui, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'bottom';
+                ctx.fillStyle = isDark ? '#7ece93' : '#16642f';
+                ctx.fillText(`${val}`, element.x, element.y - 5);
+              }
+
+            } else if (chartType === 'polarArea') {
+              const center = element.getCenterPoint();
+              ctx.font = 'bold 11px "Segoe UI", system-ui, sans-serif';
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'middle';
+              const bg = Array.isArray(dataset.backgroundColor) ? dataset.backgroundColor[index] : dataset.backgroundColor;
+              ctx.fillStyle = getContrast(bg);
+              let formatted = typeof val === 'number' ? `R$ ${val}M` : `${val}`;
+              ctx.fillText(formatted, center.x, center.y);
+            }
+
+            ctx.restore();
+          });
+        });
+      }
+    };
+
+    try {
+      Chart.register(dsDataLabelsPlugin);
+    } catch (e) {}
+  }
+
   function initChartJS() {
     if (typeof Chart === 'undefined') {
       setTimeout(initChartJS, 100);
       return;
     }
+
+    registerDataLabelsPlugin();
 
     const tc = getThemeColors();
 
