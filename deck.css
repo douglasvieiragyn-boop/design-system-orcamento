@@ -2,7 +2,7 @@
    DESIGN SYSTEM ORÇAMENTO — MOTOR DE APRESENTAÇÕES INSTITUCIONAIS
    Governo do Estado de Goiás — Secretaria da Economia
    Arquivo: deck.css (Imutável / Produção)
-   Versão: 3.4.8 — Padronização Oficial de Rodapé (Subsecretaria Central do Orçamento & Marcador de Slide)
+   Versão: 3.4.9 — Blindagem e Confiabilidade dos Controles Flutuantes (Z-Index Stacking & Disabled States)
    ========================================================================== */
 
 * {
@@ -727,9 +727,14 @@ body > :not(.deck-viewport):not(.deck-controls):not(script):not(style) {
 .deck-controls::before {
   content: '';
   position: absolute;
-  inset: -14px -16px -10px -16px;
+  inset: -18px -18px -12px -18px;
   background: transparent;
   pointer-events: auto;
+  z-index: 1;
+}
+.deck-controls > * {
+  position: relative;
+  z-index: 2;
 }
 .deck-controls:hover,
 .deck-controls.visible,
@@ -748,15 +753,20 @@ body > :not(.deck-viewport):not(.deck-controls):not(script):not(style) {
   font-weight: 700;
   font-size: 0.72rem;
   line-height: 1.2;
-  transition: background 0.15s ease, transform 0.1s ease;
+  transition: background 0.15s ease, transform 0.1s ease, opacity 0.15s ease;
   white-space: nowrap;
 }
-.deck-controls button:hover { background: #16642f; }
-.deck-controls button:active { transform: scale(0.97); }
+.deck-controls button:hover:not(:disabled) { background: #16642f; }
+.deck-controls button:active:not(:disabled) { transform: scale(0.97); }
+.deck-controls button:disabled {
+  opacity: 0.35 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+}
 .deck-controls .btn-sec { background: rgba(255, 255, 255, 0.12); }
-.deck-controls .btn-sec:hover { background: rgba(255, 255, 255, 0.22); }
+.deck-controls .btn-sec:hover:not(:disabled) { background: rgba(255, 255, 255, 0.22); }
 .deck-controls .btn-solar { background: var(--yellow-500); color: var(--text-primary); }
-.deck-controls .btn-solar:hover { background: #e5ca00; }
+.deck-controls .btn-solar:hover:not(:disabled) { background: #e5ca00; }
 #slideIndicator {
   font-size: 0.72rem;
   font-weight: 600;

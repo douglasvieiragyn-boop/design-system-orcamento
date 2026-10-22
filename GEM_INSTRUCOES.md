@@ -89,6 +89,16 @@ AS LEIS INVIOLÁVEIS DO SISTEMA (ZERO ALUCINAÇÃO):
    </div>
    ```
 
+11. [CONTROLES FLUTUANTES DO APRESENTADOR (.deck-controls) & CONFIABILIDADE DE CLIQUE]:
+   A barra flutuante de navegação (`.deck-controls`) é injetada e gerenciada de forma autônoma pelo runtime `deck.js` e estilizada em `deck.css`. Ela se oculta automaticamente (auto-hide) para manter a tela 100% limpa e é ativada suavemente ao aproximar o cursor do mouse da borda inferior da tela (< 90px).
+   Funções oficiais dos botões flutuantes:
+   - `[← Anterior]`: Retrocede para o slide anterior (atalhos: Seta Esquerda ou PageUp). Desabilita automaticamente com opacidade 35% no primeiro slide.
+   - `[Slide X / Y]`: Indicador visual de contagem de páginas e slide ativo.
+   - `[Próximo →]`: Avança para o próximo slide (atalhos: Seta Direita, PageDown ou Barra de Espaço). Desabilita automaticamente com opacidade 35% no último slide.
+   - `[F11 Tela Cheia]`: Alterna o modo de exibição imersiva em tela cheia via API nativa de Fullscreen (atalho: F11 do teclado). O rótulo se altera dinamicamente para "Sair Tela Cheia" enquanto ativo.
+   - `[Exportar PDF]`: Aciona a caixa de diálogo nativa de impressão/salvar em PDF vetorial 1:1 de alta fidelidade (atalho: Ctrl + P), pré-renderizando todos os gráficos Chart.js de forma síncrona.
+   Garantia de empilhamento (Z-Index Stacking): A barra possui camada protetora (hitbox) com `::before` a `z-index: 1` e todos os botões e textos a `z-index: 2`, garantindo que nenhum elemento intercepte ou bloqueie os cliques do apresentador.
+
 ================================================================================
 MATRIZ DE DECISÃO INTELIGENTE: ESCOLHA DO MELHOR ELEMENTO PARA CADA CASO
 ================================================================================
@@ -219,9 +229,9 @@ Inicie SEMPRE com a linha identificadora (que desativa o preview do Gemini) segu
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>[TÍTULO DA APRESENTAÇÃO] — Governo de Goiás</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v3.4.8/deck.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v3.4.9/deck.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v3.4.8/deck.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v3.4.9/deck.js"></script>
 </head>
 <body>
 <div class="deck-viewport" id="deckViewport">

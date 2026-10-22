@@ -3,7 +3,7 @@
  * DESIGN SYSTEM ORÇAMENTO — RUNTIME ENGINE DE APRESENTAÇÕES INSTITUCIONAIS
  * Governo do Estado de Goiás — Secretaria da Economia
  * Arquivo: deck.js (Imutável / Produção)
- * Versão: 3.4.8 — Padronização Oficial de Rodapé (Subsecretaria Central do Orçamento & Marcador de Slide)
+ * Versão: 3.4.9 — Blindagem e Confiabilidade dos Controles Flutuantes (Z-Index Stacking & Disabled States)
  * ==========================================================================
  */
 
@@ -397,6 +397,18 @@
 
     const indicator = document.getElementById('slideIndicator');
     if (indicator) indicator.innerText = `Slide ${currentSlide} / ${totalSlides}`;
+
+    const prevBtn = document.getElementById('btnPrev');
+    const nextBtn = document.getElementById('btnNext');
+    if (prevBtn) {
+      prevBtn.disabled = (currentSlide <= 1);
+      prevBtn.title = (currentSlide <= 1) ? 'Início da apresentação' : 'Slide anterior (Seta esquerda / PageUp)';
+    }
+    if (nextBtn) {
+      nextBtn.disabled = (currentSlide >= totalSlides);
+      nextBtn.title = (currentSlide >= totalSlides) ? 'Final da apresentação' : 'Próximo slide (Seta direita / PageDown / Espaço)';
+    }
+
     pingControls(1500);
     updateFooters();
 
@@ -470,23 +482,69 @@
       controls = document.createElement('div');
       controls.className = 'deck-controls';
       controls.innerHTML = `
-        <button id="btnPrev">← Anterior</button>
+        <button id="btnPrev" title="Slide anterior (Seta esquerda / PageUp)">← Anterior</button>
         <span id="slideIndicator">Slide 1 / ${totalSlides}</span>
-        <button id="btnNext">Próximo →</button>
-        <button class="btn-sec btn-solar" id="btnFS">F11 Tela Cheia</button>
+        <button id="btnNext" title="Próximo slide (Seta direita / PageDown / Espaço)">Próximo →</button>
+        <button class="btn-sec btn-solar" id="btnFS" title="Alternar Modo Apresentação em Tela Cheia (F11)">F11 Tela Cheia</button>
         <button class="btn-sec" id="btnPDF" title="Salvar Apresentação em PDF (Ctrl + P)">Exportar PDF</button>
       `;
       document.body.appendChild(controls);
+    }
 
-      document.getElementById('btnPrev').addEventListener('click', prevSlide);
-      document.getElementById('btnNext').addEventListener('click', nextSlide);
-      document.getElementById('btnFS').addEventListener('click', toggleFullScreen);
-      document.getElementById('btnPDF').addEventListener('click', exportPDF);
+    // Vinculação robusta de eventos nos botões (idempotente)
+    const prevBtn = document.getElementById('btnPrev');
+    const nextBtn = document.getElementById('btnNext');
+    const fsBtn = document.getElementById('btnFS');
+    const pdfBtn = document.getElementById('btnPDF');
 
-      // Mousemove: revela suavemente ao aproximar o cursor dos 80px inferiores da tela
+    if (prevBtn && !prevBtn._hasDeckListener) {
+      prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        prevSlide();
+      });
+      prevBtn._hasDeckListener = true;
+    }
+
+    if (nextBtn && !nextBtn._hasDeckListener) {
+      nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        nextSlide();
+      });
+      nextBtn._hasDeckListener = true;
+    }
+
+    if (fsBtn && !fsBtn._hasDeckListener) {
+      fsBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleFullScreen();
+      });
+      fsBtn._hasDeckListener = true;
+    }
+
+    if (pdfBtn && !pdfBtn._hasDeckListener) {
+      pdfBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        exportPDF();
+      });
+      pdfBtn._hasDeckListener = true;
+    }
+
+    // Monitoramento do estado de tela cheia para sincronizar o rótulo do botão
+    if (!document._hasFsListener) {
+      document.addEventListener('fullscreenchange', () => {
+        const btn = document.getElementById('btnFS');
+        if (btn) {
+          btn.textContent = document.fullscreenElement ? 'Sair Tela Cheia' : 'F11 Tela Cheia';
+        }
+      });
+      document._hasFsListener = true;
+    }
+
+    // Comportamento inteligente de auto-hide e ativação no hover
+    if (!controls._hasHoverListeners) {
       window.addEventListener('mousemove', (e) => {
-        if (window.innerHeight - e.clientY <= 80) {
-          pingControls(2200);
+        if (window.innerHeight - e.clientY <= 90) {
+          pingControls(2500);
         } else if (!controls.matches(':hover')) {
           controls.classList.remove('visible');
         }
@@ -500,8 +558,10 @@
       controls.addEventListener('mouseleave', () => {
         _controlsHideTimer = setTimeout(() => {
           controls.classList.remove('visible');
-        }, 500);
+        }, 600);
       });
+
+      controls._hasHoverListeners = true;
     }
   }
 
@@ -697,6 +757,8 @@
   // Exporta funções para escopo global caso botões inline sejam usados
   window.nextSlide = nextSlide;
   window.prevSlide = prevSlide;
+  window.goToSlide = function (n) { currentSlide = n; updateSlides(); };
+  window.updateSlides = updateSlides;
   window.toggleFullScreen = toggleFullScreen;
   window.exportPDF = exportPDF;
 })();
