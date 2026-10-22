@@ -3,7 +3,7 @@
  * DESIGN SYSTEM ORÇAMENTO — RUNTIME ENGINE DE APRESENTAÇÕES INSTITUCIONAIS
  * Governo do Estado de Goiás — Secretaria da Economia
  * Arquivo: deck.js (Imutável / Produção)
- * Versão: 3.4.7 — Controles do Apresentador Compactos & Invisíveis com Auto-Hide Hover
+ * Versão: 3.4.8 — Padronização Oficial de Rodapé (Subsecretaria Central do Orçamento & Marcador de Slide)
  * ==========================================================================
  */
 
@@ -398,6 +398,7 @@
     const indicator = document.getElementById('slideIndicator');
     if (indicator) indicator.innerText = `Slide ${currentSlide} / ${totalSlides}`;
     pingControls(1500);
+    updateFooters();
 
     autoScale();
 
@@ -502,6 +503,40 @@
         }, 500);
       });
     }
+  }
+
+  // 6. PADRONIZAÇÃO AUTOMÁTICA DOS RODAPÉS INSTITUCIONAIS (SUBSECRETARIA DO ORÇAMENTO & MARCADOR DE SLIDE)
+  function updateFooters() {
+    const slides = document.querySelectorAll('.slide');
+    const total = slides.length || 1;
+    slides.forEach((slide, idx) => {
+      if (slide.classList.contains('slide-cover') || slide.classList.contains('slide-closing')) return;
+      const footer = slide.querySelector('.slide-footer');
+      if (!footer) return;
+
+      const spans = footer.querySelectorAll('span');
+      // Atualiza o órgão emissor no primeiro span para o padrão institucional exigido
+      if (spans.length > 0) {
+        if (spans[0].textContent.includes('Governo do Estado de Goiás') || spans[0].textContent.includes('Governo de Goiás')) {
+          spans[0].textContent = 'Secretaria de Estado da Economia — Subsecretaria Central do Orçamento';
+        }
+      }
+
+      // Marcador de página padronizado (Slide XX / YY)
+      const pageStr = `Slide ${String(idx + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
+      const pageEl = footer.querySelector('.slide-page-number');
+      if (pageEl) {
+        pageEl.textContent = pageStr;
+      } else if (spans.length >= 2) {
+        spans[1].classList.add('slide-page-number');
+        spans[1].textContent = pageStr;
+      } else if (spans.length === 1) {
+        const newPageSpan = document.createElement('span');
+        newPageSpan.className = 'slide-page-number';
+        newPageSpan.textContent = pageStr;
+        footer.appendChild(newPageSpan);
+      }
+    });
   }
 
   // Função utilitária para carregamento dinâmico de scripts
@@ -645,6 +680,7 @@
     sanitizeEmojis();
     ensureControls();
     ensureHeaderBadges();
+    updateFooters();
     initCharts();
     updateSlides();
     setTimeout(updateSlides, 100);

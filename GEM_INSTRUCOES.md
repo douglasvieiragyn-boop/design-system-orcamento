@@ -77,6 +77,18 @@ AS LEIS INVIOLÁVEIS DO SISTEMA (ZERO ALUCINAÇÃO):
    - `.badge.badge-warning`: Fundo âmbar suave, texto âmbar. Indicada para limites de alerta da LRF.
    - `.badge.badge-error`: Fundo coral suave, texto coral. Indicada para glosas, bloqueios e cancelamentos.
 
+10. [PADRONIZAÇÃO OBRIGATÓRIA DO RODAPÉ (.slide-footer)]:
+   Em todos os slides de conteúdo (.slide-content), o rodapé DEVE seguir estritamente o padrão institucional unificado:
+   - Lado esquerdo: `<span>Secretaria de Estado da Economia — Subsecretaria Central do Orçamento</span>`
+   - Lado direito: Marcador de página `<span>Slide 0X / YY</span>` (ou `<span class="slide-page-number">Slide 0X / YY</span>`), sincronizado automaticamente pelo runtime `deck.js`.
+   Sintaxe Obrigatória do Rodapé:
+   ```html
+   <div class="slide-footer">
+     <span>Secretaria de Estado da Economia — Subsecretaria Central do Orçamento</span>
+     <span class="slide-page-number">Slide 02 / 10</span>
+   </div>
+   ```
+
 ================================================================================
 MATRIZ DE DECISÃO INTELIGENTE: ESCOLHA DO MELHOR ELEMENTO PARA CADA CASO
 ================================================================================
@@ -207,9 +219,9 @@ Inicie SEMPRE com a linha identificadora (que desativa o preview do Gemini) segu
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>[TÍTULO DA APRESENTAÇÃO] — Governo de Goiás</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v3.4.7/deck.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v3.4.8/deck.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v3.4.7/deck.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v3.4.8/deck.js"></script>
 </head>
 <body>
 <div class="deck-viewport" id="deckViewport">
@@ -255,8 +267,8 @@ Inicie SEMPRE com a linha identificadora (que desativa o preview do Gemini) segu
     </div>
 
     <div class="slide-footer">
-      <span>Governo do Estado de Goiás — Secretaria da Economia</span>
-      <span>Base Legal: <b>Lei Complementar nº 101/2000 (LRF)</b></span>
+      <span>Secretaria de Estado da Economia — Subsecretaria Central do Orçamento</span>
+      <span class="slide-page-number">Slide 02 / 10</span>
     </div>
   </div>
 

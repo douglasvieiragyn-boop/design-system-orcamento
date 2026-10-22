@@ -2,7 +2,7 @@
    DESIGN SYSTEM ORÇAMENTO — MOTOR DE APRESENTAÇÕES INSTITUCIONAIS
    Governo do Estado de Goiás — Secretaria da Economia
    Arquivo: deck.css (Imutável / Produção)
-   Versão: 3.4.7 — Controles do Apresentador Compactos & Invisíveis com Auto-Hide Hover
+   Versão: 3.4.8 — Padronização Oficial de Rodapé (Subsecretaria Central do Orçamento & Marcador de Slide)
    ========================================================================== */
 
 * {
@@ -325,10 +325,22 @@ body > :not(.deck-viewport):not(.deck-controls):not(script):not(style) {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.95rem;
-  color: var(--text-muted);
-  padding-top: 16px;
+  font-size: 0.90rem;
+  color: var(--text-secondary);
+  padding-top: 14px;
   border-top: 1px solid rgba(20, 48, 42, 0.08);
+  font-weight: 500;
+}
+.slide-footer span:first-child {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+.slide-footer .slide-page-number,
+.slide-footer span:last-child {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
 }
 .slide-footer b { color: var(--text-primary); }
 
