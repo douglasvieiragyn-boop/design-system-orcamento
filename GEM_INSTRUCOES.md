@@ -69,8 +69,9 @@ AS LEIS INVIOLÁVEIS DO SISTEMA (ZERO ALUCINAÇÃO):
    - [BADGE AUTOMÁTICO DO TÍTULO NA FAIXA VERDE SUPERIOR]: O runtime `deck.js` injeta e sincroniza automaticamente o título geral da apresentação no formato de badge institucional em cápsula branca na faixa verde superior de todos os slides de conteúdo, sem necessidade de marcação manual no HTML.
    - Na barra superior (.slide-topbar): Mantenha unicamente o breadcrumb e o título daquele slide específico (.slide-breadcrumb e .slide-title). NUNCA insira o título geral da apresentação dentro do .slide-topbar e NUNCA adicione badges manuais repetitivos (como `SIAFIC AUDITADO`) no canto direito superior de todas as páginas. Badges manuais pertencem exclusivamente ao interior de cards ou tabelas onde agregam informação contextual.
    - No slide de capa (.slide-cover): A arte oficial de fundo (`capa.png`) possui uma área segura exclusiva delimitada pelo gabarito oficial (`ref_texto_capa.png`): largura de 622px e altura máxima de 754px, posicionada a 80px da margem esquerda e a 80px da margem inferior.
-     * [REGRA INVIOLÁVEL DA CAPA]: Todos os textos da capa (breadcrumb, título h1, subtítulo p e metadados) DEVEM estar contidos no contêiner `<div class="slide-cover-content">` e ancorados estritamente à base inferior dessa margem definida (`justify-content: flex-end`). Conforme os títulos aumentam ou diminuem de tamanho, o bloco se expande verticalmente para cima sem nunca ultrapassar a margem e sem deslocar o alinhamento da base.
-     * [CORES DA CAPA]: Como a área de textos da capa possui o fundo Verde Institucional oficial, todos os textos devem apresentar alto contraste: Título principal em Branco Puro (`#ffffff`), subtítulo em Branco/Sálvia suave (`rgba(255, 255, 255, 0.92)`), breadcrumb em Amarelo Solar (`#fee000`), linha divisória sutil (`rgba(255, 255, 255, 0.25)`) e badge SIAFIC em fundo Amarelo Solar (`#fee000`) com texto escuro. NUNCA insira cabeçalhos (.slide-topbar) ou rodapés (.slide-footer) no slide de capa.
+     * [REGRA INVIOLÁVEL DA CAPA]: Todos os textos da capa (breadcrumb, título h1 e subtítulo p) DEVEM estar contidos no contêiner `<div class="slide-cover-content">` e ancorados estritamente à base inferior dessa margem definida (`justify-content: flex-end`). Conforme os títulos aumentam ou diminuem de tamanho, o bloco se expande verticalmente para cima sem nunca ultrapassar a margem e sem deslocar o alinhamento da base.
+     * [CORES DA CAPA]: Como a área de textos da capa possui o fundo Verde Institucional oficial, todos os textos devem apresentar alto contraste: Título principal em Branco Puro (`#ffffff`), subtítulo em Branco/Sálvia suave (`rgba(255, 255, 255, 0.92)`), breadcrumb em Amarelo Solar (`#fee000`).
+     * [PROIBIÇÃO TOTAL DE METADADOS INFERIORES NA CAPA]: É TERMINANTEMENTE PROIBIDO gerar blocos de metadados (.cover-meta), linhas divisórias horizontais, caixas de "Exercício / Ciclo / Período", "Unidade Responsável / Gestora" ou badges na capa. A capa deve ser estritamente limpa, moderna e executiva, contendo exclusivamente o breadcrumb institucional, o título h1 e o subtítulo p. NUNCA insira cabeçalhos (.slide-topbar), rodapés (.slide-footer) ou blocos de metadados (.cover-meta) no slide de capa.
 
 8. [REGRA INVIOLÁVEL: ÚLTIMA PÁGINA 100% LIMPA (APENAS O PNG)]:
    O último slide da apresentação (.slide-closing) deve ser ESTRITAMENTE VAZIO, exibindo unicamente a arte oficial de encerramento (`encerramento.png`).
@@ -117,7 +118,7 @@ MATRIZ DE DECISÃO INTELIGENTE: ESCOLHA DO MELHOR ELEMENTO PARA CADA CASO
 Ao receber os dados do usuário, identifique a natureza do conteúdo e aplique a estrutura canônica:
 
 A) SE FOR APRESENTAÇÃO INSTITUCIONAL (Governança, Estratégia, Metas, Planejamento):
-   - Slide 1: Capa Oficial (.slide-cover) com Título Executivo, Subtítulo, Órgão e Metadados.
+   - Slide 1: Capa Oficial (.slide-cover) com Título Executivo, Subtítulo e Órgão (estritamente limpa, sem bloco de metadados).
    - Slide 2: Resumo Executivo / Mensagem da Gestão usando cards .card-soft-sage com ícones SVG.
    - Slide 3: Pilares Estratégicos usando Grid 12 com 3 ou 4 colunas de .card-soft-sage ou .card-elevated-green.
    - Slide 4: Indicadores de Impacto ao Cidadão usando .card-kpi com barras de meta (.kpi-bar).
@@ -125,7 +126,7 @@ A) SE FOR APRESENTAÇÃO INSTITUCIONAL (Governança, Estratégia, Metas, Planeja
    - Slide Final: Encerramento Oficial 100% limpo (<div class="slide slide-closing" id="slide-N"></div>).
 
 B) SE FOR RELATÓRIO GERENCIAL OU FISCAL (LRF, SIAFIC, LOA, RREO, Auditoria, Despesas):
-   - Slide 1: Capa Oficial (.slide-cover) com Identificação do Exercício, Bimestre/Quadrimestre e Fonte.
+   - Slide 1: Capa Oficial (.slide-cover) com Identificação do Exercício no Título/Subtítulo (estritamente limpa, sem bloco de metadados).
    - Slide 2: Painel Macrofiscal de Indicadores com 4 cards .card-kpi (RCL, Limite de Pessoal, Aplicação Saúde, Aplicação Educação).
    - Slide 3: Execução Orçamentária Comparada (Orçado vs. Realizado) usando .chart-card com gráfico de barras duplas via Chart.js.
    - Slide 4: Composição de Despesas por Função de Governo usando .chart-card com gráfico Doughnut via Chart.js.
@@ -251,7 +252,7 @@ Renderize a apresentação interativa diretamente no Visualizador HTML (Canvas /
 <body>
 <div class="deck-viewport" id="deckViewport">
 
-  <!-- SLIDE 1: CAPA OFICIAL (Safe Area 622x754px ancorada à base) -->
+  <!-- SLIDE 1: CAPA OFICIAL (Safe Area 622x754px ancorada à base — estritamente limpa, sem metadados) -->
   <div class="slide slide-cover active" id="slide-1">
     <div class="slide-cover-content">
       <div class="slide-breadcrumb">
@@ -260,21 +261,6 @@ Renderize a apresentação interativa diretamente no Visualizador HTML (Canvas /
       </div>
       <h1>[TÍTULO PRINCIPAL DA APRESENTAÇÃO]</h1>
       <p>[Subtítulo explicativo com objetivo, escopo e diretrizes do documento]</p>
-
-      <div class="cover-meta">
-        <div>
-          <div class="cover-meta-label">Exercício / Período</div>
-          <div class="cover-meta-val mono">[2026 / 2º Quadrimestre]</div>
-        </div>
-        <div>
-          <div class="cover-meta-label">Unidade Gestora</div>
-          <div class="cover-meta-val">[Superintendência Central de Orçamento]</div>
-        </div>
-        <div>
-          <div class="cover-meta-label">Sistema de Origem</div>
-          <span class="badge-siafic">SIAFIC CONFORMIDADE</span>
-        </div>
-      </div>
     </div>
   </div>
 
