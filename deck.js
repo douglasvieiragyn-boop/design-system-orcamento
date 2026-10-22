@@ -3,7 +3,7 @@
  * DESIGN SYSTEM ORÇAMENTO — RUNTIME ENGINE DE APRESENTAÇÕES INSTITUCIONAIS
  * Governo do Estado de Goiás — Secretaria da Economia
  * Arquivo: deck.js (Imutável / Produção)
- * Versão: 3.0 — Runtime Widescreen 16:9 & Exportação PDF Nativa (100% Fidelidade)
+ * Versão: 3.1 — Runtime Widescreen 16:9 & Auto-Injeção de Badge de Cabeçalho
  * ==========================================================================
  */
 
@@ -336,6 +336,36 @@
 
   window.addEventListener('resize', autoScale);
 
+  // 9. INJEÇÃO E SINCRONIZAÇÃO AUTOMÁTICA DO BADGE DE CABEÇALHO (TÍTULO DA APRESENTAÇÃO NA FAIXA VERDE)
+  function ensureHeaderBadges() {
+    const coverTitleEl = document.querySelector('.slide-cover h1, .slide-cover .slide-title');
+    let presentationTitle = '';
+    if (coverTitleEl && coverTitleEl.innerText.trim()) {
+      presentationTitle = coverTitleEl.innerText.trim();
+    } else if (document.title) {
+      presentationTitle = document.title.split('—')[0].split('-')[0].trim();
+    }
+
+    if (!presentationTitle) return;
+
+    const contentSlides = document.querySelectorAll('.slide.slide-content, .slide:not(.slide-cover):not(.slide-closing)');
+    contentSlides.forEach(slide => {
+      if (slide.classList.contains('slide-cover') || slide.classList.contains('slide-closing')) return;
+
+      let badge = slide.querySelector('.slide-header-badge');
+      if (!badge) {
+        badge = document.createElement('div');
+        badge.className = 'slide-header-badge';
+        badge.innerText = presentationTitle;
+        badge.title = presentationTitle;
+        slide.insertBefore(badge, slide.firstChild);
+      } else if (!badge.innerText.trim()) {
+        badge.innerText = presentationTitle;
+        badge.title = presentationTitle;
+      }
+    });
+  }
+
   // INICIALIZAÇÃO GERAL ROBUSTA
   function initDeck() {
     if (!document.body) {
@@ -345,6 +375,7 @@
     patchChartJsPlatform();
     sanitizeEmojis();
     ensureControls();
+    ensureHeaderBadges();
     initCharts();
     updateSlides();
     setTimeout(updateSlides, 100);

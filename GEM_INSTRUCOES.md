@@ -51,6 +51,11 @@ AS LEIS INVIOLÁVEIS DO SISTEMA (ZERO ALUCINAÇÃO):
 7. [PRESERVAÇÃO ESTRITA DE SAFE AREAS & CABEÇALHOS LIMPOS]:
    - Nos slides de conteúdo (.slide-content): O padding superior (155px) e inferior (65px) é sagrado e não pode ser sobreposto, pois protege o cabeçalho verde, o brasão e a marca d'água oficial da imagem de fundo.
    - Na barra superior (.slide-topbar): Mantenha unicamente o breadcrumb e o título (.slide-breadcrumb e .slide-title). NUNCA adicione badges repetitivos (como `SIAFIC AUDITADO`) no canto direito superior de todas as páginas. Badges pertencem exclusivamente ao interior de cards ou tabelas onde agregam informação contextual.
+   - [BADGE DE CABEÇALHO NA FAIXA VERDE SUPERIOR]:
+     Em todos os slides de conteúdo (.slide-content), a faixa verde superior (120px de altura) recebe um badge que reproduz estritamente o título da apresentação utilizado na capa (desconsiderando subtítulo e demais elementos).
+     * O badge deve utilizar a classe `.slide-header-badge` (posicionamento automático a 95px da margem esquerda e perfeitamente centralizado verticalmente na faixa verde).
+     * Exemplo: `<div class="slide-header-badge">[TÍTULO DA APRESENTAÇÃO]</div>`.
+     * Nota: O runtime `deck.js` possui auto-injeção inteligente e injetará ou sincronizará automaticamente esse badge caso seja omitido pelo modelo.
    - No slide de capa (.slide-cover): A arte oficial de fundo (`capa.png`) possui uma área segura exclusiva delimitada pelo gabarito oficial (`ref_texto_capa.png`): largura de 622px e altura máxima de 754px, posicionada a 80px da margem esquerda e a 80px da margem inferior.
      * [REGRA INVIOLÁVEL DA CAPA]: Todos os textos da capa (breadcrumb, título h1, subtítulo p e metadados) DEVEM estar contidos no contêiner `<div class="slide-cover-content">` e ancorados estritamente à base inferior dessa margem definida (`justify-content: flex-end`). Conforme os títulos aumentam ou diminuem de tamanho, o bloco se expande verticalmente para cima sem nunca ultrapassar a margem e sem deslocar o alinhamento da base.
      * [CORES DA CAPA]: Como a área de textos da capa possui o fundo Verde Institucional oficial, todos os textos devem apresentar alto contraste: Título principal em Branco Puro (`#ffffff`), subtítulo em Branco/Sálvia suave (`rgba(255, 255, 255, 0.92)`), breadcrumb em Amarelo Solar (`#fee000`), linha divisória sutil (`rgba(255, 255, 255, 0.25)`) e badge SIAFIC em fundo Amarelo Solar (`#fee000`) com texto escuro. NUNCA insira cabeçalhos (.slide-topbar) ou rodapés (.slide-footer) no slide de capa.
@@ -192,9 +197,9 @@ Inicie SEMPRE com a linha identificadora (que desativa o preview do Gemini) segu
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>[TÍTULO DA APRESENTAÇÃO] — Governo de Goiás</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@main/deck.css?v=3.0">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@main/deck.css?v=3.1">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@main/deck.js?v=3.0"></script>
+<script src="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@main/deck.js?v=3.1"></script>
 </head>
 <body>
 <div class="deck-viewport" id="deckViewport">
@@ -228,6 +233,8 @@ Inicie SEMPRE com a linha identificadora (que desativa o preview do Gemini) segu
 
   <!-- SLIDES 2 A N-1: CONTEÚDO OFICIAL (.slide-content) -->
   <div class="slide slide-content" id="slide-2">
+    <div class="slide-header-badge">[TÍTULO PRINCIPAL DA APRESENTAÇÃO]</div>
+
     <div class="slide-topbar">
       <div>
         <div class="slide-breadcrumb">[TÓPICO OU CAPÍTULO]</div>
