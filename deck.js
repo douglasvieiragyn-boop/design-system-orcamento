@@ -3,7 +3,7 @@
  * DESIGN SYSTEM ORÇAMENTO — RUNTIME ENGINE DE APRESENTAÇÕES INSTITUCIONAIS
  * Governo do Estado de Goiás — Secretaria da Economia
  * Arquivo: deck.js (Imutável / Produção)
- * Versão: 3.4.4 — Rótulos Numéricos Ampliados (+30%), Border-Radius (8px) & Escudo Anti-Sobreposição
+ * Versão: 3.4.5 — Legendas Circulares (pointStyle circle), Rótulos Numéricos (+30%) & Escudo Anti-Sobreposição
  * ==========================================================================
  */
 
@@ -84,13 +84,29 @@
         proto._dsPatched = true;
       }
     }
+    applyChartDefaults();
     registerDataLabelsPlugin();
   }
 
-  // 3. PLUGIN NATIVO DE RÓTULOS DE DADOS (DATA LABELS) PARA CHART.JS (ZERO DEPENDÊNCIAS / PDF FRIENDLY)
+  // 3. PADRONIZAÇÃO DE LEGENDAS (CIRCUNFERÊNCIAS) E RÓTULOS NATIVOS DE DADOS PARA CHART.JS
+  // Garante que todas as legendas usem circunferências (pointStyle: 'circle') em vez de retângulos
+  function applyChartDefaults() {
+    if (typeof Chart === 'undefined') return;
+    try {
+      if (Chart.defaults && Chart.defaults.plugins && Chart.defaults.plugins.legend) {
+        if (!Chart.defaults.plugins.legend.labels) {
+          Chart.defaults.plugins.legend.labels = {};
+        }
+        Chart.defaults.plugins.legend.labels.usePointStyle = true;
+        Chart.defaults.plugins.legend.labels.pointStyle = 'circle';
+      }
+    } catch (e) {}
+  }
+
   // Renderiza rótulos numéricos e percentuais diretamente no Canvas 2D, garantindo impressão estática perfeita (Ctrl + P)
   function registerDataLabelsPlugin() {
     if (typeof Chart === 'undefined') return;
+    applyChartDefaults();
     if (Chart.registry && Chart.registry.plugins && Chart.registry.plugins.get('dsDataLabels')) return;
 
     function getContrast(colorStr) {
@@ -276,12 +292,14 @@
 
   // Chamada imediata e hook reativo para garantir registro instantâneo mesmo se Chart.js carregar de forma assíncrona
   if (typeof Chart !== 'undefined') {
+    applyChartDefaults();
     registerDataLabelsPlugin();
   }
   if (typeof window !== 'undefined') {
     let _chartHolder = window.Chart;
-    if (_chartHolder && typeof _chartHolder.register === 'function') {
-      try { _chartHolder.register(dsDataLabelsPlugin); } catch (e) {}
+    if (_chartHolder) {
+      applyChartDefaults();
+      registerDataLabelsPlugin();
     }
     try {
       Object.defineProperty(window, 'Chart', {
@@ -290,9 +308,8 @@
         get() { return _chartHolder; },
         set(newChart) {
           _chartHolder = newChart;
-          if (_chartHolder && typeof _chartHolder.register === 'function') {
-            try { _chartHolder.register(dsDataLabelsPlugin); } catch (e) {}
-          }
+          applyChartDefaults();
+          registerDataLabelsPlugin();
         }
       });
     } catch (e) {}
@@ -300,6 +317,7 @@
 
   // 4. AUTO-RENDERIZADOR DECLARATIVO DE GRÁFICOS CHART.JS
   function initCharts() {
+    applyChartDefaults();
     registerDataLabelsPlugin();
     if (typeof Chart === 'undefined') return;
 

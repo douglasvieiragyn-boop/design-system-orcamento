@@ -2059,7 +2059,7 @@
   .chart-legend-chip {
     width: 10px;
     height: 10px;
-    border-radius: 3px;
+    border-radius: 50%;
     flex: none;
   }
   .chart-tooltip-pro {
@@ -3527,6 +3527,15 @@
       tooltipBg: isDark ? '#152c1e' : '#0d1711',
       cardBorder: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(15, 28, 24, 0.07)'
     };
+  }
+
+  // PADRONIZAÇÃO DE LEGENDAS (CIRCUNFERÊNCIAS) PARA CHART.JS
+  if (typeof Chart !== 'undefined' && Chart.defaults && Chart.defaults.plugins && Chart.defaults.plugins.legend) {
+    if (!Chart.defaults.plugins.legend.labels) {
+      Chart.defaults.plugins.legend.labels = {};
+    }
+    Chart.defaults.plugins.legend.labels.usePointStyle = true;
+    Chart.defaults.plugins.legend.labels.pointStyle = 'circle';
   }
 
   // PLUGIN NATIVO DE RÓTULOS DE DADOS (DATA LABELS) PARA CHART.JS (ZERO DEPENDÊNCIAS / PDF FRIENDLY)
