@@ -2,7 +2,8 @@
    DESIGN SYSTEM ORÇAMENTO — MOTOR DE APRESENTAÇÕES INSTITUCIONAIS
    Governo do Estado de Goiás — Secretaria da Economia
    Arquivo: deck.css (Imutável / Produção)
-   Versão: 3.5.0 — Suporte 1:1 a Pré-visualização Gemini Web & Iframes (Auto-Scale Reativo & Containment)
+   Versão: 4.0.0 — Gramática de Composição (layouts + blocos combináveis),
+                   CSS do boilerplate absorvido, gráficos declarativos, ajuste automático de densidade
    ========================================================================== */
 
 * {
@@ -11,6 +12,10 @@
   padding: 0;
   font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+html {
+  font-size: 130% !important; /* Padrão tipográfico aumentado em 30% */
 }
 
 :root {
@@ -27,6 +32,12 @@
   --text-muted: #738b7b;
   --border-subtle: rgba(20, 48, 42, 0.10);
   --shadow-soft: 0 4px 12px rgba(15, 28, 24, 0.03), 0 16px 36px -4px rgba(15, 28, 24, 0.06);
+  --shadow-soft-sm: 0 2px 8px rgba(15, 28, 24, 0.03), 0 8px 20px -4px rgba(15, 28, 24, 0.05);
+  --shadow-soft-md: 0 6px 16px rgba(15, 28, 24, 0.05), 0 20px 40px -6px rgba(15, 28, 24, 0.08);
+  --sage-border: rgba(33, 150, 71, 0.14);
+  --sage-200: #cbd8cf;
+  --sage-100: #dee8e1;
+  --trans-fast: 0.15s ease;
 }
 
 body {
@@ -125,17 +136,9 @@ body > :not(.deck-viewport):not(.deck-controls):not(script):not(style) {
   display: none !important;
 }
 
-/* Tipografia de Alto Contraste da Capa Oficial (Fundo Verde Institucional) */
+/* Ocultação mandatória de breadcrumbs ou selos na Capa Oficial */
 .slide-cover .slide-breadcrumb {
-  color: var(--yellow-500) !important;
-  font-size: 1rem !important;
-  font-weight: 700 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.06em !important;
-  margin-bottom: 14px !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 8px !important;
+  display: none !important;
 }
 
 .slide-cover h1,
@@ -209,7 +212,8 @@ body > :not(.deck-viewport):not(.deck-controls):not(script):not(style) {
 /* 2. Conteúdo Oficial (Protege 100% a barra verde e logo da imagem 4K) */
 .slide-content,
 .slide-content-bg {
-  background-image: url('https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@main/apresentacao/bg-conteudo.png') !important;
+  background-color: #ffffff !important;
+  background-image: url('apresentacao/bg-conteudo.png'), url('https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@main/apresentacao/bg-conteudo.png') !important;
   padding: 155px 95px 65px 95px !important;
 }
 
@@ -222,7 +226,7 @@ body > :not(.deck-viewport):not(.deck-controls):not(script):not(style) {
   background: #ffffff !important;
   border: none !important;
   color: var(--green-700) !important;
-  font-size: 1.05rem !important;
+  font-size: 16.8px !important;
   font-weight: 700 !important;
   padding: 8px 22px !important;
   border-radius: 999px !important;
@@ -290,7 +294,7 @@ body > :not(.deck-viewport):not(.deck-controls):not(script):not(style) {
 }
 
 .slide-breadcrumb {
-  font-size: 0.95rem;
+  font-size: 15.2px !important;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -302,18 +306,20 @@ body > :not(.deck-viewport):not(.deck-controls):not(script):not(style) {
 }
 
 .slide-title {
-  font-size: 2.2rem;
+  font-size: 35.2px !important;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text-primary);
+  line-height: 1.2 !important;
 }
 
+.badge-table,
 .badge-siafic {
   background: var(--sage-bg);
   color: var(--green-500);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 700;
-  padding: 8px 20px;
+  padding: 6px 16px;
   border-radius: 999px;
   white-space: nowrap;
 }
@@ -322,7 +328,7 @@ body > :not(.deck-viewport):not(.deck-controls):not(script):not(style) {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.90rem;
+  font-size: 14.4px !important;
   color: var(--text-secondary);
   padding-top: 14px;
   border-top: 1px solid rgba(20, 48, 42, 0.08);
@@ -331,6 +337,7 @@ body > :not(.deck-viewport):not(.deck-controls):not(script):not(style) {
 .slide-footer span:first-child {
   color: var(--text-secondary);
   font-weight: 500;
+  font-size: 14.4px !important;
 }
 .slide-footer .slide-page-number,
 .slide-footer span:last-child {
@@ -338,6 +345,7 @@ body > :not(.deck-viewport):not(.deck-controls):not(script):not(style) {
   color: var(--text-primary);
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.02em;
+  font-size: 14.4px !important;
 }
 .slide-footer b { color: var(--text-primary); }
 
@@ -349,6 +357,9 @@ body > :not(.deck-viewport):not(.deck-controls):not(script):not(style) {
   flex: 1;
   align-items: stretch;
 }
+/* Grid aninhado por engano ocupa a largura toda (antes caía em 1/12) */
+.grid-12 > .grid-12 { grid-column: 1 / -1; margin: 0; }
+.grid-12 > * { min-width: 0; }
 
 .mono {
   font-variant-numeric: tabular-nums;
@@ -464,8 +475,10 @@ body > :not(.deck-viewport):not(.deck-controls):not(script):not(style) {
 }
 .badge-sage {
   background: var(--sage-bg);
-  color: var(--green-700);
-  border: 1px solid rgba(33, 150, 71, 0.16);
+  color: var(--green-500);
+  border: 1px solid rgba(33, 150, 71, 0.2);
+  font-size: 0.78rem;
+  padding: 5px 14px;
 }
 .badge-pine {
   background: var(--green-500);
@@ -574,8 +587,27 @@ body > :not(.deck-viewport):not(.deck-controls):not(script):not(style) {
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
-.card-elevated-green .card-title { font-size: 1.85rem; font-weight: 700; margin-top: 8px; }
-.card-elevated-green .card-desc { font-size: 1.05rem; color: rgba(255, 255, 255, 0.92); line-height: 1.55; margin-top: 10px; }
+.card-elevated-green .card-title { font-size: 1.85rem; font-weight: 700; margin-top: 8px; color: #ffffff !important; }
+.card-elevated-green .card-desc { font-size: 1.05rem; color: rgba(255, 255, 255, 0.92) !important; line-height: 1.55; margin-top: 10px; }
+.card-elevated-green p,
+.card-elevated-green li { color: rgba(255, 255, 255, 0.92) !important; }
+.card-elevated-green b,
+.card-elevated-green strong { color: #ffffff !important; }
+.card-elevated-green .key-points-list { display: flex; flex-direction: column; gap: 14px; margin: 16px 0 20px 0; }
+.card-elevated-green .key-point-item {
+  color: rgba(255, 255, 255, 0.92) !important;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.card-elevated-green .key-point-item b { color: #ffffff !important; }
+.card-elevated-green .key-point-bullet { background: var(--yellow-500) !important; width: 8px; height: 8px; border-radius: 50%; margin-top: 7px; flex-shrink: 0; }
 .btn-white {
   background: #ffffff;
   color: var(--green-500);
@@ -652,38 +684,66 @@ body > :not(.deck-viewport):not(.deck-controls):not(script):not(style) {
   display: block !important;
 }
 
-/* 6. Tabela SIAFIC */
+/* 6. Tabela Orçamentária / Demonstrativo Fiscal (Responsiva & Linha Única) */
 .table-box {
   background: #ffffff;
   border-radius: 20px;
   border: 1px solid var(--border-subtle);
   box-shadow: var(--shadow-soft);
-  overflow: hidden;
-  margin-block: 16px;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  width: 100% !important;
+  margin-block: 14px;
   flex: 1;
 }
+.table-soft,
+.table-box table,
 .table-siafic {
-  width: 100%;
+  width: 100% !important;
   border-collapse: separate;
   border-spacing: 0;
-  font-size: 1.05rem;
+  font-size: clamp(0.72rem, 0.95vw, 0.90rem) !important; /* Limite mínimo de 0.72rem para densidade sem quebra */
+  table-layout: auto;
 }
+.table-soft thead th,
+.table-box thead th,
 .table-siafic thead th {
   background: var(--sage-bg);
   color: var(--text-secondary);
-  font-size: 0.85rem;
+  font-size: clamp(0.65rem, 0.8vw, 0.78rem) !important;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  padding: 18px 26px;
+  letter-spacing: 0.05em;
+  padding: 14px 22px !important;
   border-bottom: 1px solid var(--border-subtle);
   text-align: left;
+  white-space: nowrap !important; /* Informação sempre em linha única */
 }
+.table-soft tbody td,
+.table-box tbody td,
 .table-siafic tbody td {
-  padding: 18px 26px;
+  padding: 14px 22px !important;
   border-bottom: 1px solid rgba(20, 48, 42, 0.06);
   color: var(--text-primary);
   vertical-align: middle;
+  white-space: nowrap !important; /* Informações cabem estritamente na mesma linha */
+}
+.table-soft tbody tr:last-child td,
+.table-box tbody tr:last-child td,
+.table-siafic tbody tr:last-child td {
+  border-bottom: none;
+}
+.table-soft tbody tr:hover,
+.table-box tbody tr:hover,
+.table-siafic tbody tr:hover {
+  background: rgba(33, 150, 71, 0.03);
+}
+.table-soft .td-truncate,
+.table-box .td-truncate {
+  max-width: 480px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap !important;
 }
 .ne-badge {
   font-family: inherit;
@@ -691,9 +751,552 @@ body > :not(.deck-viewport):not(.deck-controls):not(script):not(style) {
   font-weight: 700;
   color: var(--green-500);
   background: rgba(31, 149, 71, 0.08);
-  padding: 6px 14px;
+  padding: 4px 10px;
   border-radius: 8px;
+  white-space: nowrap !important;
 }
+
+/* ==========================================================================
+   ARQUITETURAS DE LAYOUT & ARQUÉTIPOS EDITORIAIS (GRID ASSIMÉTRICO 16:9)
+   Governo do Estado de Goiás — Secretaria da Economia
+   ========================================================================== */
+
+/* 1. Utilitários Canônicos de Colunas (Grid 12) */
+.col-12 { grid-column: span 12 !important; }
+.col-9  { grid-column: span 9 !important; }
+.col-8  { grid-column: span 8 !important; }
+.col-7  { grid-column: span 7 !important; }
+.col-6  { grid-column: span 6 !important; }
+.col-5  { grid-column: span 5 !important; }
+.col-4  { grid-column: span 4 !important; }
+.col-3  { grid-column: span 3 !important; }
+
+/* 2. Pilha Vertical Flexível (Para Assimetria 8:4 / 4:8) */
+.flex-stack {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 20px !important;
+  height: 100% !important;
+  justify-content: space-between !important;
+}
+.flex-stack > * {
+  flex: 1 1 auto !important;
+  margin: 0 !important;
+}
+/* Blocos editoriais mantêm a altura natural; os cards absorvem o espaço restante */
+.flex-stack > .prose, .flex-stack > .figure, .flex-stack > .lede, .flex-stack > .eyebrow,
+.flex-stack > .statement, .flex-stack > .badge-row, .flex-stack > .source-note,
+.flex-stack > .figure-row, .flex-stack > .table-kpi-strip {
+  flex: 0 0 auto !important;
+}
+
+/* 3. Arquétipo Spotlight Hero: Mega Indicador Monumental */
+.card-kpi-hero {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 36px 32px;
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  box-sizing: border-box;
+  height: 100% !important;
+}
+.card-kpi-hero .kpi-val {
+  font-size: 3.4rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.03em !important;
+  color: var(--green-500) !important;
+  line-height: 1.05 !important;
+  margin: 14px 0 8px 0 !important;
+}
+.card-kpi-hero .kpi-label {
+  font-size: 1.15rem !important;
+  font-weight: 600 !important;
+  color: var(--text-secondary) !important;
+  line-height: 1.4 !important;
+}
+
+/* 4. Arquétipo Pipeline / Fluxo da Despesa (Esteira Sequencial) */
+.pipeline-step {
+  background: var(--sage-bg);
+  border-radius: 18px;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid var(--border-subtle);
+  position: relative;
+  box-shadow: 0 4px 14px rgba(15, 28, 24, 0.02);
+}
+.pipeline-step .step-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--green-700);
+  background: #ffffff;
+  padding: 4px 10px;
+  border-radius: 999px;
+  align-self: flex-start;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.pipeline-step .step-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 4px;
+}
+.pipeline-step .step-val {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--green-500);
+}
+.pipeline-step .step-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* 5. Arquétipo Régua / Termômetro de Limites da LRF */
+.lrf-meter {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 28px 32px;
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  height: 100%;
+  box-sizing: border-box;
+}
+.lrf-meter-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.lrf-scale-track {
+  position: relative;
+  width: 100%;
+  height: 16px;
+  background: #dee8e1;
+  border-radius: 999px;
+  margin: 56px 0 44px 0;
+}
+.lrf-scale-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--green-500);
+}
+.lrf-marker {
+  position: absolute;
+  bottom: -8px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  line-height: 1.25;
+  font-size: 0.74rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.lrf-marker::after {
+  content: '';
+  width: 2px;
+  height: 30px;
+  background: #0d1711;
+  margin-top: 2px;
+  opacity: 0.35;
+}
+.lrf-marker.current {
+  top: 22px;
+  bottom: auto;
+  color: var(--green-700);
+}
+.lrf-marker.current::after {
+  display: none;
+}
+.lrf-marker.current::before {
+  content: '▲';
+  font-size: 10px;
+  color: var(--green-500);
+  margin-bottom: 2px;
+}
+
+/* 6. Barra Superior de Mini-KPIs para Tabela SIAFIC Combinada */
+.table-kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 14px;
+  width: 100%;
+}
+.mini-kpi-card {
+  background: var(--sage-bg);
+  border-radius: 14px;
+  padding: 14px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  border: 1px solid var(--border-subtle);
+}
+.mini-kpi-card .mini-lbl {
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  letter-spacing: 0.04em;
+}
+.mini-kpi-card .mini-val {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* 7. Lista Editorial de Diretrizes & Recomendações */
+.key-points-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 10px;
+}
+.key-point-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 1.02rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+.key-point-bullet {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green-500);
+  margin-top: 8px;
+  flex-shrink: 0;
+}
+.key-point-item b {
+  color: var(--text-primary);
+}
+
+/* ==========================================================================
+   v4.0 — GRAMÁTICA DE COMPOSIÇÃO
+   Layouts = divisão do grid (spans). Blocos = componentes abaixo.
+   Qualquer bloco cabe em qualquer região; a SKILL.md orienta a escolha.
+   ========================================================================== */
+
+/* --- Utilitários de região --- */
+.grid-12.is-stacked { grid-template-rows: auto 1fr; }   /* faixa curta em cima + área principal */
+.grid-12.is-split   { grid-template-rows: 1fr 1fr; }    /* duas linhas iguais */
+.grid-12.is-center  { align-content: center; }          /* conteúdo curto centralizado */
+.row-2  { grid-row: span 2; }
+.self-center { align-self: center; }
+.col-start-2 { grid-column-start: 2 !important; }
+.col-start-3 { grid-column-start: 3 !important; }
+.stack { display: flex; flex-direction: column; gap: 24px; min-width: 0; }   /* pilha natural, sem esticar */
+.divider-left { border-left: 1px solid var(--border-subtle); padding-left: 48px; }
+.badge-row { display: flex; flex-wrap: wrap; gap: 10px; }
+
+/* --- Slide divisor de seção (.slide.slide-content.slide-section) --- */
+.slide-section .section-block {
+  margin: auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1300px;
+  padding-left: 48px;
+  border-left: 8px solid var(--green-500);
+}
+.section-num {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--green-500);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+.section-title {
+  font-size: 4.2rem;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+}
+.section-lede {
+  font-size: 1.45rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  max-width: 52ch;
+}
+
+/* --- Texto corrido sem caixa (editorial) --- */
+.prose { font-size: 1.12rem; line-height: 1.6; color: var(--text-secondary); }
+.prose h3 { font-size: 1.5rem; font-weight: 700; color: var(--text-primary); line-height: 1.25; margin-bottom: 12px; }
+.prose p + p, .prose p + ul, .prose ul + p { margin-top: 14px; }
+.prose ul { padding-left: 1.2em; }
+.prose li + li { margin-top: 8px; }
+.prose li::marker { color: var(--green-500); }
+.prose b, .prose strong { color: var(--text-primary); }
+.lede { font-size: 1.5rem; line-height: 1.5; color: var(--text-primary); font-weight: 400; }
+.lede b { color: var(--green-500); }
+.eyebrow {
+  font-size: 0.85rem; font-weight: 700; color: var(--green-500);
+  text-transform: uppercase; letter-spacing: 0.1em;
+}
+
+/* --- Card neutro branco (texto com borda, sem cor de ênfase) --- */
+.card-plain {
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: var(--shadow-soft-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.card-plain h3 { font-size: 1.35rem; font-weight: 700; color: var(--text-primary); }
+.card-plain p { font-size: 1.05rem; line-height: 1.6; color: var(--text-secondary); }
+
+/* --- Statement: frase de impacto do próprio usuário, sem caixa --- */
+.statement {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+  padding: 8px 0 8px 44px;
+  border-left: 6px solid var(--green-500);
+}
+.statement-text {
+  font-size: 2.5rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+.statement-text b { color: var(--green-500); font-weight: 700; }
+.col-3 .statement-text, .col-4 .statement-text, .col-5 .statement-text, .col-6 .statement-text { font-size: 1.75rem; }
+.statement-source {
+  font-size: 0.95rem; font-weight: 700; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+
+/* --- Quote: transcrição literal de norma, lei, fala oficial --- */
+.quote {
+  position: relative;
+  background: var(--sage-bg);
+  border-radius: 20px;
+  padding: 56px 48px 36px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+.quote::before {
+  content: '\201C';
+  position: absolute;
+  top: 6px; left: 36px;
+  font-size: 6rem; line-height: 1;
+  font-weight: 700;
+  color: var(--green-500);
+  opacity: 0.35;
+}
+.quote-text { font-size: 1.4rem; line-height: 1.55; color: var(--text-primary); }
+.quote-source { font-size: 0.95rem; font-weight: 700; color: var(--green-700); }
+
+/* --- Figure: número monumental sem caixa (editorial) --- */
+.figure {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  min-width: 0;
+}
+.figure-val {
+  font-size: 5.6rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--green-500);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.figure-label { font-size: 1.45rem; font-weight: 600; color: var(--text-primary); line-height: 1.3; }
+.figure-note { font-size: 1.05rem; line-height: 1.5; color: var(--text-secondary); max-width: 46ch; }
+.figure--md .figure-val { font-size: 3.6rem; }
+.figure--sm .figure-val { font-size: 2.6rem; }
+.figure--ink .figure-val { color: var(--text-primary); }
+
+/* Linha de figures separadas por fios verticais (alternativa sem cards à fileira de KPIs) */
+.figure-row {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  align-items: start;
+  align-content: center;
+}
+.figure-row > .figure { padding: 0 40px; border-left: 1px solid var(--border-subtle); }
+.figure-row > .figure:first-child { padding-left: 0; border-left: none; }
+.figure-row .figure-val { font-size: 3.4rem; }
+
+/* --- Delta: de → para (dois estados e a variação entre eles) --- */
+.delta {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 40px;
+}
+.delta-side {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 36px;
+  border-radius: 20px;
+  background: var(--sage-bg);
+  height: 100%;
+  justify-content: center;
+}
+.delta-side.is-to { background: var(--green-500); color: #ffffff; }
+.delta-tag {
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+.delta-side.is-to .delta-tag { color: var(--yellow-500); }
+.delta-val { font-size: 3.4rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; font-variant-numeric: tabular-nums; color: var(--text-primary); }
+.delta-side.is-to .delta-val { color: #ffffff; }
+.delta-label { font-size: 1.05rem; line-height: 1.5; color: var(--text-secondary); }
+.delta-side.is-to .delta-label { color: rgba(255, 255, 255, 0.92); }
+.delta-arrow {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  color: var(--green-500);
+}
+.delta-arrow::before { content: '\2192'; font-size: 3.6rem; font-weight: 700; line-height: 1; }
+.delta-change {
+  font-size: 1.2rem; font-weight: 700; font-variant-numeric: tabular-nums;
+  background: var(--yellow-500); color: var(--text-primary);
+  padding: 6px 16px; border-radius: 999px; white-space: nowrap;
+}
+
+/* --- Steps: processo sequencial com conectores (usa .pipeline-step) --- */
+.steps {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 40px;
+  align-items: stretch;
+}
+.steps > .pipeline-step { justify-content: flex-start; gap: 12px; padding: 28px 26px; }
+.steps .step-title { font-size: 1.3rem; }
+.steps .step-val { margin-top: 6px; font-size: 2rem; letter-spacing: -0.02em; }
+.steps .step-desc { font-size: 0.95rem; line-height: 1.5; }
+.steps > .pipeline-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -29px;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  border-top: 3px solid var(--green-500);
+  border-right: 3px solid var(--green-500);
+  transform: translateY(-50%) rotate(45deg);
+  opacity: 0.55;
+}
+.steps > .pipeline-step.is-current { background: var(--green-500); border-color: var(--green-500); }
+.steps > .pipeline-step.is-current .step-title,
+.steps > .pipeline-step.is-current .step-val { color: #ffffff; }
+.steps > .pipeline-step.is-current .step-desc { color: rgba(255, 255, 255, 0.9); }
+.steps > .pipeline-step.is-current .step-badge { background: var(--yellow-500); color: var(--text-primary); }
+.steps.is-vertical { grid-auto-flow: row; gap: 18px; }
+.steps.is-vertical > .pipeline-step:not(:last-child)::after { display: none; }
+
+/* --- Timeline: marcos datados --- */
+.timeline {
+  list-style: none;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 28px;
+  position: relative;
+  padding-top: 52px;
+  align-content: center;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 16px;
+  height: 3px;
+  background: var(--sage-100);
+  border-radius: 3px;
+}
+.timeline > li { position: relative; display: flex; flex-direction: column; gap: 8px; }
+.timeline > li::before {
+  content: '';
+  position: absolute;
+  top: -45px; left: 0;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 3px solid var(--green-500);
+  box-sizing: border-box;
+}
+.timeline > li.is-done::before { background: var(--green-500); }
+.timeline > li.is-current::before { background: var(--yellow-500); border-color: var(--green-700); box-shadow: 0 0 0 6px rgba(254, 224, 0, 0.3); }
+.tl-date { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green-500); }
+.tl-title { font-size: 1.2rem; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
+.tl-desc { font-size: 0.95rem; line-height: 1.5; color: var(--text-secondary); }
+.timeline.is-vertical { grid-auto-flow: row; padding-top: 0; padding-left: 48px; gap: 22px; }
+.timeline.is-vertical::before { left: 9px; right: auto; top: 6px; bottom: 6px; width: 3px; height: auto; }
+.timeline.is-vertical > li::before { top: 2px; left: -48px; }
+
+/* --- Agenda: sumário numerado do deck --- */
+.agenda {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 72px;
+  align-content: center;
+}
+.agenda.is-single { grid-template-columns: 1fr; }
+.agenda > li {
+  display: flex;
+  align-items: baseline;
+  gap: 28px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.agenda-num { font-size: 2.2rem; font-weight: 700; color: var(--green-500); font-variant-numeric: tabular-nums; min-width: 2.2ch; line-height: 1; }
+.agenda-title { font-size: 1.4rem; font-weight: 600; color: var(--text-primary); line-height: 1.3; }
+.agenda-desc { display: block; font-size: 1rem; font-weight: 400; color: var(--text-secondary); margin-top: 4px; }
+
+/* --- Gráfico: cabeçalho, subtítulo, variação sem moldura --- */
+.chart-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 14px; }
+.chart-head h3 { margin: 0 !important; }
+.chart-card h3 { font-size: 1.25rem; font-weight: 700; color: var(--text-primary); }
+.chart-sub { font-size: 0.9rem; color: var(--text-secondary); margin-top: 4px; }
+.chart-card.is-flat { background: transparent; border: none; box-shadow: none; padding: 0; }
+.deck-chart { position: relative; flex: 1 1 auto; min-height: 260px; width: 100%; }
+.deck-chart > .chart-container-box { position: absolute !important; inset: 0; min-height: 0 !important; }
+.chart-empty {
+  display: flex; align-items: center; justify-content: center; height: 100%;
+  border: 2px dashed var(--sage-200); border-radius: 14px;
+  color: var(--text-muted); font-weight: 600;
+}
+
+/* --- Tabela: colunas numéricas e linha de total --- */
+.table-soft th.num, .table-soft td.num,
+.table-box th.num, .table-box td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.table-soft tr.is-total td, .table-box tr.is-total td { font-weight: 700; background: var(--sage-bg); }
+.table-soft tr.is-highlight td, .table-box tr.is-highlight td { background: rgba(254, 224, 0, 0.18); }
+
+/* --- Legenda / nota de rodapé de fonte dos dados --- */
+.source-note { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
+
 
 /* ==========================================================================
    CONTROLES FLUTUANTES DO APRESENTADOR (COMPACTO & AUTO-HIDE HOVER)

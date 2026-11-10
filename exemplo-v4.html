@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panorama Econômico & Solvência Fiscal de Goiás — Governo de Goiás</title>
+<link rel="stylesheet" href="deck.css">
+<script src="assets/chart.umd.min.js"></script>
+<script src="deck.js"></script>
+<script>(function(){function s(){var w=innerWidth||1920,h=innerHeight||1080,k=Math.min(w/1920,h/1080);if(k>0)document.documentElement.style.setProperty('--scale',k)}s();addEventListener('resize',s);addEventListener('load',s)})();</script>
+</head>
+<body>
+<!-- ROTEIRO
+02 abrir      · 12         · agenda
+03 situar     · 12 stack   · figure-row / chart(line) + prose
+04 evidenciar · 5·7        · figure | prose + card-elevated-green
+05 detalhar   · 7·5        · chart(donut+center) | kpi + prose
+06 comparar   · 7·5 inv    · chart(radar) | prose + card-solar
+07 comparar   · 6·6        · figure+prose | figure+prose (editorial)
+08 evidenciar · 12 stack   · lrf-meter / prose + card-solar
+09 evidenciar · 8·4        · chart(bar) | figure + prose
+10 detalhar   · 12         · steps
+11 detalhar   · 12 stack   · table-kpi-strip / table
+12 concluir   · 7·5        · agenda numerada | card-solar + card-soft-sage
+-->
+<div class="deck-viewport" id="deckViewport">
+
+  <div class="slide slide-cover active" id="slide-1">
+    <div class="slide-cover-content"><h1>Panorama Econômico &amp; Solvência Fiscal de Goiás</h1><p>Diagnóstico Macroeconômico, Dinâmica Tributária, Matriz Produtiva e Diretrizes Estratégicas de Desenvolvimento (Exercícios 2024–2027)</p></div>
+  </div>
+
+  <div class="slide slide-content" id="slide-2">
+    <div class="slide-topbar"><div><div class="slide-breadcrumb">Roteiro</div><h2 class="slide-title">Estrutura da apresentação</h2></div></div>
+    <div class="grid-12 is-center">
+      <div class="col-12">
+        <ol class="agenda">
+          <li><span class="agenda-num">01</span><span class="agenda-title">Indicadores Macroeconômicos</span></li>
+          <li><span class="agenda-num">02</span><span class="agenda-title">Sustentabilidade das Contas Públicas</span></li>
+          <li><span class="agenda-num">03</span><span class="agenda-title">Finanças Públicas &amp; Arrecadação</span></li>
+          <li><span class="agenda-num">04</span><span class="agenda-title">Posicionamento Estratégico</span></li>
+          <li><span class="agenda-num">05</span><span class="agenda-title">Matriz Produtiva Regional</span></li>
+          <li><span class="agenda-num">06</span><span class="agenda-title">Lei de Responsabilidade Fiscal</span></li>
+          <li><span class="agenda-num">07</span><span class="agenda-title">Comércio Exterior &amp; Globalização</span></li>
+          <li><span class="agenda-num">08</span><span class="agenda-title">Logística &amp; Investimentos Estruturantes</span></li>
+          <li><span class="agenda-num">09</span><span class="agenda-title">Execução Programática Orçamentária</span></li>
+          <li><span class="agenda-num">10</span><span class="agenda-title">Diretrizes Estratégicas 2025–2027</span></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-content" id="slide-3">
+    <div class="slide-topbar"><div><div class="slide-breadcrumb">Indicadores Macroeconômicos</div><h2 class="slide-title">Evolução do Produto Interno Bruto (Goiás vs. Brasil)</h2></div></div>
+    <div class="grid-12 is-stacked">
+      <div class="col-12">
+        <div class="figure-row">
+          <div class="figure"><div class="figure-val">R$ 338,4 Bi</div><div class="figure-label">PIB Consolidado do Estado de Goiás</div></div>
+          <div class="figure"><div class="figure-val">+4,8% a.a.</div><div class="figure-label">Expansão real de Goiás</div></div>
+          <div class="figure figure--ink"><div class="figure-val">+2,1%</div><div class="figure-label">Média nacional</div></div>
+        </div>
+      </div>
+      <div class="col-7">
+        <div class="chart-card">
+          <div class="chart-head"><div><h3>Trajetória de Crescimento Real Acumulado (%) — Base 2020</h3></div></div>
+          <div class="deck-chart" data-type="line">
+            <script type="application/json">{"labels":["2020","2021","2022","2023","2024","2025","2026 Proj."],"series":[{"label":"Goiás","data":[100.0,105.2,111.8,118.6,126.1,134.2,142.8]},{"label":"Brasil","data":[100.0,103.9,107.2,110.8,114.5,118.2,121.9]}],"decimals":1}</script>
+          </div>
+        </div>
+      </div>
+      <div class="col-5 prose self-center">
+        <p>A economia goiana consolidou ritmo de expansão superior ao índice nacional <b>pelo quarto ano consecutivo</b>. O desempenho reflete a sinergia entre o agronegócio de alta tecnologia e o fortalecimento do polo industrial do interior, sustentando elevados níveis de emprego formal e renda familiar.</p>
+        <p>A desconcentração econômica para eixos como Rio Verde, Jataí e Itumbiara reduziu a dependência exclusiva da região metropolitana, ancorando o consumo das famílias em patamares recordes.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-content" id="slide-4">
+    <div class="slide-topbar"><div><div class="slide-breadcrumb">Sustentabilidade das Contas Públicas</div><h2 class="slide-title">Resultado Fiscal e Capacidade de Pagamento do Tesouro</h2></div></div>
+    <div class="grid-12">
+      <div class="col-5 figure">
+        <span class="badge badge-pine" style="align-self:flex-start">Superávit Primário</span>
+        <div class="figure-val">R$ 4,18 Bi</div>
+        <div class="figure-label">Economia Fiscal Acumulada no Exercício Vigente</div>
+        <p class="figure-note">Classificação CAPAG: <b>Nota A</b> pela Secretaria do Tesouro Nacional (STN)</p>
+      </div>
+      <div class="col-7 flex-stack">
+        <div class="prose">
+          <h3>Diagnóstico de Equilíbrio das Finanças Estaduais</h3>
+          <p>O rigor na contenção do custeio administrativo e a modernização da arrecadação viabilizaram a reversão estrutural do endividamento público. Com a manutenção da nota máxima de capacidade de pagamento perante a Secretaria do Tesouro Nacional, o Estado preserva aval soberano para captação de recursos com juros reduzidos em agências multilaterais internacionais, sem comprometer as gerações futuras.</p>
+        </div>
+        <div class="card-elevated-green">
+          <div><div class="card-label">Diretriz do Tesouro</div><div class="card-title">Preservação de Reservas de Liquidez para Investimentos</div><div class="card-desc">Garantia de contrapartidas orçamentárias permanentes para programas estruturais de infraestrutura rodoviária e saneamento básico sem elevação de alíquotas.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-content" id="slide-5">
+    <div class="slide-topbar"><div><div class="slide-breadcrumb">Finanças Públicas &amp; Arrecadação</div><h2 class="slide-title">Composição da Receita Tributária Própria</h2></div></div>
+    <div class="grid-12">
+      <div class="col-7">
+        <div class="chart-card">
+          <div class="chart-head"><div><h3>Distribuição das Fontes de Arrecadação Fiscal — Exercício Consolidado</h3></div></div>
+          <div class="deck-chart" data-type="donut" data-format="{v}%">
+            <script type="application/json">{"labels":["ICMS (Indústria & Comércio)","IPVA (Frota Estadual)","FPE & Repasses Federais","ITCD (Doações & Heranças)","Taxas e Contribuições","Demais Receitas Correntes"],"series":[{"label":"Participação","data":[58.4,14.2,12.8,6.1,5.2,3.3]}],"center":{"value":"R$ 44,6 Bi","label":"Receita Corrente Líquida Total"}}</script>
+          </div>
+        </div>
+      </div>
+      <div class="col-5 flex-stack">
+        <div class="card-kpi">
+          <div><div class="kpi-val mono">89,2%</div><div class="kpi-label">da meta anual arrecadada</div></div>
+          <div class="kpi-progress-wrap"><div class="kpi-progress-bar"><div class="kpi-progress-fill" style="width:89.2%"></div></div></div>
+        </div>
+        <div class="card-soft-sage">
+          <div class="card-soft-sage-header"><h3>Nota Técnica de Desempenho Tributário</h3></div>
+          <p>O ICMS permanece como o principal esteio da arrecadação (58,4%), sustentado pela indústria de transformação e comércio atacadista. O cruzamento automatizado de documentos eletrônicos elevou em <b>+11,3%</b> a recuperação de passivos sem aumento da carga para micro e pequenas empresas, viabilizando o congelamento de tributos sobre itens de primeira necessidade e energia elétrica rural.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-content" id="slide-6">
+    <div class="slide-topbar"><div><div class="slide-breadcrumb">Posicionamento Estratégico</div><h2 class="slide-title">Índice Multidimensional de Competitividade dos Estados</h2></div></div>
+    <div class="grid-12">
+      <div class="col-7">
+        <div class="chart-card is-flat">
+          <div class="chart-head"><div><h3>Goiás vs. Média Nacional — Pilares de Atração de Investimentos</h3><p class="chart-sub">Pontuação 0–100</p></div></div>
+          <div class="deck-chart" data-type="radar">
+            <script type="application/json">{"labels":["Solidez Fiscal","Segurança Pública","Infraestrutura Viária","Capital Humano","Eficiência da Máquina","Ambiente de Negócios"],"series":[{"label":"Goiás","data":[92,88,79,74,85,89]},{"label":"Brasil","data":[65,58,60,62,59,64]}]}</script>
+          </div>
+        </div>
+      </div>
+      <div class="col-5 flex-stack">
+        <div class="statement" style="flex:1.3 1 0">
+          <p class="statement-text" style="font-size:1.75rem">O Estado lidera nacionalmente nos quesitos de <b>Segurança Pública (88 pts)</b> e <b>Solidez Fiscal (92 pts)</b>, fatores determinantes para a atração de multinacionais farmacêuticas, centros de dados e operadores logísticos no Centro-Oeste brasileiro.</p>
+          <span class="statement-source">Destaque em Segurança e Solidez Fiscal</span>
+        </div>
+        <div class="card-solar-cta">
+          <div><div class="card-label">Modernização Digital e Capital Humano</div><div class="card-title">Plano de Ação Integrado</div><div class="card-desc">Expansão de 14 novas Escolas do Futuro (EFG) para formação de mão de obra em inteligência artificial, biotecnologia e logística integrada.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-content" id="slide-7">
+    <div class="slide-topbar"><div><div class="slide-breadcrumb">Matriz Produtiva Regional</div><h2 class="slide-title">Confronto Estrutural dos Dois Motores Econômicos Goianos</h2></div></div>
+    <div class="grid-12 is-center">
+      <div class="col-6 stack">
+        <div class="figure figure--md">
+          <span class="eyebrow">Agronegócio de Alta Precisão &amp; Bioenergia</span>
+          <div class="figure-val">R$ 142,5 Bi</div>
+          <div class="figure-label">VAB Agropecuário Consolidado</div>
+        </div>
+        <div class="prose"><p>Produção recorde de grãos (soja e milho com <b>32,4 milhões de toneladas</b>) e liderança na cadeia sucroalcooleira. Os avanços em biodefensivos e irrigação monitorada por sensores elevaram o valor adicionado agropecuário em <b>+8,2%</b> no último ciclo agrícola, diminuindo perdas climáticas e impulsionando cooperativas regionais.</p></div>
+        <div class="badge-row"><span class="badge badge-sage">VAB Agropecuário Líder</span></div>
+      </div>
+      <div class="col-6 stack divider-left">
+        <div class="figure figure--md">
+          <span class="eyebrow">Parque Industrial &amp; Biotecnologia</span>
+          <div class="figure-val">R$ 96,8 Bi</div>
+          <div class="figure-label">VAB Industrial</div>
+        </div>
+        <div class="prose"><p>Goiás sedia o segundo maior polo farmacêutico do Brasil (DAIA em Anápolis), responsável pela fabricação de genéricos e insumos hospitalares estratégicos, associado ao polo automotivo e de fertilizantes que geram <b>mais de 115 mil empregos diretos</b> com remuneração acima da média regional.</p></div>
+        <div class="badge-row"><span class="badge badge-sage">+14,6% Expansão Fabril</span><span class="badge badge-sage">ProGoiás Ativo</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-content" id="slide-8">
+    <div class="slide-topbar"><div><div class="slide-breadcrumb">Lei de Responsabilidade Fiscal</div><h2 class="slide-title">Controle e Disciplina na Despesa Total com Pessoal (DTP / RCL)</h2></div></div>
+    <div class="grid-12 is-stacked">
+      <div class="col-12">
+        <div class="lrf-meter">
+          <div class="lrf-meter-head"><h3>Executivo (Goiás): <span class="mono" style="color:var(--green-500)">42,35%</span></h3><span class="badge badge-sage">Situação Regular / Abaixo do Alerta</span></div>
+          <div class="lrf-scale-track">
+            <div class="lrf-scale-fill" style="width:70.58%"></div>
+            <span class="lrf-marker" style="left:73.5%">Alerta<br>44,10%</span>
+            <span class="lrf-marker" style="left:81%">Prudencial<br>48,60%</span>
+            <span class="lrf-marker" style="left:90%">Máximo LRF<br>54,00%</span>
+            <span class="lrf-marker current" style="left:70.58%">42,35%</span>
+          </div>
+          <p class="source-note">Margem de Segurança: <b>6,25 pontos percentuais</b> abaixo do limite prudencial.</p>
+        </div>
+      </div>
+      <div class="col-7 prose self-center">
+        <h3>Fundamentação Técnica e Jurídica</h3>
+        <p>A gestão de pessoal implementou regras de transição previdenciária e rígido controle de cargos em comissão. Os vencimentos de carreiras finalísticas de segurança, saúde e educação foram recompostos sem comprometer as metas fiscais nem estourar as travas do Art. 19 da LRF.</p>
+      </div>
+      <div class="col-5 self-center">
+        <div class="card-solar-cta">
+          <div><div class="card-label">Governança Fiscal</div><div class="card-title mono">42,50%</div><div class="card-desc">Projeção de fechamento do exercício indica estabilidade em <b>42,50%</b>, garantindo segurança jurídica perante os órgãos de controle.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-content" id="slide-9">
+    <div class="slide-topbar"><div><div class="slide-breadcrumb">Comércio Exterior &amp; Globalização</div><h2 class="slide-title">Balança Comercial de Goiás — Exportações vs. Importações</h2></div></div>
+    <div class="grid-12">
+      <div class="col-8">
+        <div class="chart-card">
+          <div class="chart-head"><div><h3>Evolução dos Fluxos Comerciais Internacionais</h3><p class="chart-sub">US$ Bilhões — 2021 a 2026</p></div></div>
+          <div class="deck-chart" data-type="bar" data-format="{v}" data-decimals="1">
+            <script type="application/json">{"labels":["2021","2022","2023","2024","2025","2026 (Est.)"],"series":[{"label":"Exportações","data":[8.8,11.2,12.4,13.1,13.8,14.2]},{"label":"Importações","data":[4.1,4.8,5.1,5.3,5.6,5.8]}]}</script>
+          </div>
+        </div>
+      </div>
+      <div class="col-4 flex-stack">
+        <div class="figure figure--md">
+          <span class="badge badge-pine" style="align-self:flex-start">Superávit Comercial</span>
+          <div class="figure-val">US$ +8,4 Bi</div>
+          <div class="figure-label">Saldo Comercial</div>
+          <p class="figure-note">Vendas externas superam em mais de 140% as compras de insumos</p>
+        </div>
+        <div class="prose" style="font-size:1rem"><p>China, União Europeia e Oriente Médio absorveram <b>68%</b> das vendas externas goianas. O complexo soja, carnes bovina e avícola, minério de ouro e ferroligas mantiveram sólida liquidez e câmbio favorável, garantindo reservas cambiais e fortalecendo a balança de pagamentos do Estado.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-content" id="slide-10">
+    <div class="slide-topbar"><div><div class="slide-breadcrumb">Logística &amp; Investimentos Estruturantes</div><h2 class="slide-title">Ciclo de Execução Física e Financeira das Obras do FUNDEINFRA</h2></div></div>
+    <div class="grid-12 is-center">
+      <div class="col-12">
+        <div class="steps">
+          <div class="pipeline-step"><span class="step-badge">Fase 01</span><div class="step-title">Arrecadação e Fundo</div><div class="step-val mono">R$ 2,85 Bi</div><div class="step-desc">Captação setorial vinculada exclusivamente à infraestrutura viária e escoamento produtivo.</div></div>
+          <div class="pipeline-step"><span class="step-badge">Fase 02</span><div class="step-title">Projetos &amp; Licitações</div><div class="step-val mono">1.420 km</div><div class="step-desc">Extensão de rodovias estaduais contratadas para pavimentação, duplicação e restauração profunda.</div></div>
+          <div class="pipeline-step"><span class="step-badge">Fase 03</span><div class="step-title">Obras em Execução</div><div class="step-val mono">84 Frentes</div><div class="step-desc">Intervenções ativas conectando o Sudoeste, Norte e Entorno do Distrito Federal aos trilhos da FNS.</div></div>
+          <div class="pipeline-step"><span class="step-badge">Fase 04</span><div class="step-title">Ganhos Logísticos</div><div class="step-val mono">-22% Frete</div><div class="step-desc">Redução média do custo de transporte e eliminação de gargalos nos polos de armazenagem de grãos.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-content" id="slide-11">
+    <div class="slide-topbar"><div><div class="slide-breadcrumb">Execução Programática Orçamentária</div><h2 class="slide-title">Programas Estratégicos de Fomento Econômico — Execução Orçamentária</h2></div></div>
+    <div class="grid-12 is-stacked">
+      <div class="col-12">
+        <div class="table-kpi-strip" style="margin:0">
+          <div class="mini-kpi-card"><span class="mini-lbl">Dotação Total Autorizada</span><span class="mini-val mono">R$ 890,0 Mi</span></div>
+          <div class="mini-kpi-card"><span class="mini-lbl">Valor Liquidado e Atestado</span><span class="mini-val mono">R$ 785,4 Mi (88,2%)</span></div>
+          <div class="mini-kpi-card"><span class="mini-lbl">Saldo Financeiro Disponível</span><span class="mini-val mono">R$ 104,6 Mi</span></div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="table-box" style="margin:0">
+          <table class="table-soft">
+            <thead><tr><th>Nota de Empenho</th><th>Unidade Orçamentária</th><th>Programa de Trabalho</th><th class="num">Dotação (R$)</th><th class="num">Liquidado (R$)</th><th style="text-align:center">Situação</th></tr></thead>
+            <tbody>
+              <tr><td><span class="ne-badge">2026NE001420</span></td><td>Secretaria de Indústria e Comércio</td><td>23.691.1040.2180 — Fomento aos Distritos Industriais</td><td class="num">R$ 310.000.000,00</td><td class="num">R$ 288.450.000,00</td><td style="text-align:center"><span class="badge badge-sage">LIQUIDADO</span></td></tr>
+              <tr><td><span class="ne-badge">2026NE001895</span></td><td>GoiásFomento — Agência de Fomento</td><td>23.661.1042.4110 — Microcrédito e Inclusão Produtiva</td><td class="num">R$ 220.000.000,00</td><td class="num">R$ 201.320.000,00</td><td style="text-align:center"><span class="badge badge-sage">LIQUIDADO</span></td></tr>
+              <tr><td><span class="ne-badge">2026NE002340</span></td><td>Secretaria de Agricultura e Pecuária</td><td>20.606.1030.3320 — Eletrificação Trifásica e Irrigação</td><td class="num">R$ 195.000.000,00</td><td class="num">R$ 168.900.000,00</td><td style="text-align:center"><span class="badge badge-sage">LIQUIDADO</span></td></tr>
+              <tr><td><span class="ne-badge">2026NE002811</span></td><td>FAPEG — Apoio à Pesquisa Científica</td><td>19.573.1025.2100 — Inovação Tecnológica e Startups</td><td class="num">R$ 165.000.000,00</td><td class="num">R$ 126.730.000,00</td><td style="text-align:center"><span class="badge badge-sage">LIQUIDADO</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-content" id="slide-12">
+    <div class="slide-topbar"><div><div class="slide-breadcrumb">Diretrizes Estratégicas 2025–2027</div><h2 class="slide-title">Agenda Governamental de Desregulamentação e Sustentabilidade</h2></div></div>
+    <div class="grid-12">
+      <div class="col-7">
+        <span class="eyebrow">Prioridades para o Ciclo de Médio Prazo</span>
+        <ol class="agenda is-single" style="margin-top:8px">
+          <li><span class="agenda-num">01</span><span class="agenda-title">Descarbonização &amp; Energia Limpa<span class="agenda-desc">Expansão de parques solares e fomento a biometano nos canaviais com isenção de taxas cartorárias.</span></span></li>
+          <li><span class="agenda-num">02</span><span class="agenda-title">Liberdade Econômica Plena<span class="agenda-desc">Licenciamento ambiental e alvarás automatizados em até <b>48 horas</b> para 320 atividades de baixo risco.</span></span></li>
+          <li><span class="agenda-num">03</span><span class="agenda-title">Consolidação de Polos Tecnológicos<span class="agenda-desc">Implantação de incentivos fiscais específicos para data centers e semicondutores em Anápolis e Goiânia.</span></span></li>
+          <li><span class="agenda-num">04</span><span class="agenda-title">Proteção e Blindagem Fiscal<span class="agenda-desc">Manutenção dos fundos de equalização e cumprimento integral das travas da Lei de Responsabilidade Fiscal.</span></span></li>
+        </ol>
+      </div>
+      <div class="col-5 flex-stack">
+        <div class="card-solar-cta"><div><div class="card-label">Ação Imediata · até 15 de novembro</div><div class="card-title">Conselho de Desenvolvimento do Estado</div><div class="card-desc">Convocação extraordinária para deliberação das cartas de consulta do ProGoiás até <b>15 de novembro</b>.</div></div></div>
+        <div class="card-soft-sage"><div class="card-soft-sage-header"><div class="icon-box-sage"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h3>Certificação de Conformidade Institucional</h3></div><p>Validação contínua perante o CONFAZ e o Tribunal de Contas de Goiás.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide slide-closing" id="slide-13"></div>
+</div>
+</body>
+</html>

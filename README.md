@@ -143,3 +143,12 @@ A demonstração interativa na Seção 08 apresenta um painel funcional de **Ges
 - `assets/chart.umd.min.js`: Biblioteca Chart.js empacotada localmente para permitir operação 100% offline e resiliente.
 - `audit_v2.js`: Suíte automatizada de auditoria técnica rigorosa para validação contínua dos 12 padrões de conformidade do Design System.
 - `README.md`: Documentação oficial das diretrizes de arquitetura, acessibilidade WCAG e conformidade orçamentária.
+
+---
+
+## 7. Skill de Apresentações (`apresentacao-orcamento`) — v4.0.0
+
+- `SKILL.md`: skill universal (Claude, Gemini, ChatGPT, Antigravity) que gera decks HTML 16:9. A IA escolhe layout, blocos e gráficos a partir do conteúdo (gramática de composição), com fidelidade total ao texto e aos números enviados.
+- `deck.css` / `deck.js`: motor servido via CDN — `https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v4.0.0/`. Faz escala 16:9, rodapé e numeração automáticos, gráficos declarativos (`.deck-chart` + JSON), ajuste de densidade e exportação PDF.
+- `exemplo-v4.html`: deck de referência com os blocos da v4 (agenda, figure-row, delta, steps, lrf-meter, timeline, gráficos declarativos).
+- Decks antigos fixados em `@v3.5.0` continuam funcionando sem alteração.
