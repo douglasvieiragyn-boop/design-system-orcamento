@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visualizador — Design System Orçamento</title>
+<style>
+  :root {
+    --green-500: #219647; --green-700: #16642f; --yellow-500: #fee000;
+    --sage-bg: #ebf5ee; --canvas: #f2f6f3; --ink: #0d1711; --ink2: #4f6656;
+    --border: rgba(20, 48, 42, 0.12);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Segoe UI", system-ui, sans-serif; }
+  html, body { height: 100%; }
+  body { background: var(--canvas); color: var(--ink); display: flex; flex-direction: column; }
+
+  header {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    padding: 10px 16px; background: #fff; border-bottom: 1px solid var(--border);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; margin-right: auto; }
+  .brand-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--green-500); box-shadow: 6px 0 0 var(--yellow-500); margin-right: 8px; }
+  .brand b { font-size: 15px; }
+  .brand span { font-size: 13px; color: var(--ink2); }
+  button {
+    border: 1px solid var(--border); background: #fff; color: var(--ink);
+    font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 999px; cursor: pointer;
+  }
+  button:hover:not(:disabled) { background: var(--sage-bg); }
+  button.primary { background: var(--green-500); border-color: var(--green-500); color: #fff; }
+  button.primary:hover:not(:disabled) { background: var(--green-700); }
+  button:disabled { opacity: .4; cursor: default; }
+
+  main { flex: 1; display: flex; min-height: 0; }
+  #stage { flex: 1; min-width: 0; position: relative; background: #0d1711; }
+  #stage iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: none; }
+  #stage.has-deck iframe { display: block; }
+
+  #drop {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 24px;
+    background: var(--canvas);
+  }
+  #stage.has-deck #drop { display: none; }
+  .drop-card {
+    width: min(720px, 100%); background: #fff; border: 2px dashed rgba(33, 150, 71, .35);
+    border-radius: 20px; padding: 32px; display: flex; flex-direction: column; gap: 16px;
+  }
+  .drop-card h1 { font-size: 22px; }
+  .drop-card ol { padding-left: 20px; color: var(--ink2); line-height: 1.7; font-size: 15px; }
+  .drop-card ol b { color: var(--ink); }
+  textarea {
+    width: 100%; min-height: 160px; resize: vertical; border: 1px solid var(--border); border-radius: 12px;
+    padding: 12px; font-family: Consolas, "Cascadia Mono", monospace; font-size: 12px; color: var(--ink);
+    background: #fbfdfb;
+  }
+  textarea:focus { outline: 2px solid var(--green-500); outline-offset: 1px; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .hint { font-size: 13px; color: var(--ink2); }
+  .error { font-size: 13px; color: #b45309; background: rgba(245,158,11,.12); padding: 8px 12px; border-radius: 10px; display: none; }
+  .error.show { display: block; }
+
+  @media (max-width: 640px) {
+    header { padding: 8px 12px; }
+    .brand span { display: none; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><i class="brand-dot"></i><b>Visualizador</b><span>Design System Orçamento</span></div>
+  <button id="btnNew" disabled title="Colar outra apresentação">Colar outra</button>
+  <button id="btnTab" disabled title="Abrir a apresentação sozinha numa nova aba">Abrir em nova aba</button>
+  <button id="btnSave" disabled title="Baixar o arquivo .html">Baixar .html</button>
+  <button id="btnFull" class="primary" disabled title="Apresentar em tela cheia">Tela cheia</button>
+</header>
+
+<main>
+  <div id="stage">
+    <div id="drop">
+      <div class="drop-card">
+        <h1>Cole aqui a apresentação gerada no GoIA</h1>
+        <ol>
+          <li>No Canvas do GoIA, clique em <b>Exportar → Copiar conteúdo</b>.</li>
+          <li>Clique na caixa abaixo e cole com <b>Ctrl + V</b>. A apresentação abre na hora.</li>
+        </ol>
+        <textarea id="src" placeholder="<!DOCTYPE html> … </html>" spellcheck="false"></textarea>
+        <div id="err" class="error"></div>
+        <div class="row">
+          <button id="btnShow" class="primary">Visualizar</button>
+          <span class="hint">Também aceita arrastar um arquivo .html para esta área.</span>
+        </div>
+      </div>
+    </div>
+    <iframe id="view" title="Apresentação" allow="fullscreen"></iframe>
+  </div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  const KEY = 'ds-orcamento-visualizador:ultimo';
+  const $ = id => document.getElementById(id);
+  const stage = $('stage'), src = $('src'), view = $('view'), err = $('err');
+  const buttons = ['btnNew', 'btnTab', 'btnSave', 'btnFull'].map($);
+  let current = '';
+
+  // Limpa o que vem do Canvas: cercas de markdown, linhas em branco duplicadas,
+  // texto antes de <!DOCTYPE>/<html> e depois de </html>.
+  function extractHtml(raw) {
+    let t = String(raw || '').replace(/\r\n?/g, '\n').replace(/ /g, ' ');
+    t = t.replace(/^\s*```[a-zA-Z]*\s*\n/, '').replace(/\n\s*```\s*$/, '');
+    const start = t.search(/<!DOCTYPE html|<html[\s>]/i);
+    if (start < 0) return null;
+    t = t.slice(start);
+    const end = t.search(/<\/html>/i);
+    if (end >= 0) t = t.slice(0, end + 7);
+    // O Canvas de documento separa cada linha por uma linha vazia: compacta.
+    const lines = t.split('\n');
+    const blanks = lines.filter(l => l.trim() === '').length;
+    if (blanks > lines.length * 0.35) t = t.replace(/\n[ \t]*\n/g, '\n');
+    // Slides sem o contêiner .deck-viewport ficam ocultos pelo deck.css: envolve-os.
+    if (!/class="[^"]*deck-viewport/.test(t) && /class="[^"]*\bslide\b/.test(t)) {
+      t = t.replace(/<body([^>]*)>/i, '<body$1>\n<div class="deck-viewport" id="deckViewport">')
+           .replace(/<\/body>/i, '</div>\n</body>');
+    }
+    return t;
+  }
+
+  function show(raw) {
+    const html = extractHtml(raw);
+    if (!html) {
+      err.textContent = 'Não encontrei o início de um HTML (<!DOCTYPE html> ou <html>). Copie o conteúdo completo do Canvas.';
+      err.classList.add('show');
+      return;
+    }
+    err.classList.remove('show');
+    current = html;
+    view.srcdoc = html;
+    stage.classList.add('has-deck');
+    buttons.forEach(b => b.disabled = false);
+    try { localStorage.setItem(KEY, html); } catch (e) {}
+    try { const m = html.match(/<title>([^<]*)<\/title>/i); if (m) document.title = m[1] + ' — Visualizador'; } catch (e) {}
+    setTimeout(() => { try { view.focus(); } catch (e) {} }, 300);
+  }
+
+  src.addEventListener('paste', e => {
+    const text = e.clipboardData && e.clipboardData.getData('text/plain');
+    if (text) { e.preventDefault(); src.value = text; show(text); }
+  });
+  $('btnShow').addEventListener('click', () => show(src.value));
+
+  // Colar em qualquer lugar da página (fora do iframe)
+  document.addEventListener('paste', e => {
+    if (e.target === src) return;
+    const text = e.clipboardData && e.clipboardData.getData('text/plain');
+    if (text && extractHtml(text)) { e.preventDefault(); src.value = text; show(text); }
+  });
+
+  // Arrastar arquivo .html
+  ['dragover', 'drop'].forEach(ev => document.addEventListener(ev, e => {
+    e.preventDefault();
+    if (ev === 'drop' && e.dataTransfer.files[0]) {
+      e.dataTransfer.files[0].text().then(t => { src.value = t; show(t); });
+    }
+  }));
+
+  $('btnNew').addEventListener('click', () => {
+    stage.classList.remove('has-deck'); view.removeAttribute('srcdoc');
+    src.value = ''; buttons.forEach(b => b.disabled = true); src.focus();
+  });
+  $('btnFull').addEventListener('click', () => {
+    (view.requestFullscreen ? view.requestFullscreen() : Promise.reject()).catch(() => {});
+  });
+  $('btnTab').addEventListener('click', () => {
+    const url = URL.createObjectURL(new Blob([current], { type: 'text/html' }));
+    window.open(url, '_blank');
+  });
+  $('btnSave').addEventListener('click', () => {
+    const m = current.match(/<title>([^<—-]*)/i);
+    const name = ((m && m[1].trim()) || 'apresentacao').normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-|-$/g, '').toLowerCase();
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([current], { type: 'text/html' }));
+    a.download = name + '.html';
+    a.click();
+  });
+
+  // Reabre a última apresentação deste navegador (conveniência local)
+  try { const last = localStorage.getItem(KEY); if (last) { src.value = last; } } catch (e) {}
+  src.focus();
+})();
+</script>
+</body>
+</html>

@@ -1,9 +1,9 @@
-/**
+﻿/**
  * ==========================================================================
  * DESIGN SYSTEM ORÇAMENTO — RUNTIME ENGINE DE APRESENTAÇÕES INSTITUCIONAIS
  * Governo do Estado de Goiás — Secretaria da Economia
  * Arquivo: deck.js
- * Versão: 4.0.0 — Gráficos declarativos (.deck-chart + JSON), rodapé automático,
+ * Versão: 4.0.1 — Gráficos declarativos (.deck-chart + JSON), rodapé automático,
  *                 ajuste automático de densidade, sem ativos base64 mortos.
  *
  * O que este arquivo faz sozinho (a IA NÃO precisa escrever):
@@ -19,7 +19,7 @@
 (function () {
   'use strict';
 
-  const VERSION = '4.0.0';
+  const VERSION = '4.0.1';
   const ORG_DEFAULT = 'Secretaria de Estado da Economia — Subsecretaria Central do Orçamento';
   const FONT = '"Segoe UI", system-ui, sans-serif';
   const PALETTE = ['#219647', '#738b7b', '#9eb2a4', '#cbd8cf', '#16642f', '#dee8e1'];
@@ -709,8 +709,21 @@
   });
   window.addEventListener('resize', autoScale);
 
+  // Slides gerados sem o contêiner .deck-viewport ficariam ocultos pelo deck.css: envolve-os.
+  function ensureViewport() {
+    if (document.querySelector('.deck-viewport')) return;
+    const slides = Array.from(document.querySelectorAll('body .slide'));
+    if (!slides.length) return;
+    const vp = document.createElement('div');
+    vp.className = 'deck-viewport';
+    vp.id = 'deckViewport';
+    slides[0].parentNode.insertBefore(vp, slides[0]);
+    slides.forEach(s => vp.appendChild(s));
+  }
+
   function initDeck() {
     if (!document.body) { setTimeout(initDeck, 30); return; }
+    ensureViewport();
     patchChartJsPlatform();
     sanitizeEmojis();
     ensureControls();

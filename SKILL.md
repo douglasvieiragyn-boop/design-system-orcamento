@@ -3,13 +3,14 @@ name: apresentacao-orcamento
 description: >-
   Ative SOMENTE quando a mensagem mencionar /apresentacao-orcamento ou @apresentacao-orcamento.
   Gera e edita apresentações institucionais HTML 16:9 do Governo de Goiás (Secretaria da Economia)
-  no Design System Orçamento, entregues SEMPRE no Canvas/visualizador HTML, nunca como bloco de código no chat.
+  no Design System Orçamento, entregues SEMPRE como um arquivo HTML num documento do Canvas, nunca como bloco
+  de código no chat e nunca pelo gerador de slides nativo do Canvas (ele remove o CSS/JS do Design System).
   Se a menção vier com texto, dados ou tema, gere a apresentação completa NO MESMO TURNO, sem pedir
   para carregar antes. Só confirme o carregamento quando a mensagem for apenas a menção, sem conteúdo.
   Fidelidade total: a IA decide a forma (layout, blocos, gráficos); nunca inventa, altera ou reordena conteúdo.
 ---
 
-# Apresentação Orçamento — v4.0.0
+# Apresentação Orçamento — v4.0.1
 
 Você é o **diretor de arte** deste deck, não um preenchedor de modelo. A identidade visual é fixa;
 a composição de cada slide é decisão sua, tomada a partir do conteúdo. Todo o estilo e o comportamento
@@ -24,10 +25,12 @@ vêm do `deck.css` e do `deck.js` no CDN — você escreve só a estrutura e o c
 
 ### 0.1 Visualizador HTML obrigatório (Gemini Canvas, Claude Artifact, ChatGPT Canvas)
 
-- **Gemini**: crie a apresentação como **documento de código no Canvas** (painel lateral com abas Código/Visualizar), para o usuário acompanhar e editar em tempo real. É proibido entregar o HTML como bloco de código no corpo do chat. Não escreva frases do tipo "Código da apresentação (clique em copiar)" — elas desativam a prévia.
+- **Gemini / Gemini Enterprise (GoIA)**: escreva o HTML completo **num documento do Canvas** (painel lateral), para o usuário acompanhar e editar. É proibido entregar o HTML como bloco de código no corpo do chat.
+- **NUNCA use o gerador de slides nativo do Canvas** ("modo apresentação", slides com miniaturas): ele remove `<link>` e `<script>`, então o `deck.css`, o `deck.js` e o Chart.js não carregam, e o Design System se perde. A apresentação é sempre UM arquivo HTML no Canvas de documento.
+- **Ao entregar no GoIA**, a única linha no chat é: "Para ver os slides: no Canvas, **Exportar → Copiar conteúdo** e cole em https://douglasvieiragyn-boop.github.io/design-system-orcamento/visualizar.html" (o Canvas do GoIA mostra o código, não a prévia).
 - **Claude**: entregue como Artifact HTML. **ChatGPT**: entregue no Canvas.
 - **Alterações pedidas no chat** ("muda o título do slide 3", "troca o gráfico", "inclui um slide"): **atualize o mesmo documento do Canvas** (não abra outro e não cole o HTML no chat), mantendo o arquivo íntegro de ponta a ponta.
-- **Silêncio no chat**: fora do Canvas, no máximo 1 linha (ex.: "Apresentação atualizada no Canvas."). Sem saudações, desculpas, listas do que mudou ou explicações.
+- **Silêncio no chat**: fora do Canvas, no máximo 1 linha (no GoIA, a linha do visualizador acima). Sem saudações, desculpas, listas do que mudou ou explicações.
 - Plataforma sem visualizador: entregue o HTML num único bloco de código e nada mais.
 
 ## 1. Fidelidade — onde está sua liberdade e onde ela acaba
@@ -199,7 +202,7 @@ O `deck.js` reduz automaticamente até ~22% um slide que transborda, mas isso é
 - [ ] Cada slide tem um protagonista claro; nenhum layout repetido em sequência; ≥ 1/3 editorial.
 - [ ] Gráficos só via `.deck-chart`; sem botões, emojis, cores ou fontes fora do sistema.
 - [ ] Roteiro em comentário no topo do `<body>`.
-- [ ] Entregue no Canvas/visualizador (não como bloco de código no chat), arquivo completo, chat em silêncio.
+- [ ] Entregue no Canvas de documento (não no gerador de slides nativo, não como bloco de código no chat), arquivo completo, com `<div class="deck-viewport" id="deckViewport">` envolvendo todos os slides.
 
 ## 11. Esqueleto do arquivo (é tudo que você precisa escrever além dos slides)
 
@@ -210,9 +213,9 @@ O `deck.js` reduz automaticamente até ~22% um slide que transborda, mas isso é
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{Título} — Governo de Goiás</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v4.0.0/deck.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v4.0.1/deck.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v4.0.0/deck.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v4.0.1/deck.js"></script>
 <script>(function(){function s(){var w=innerWidth||1920,h=innerHeight||1080,k=Math.min(w/1920,h/1080);if(k>0)document.documentElement.style.setProperty('--scale',k)}s();addEventListener('resize',s);addEventListener('load',s)})();</script>
 </head>
 <body>
