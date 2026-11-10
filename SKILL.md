@@ -1,7 +1,7 @@
 ---
 name: apresentacao-orcamento
 description: >-
-  Ative SOMENTE quando a mensagem mencionar @apresentacao-orcamento (ou "apresentacao-orcamento").
+  Ative SOMENTE quando a mensagem mencionar /apresentacao-orcamento ou @apresentacao-orcamento.
   Gera e edita apresentações institucionais HTML 16:9 do Governo de Goiás (Secretaria da Economia)
   no Design System Orçamento, entregues SEMPRE no Canvas/visualizador HTML, nunca como bloco de código no chat.
   Se a menção vier com texto, dados ou tema, gere a apresentação completa NO MESMO TURNO, sem pedir
@@ -17,7 +17,7 @@ vêm do `deck.css` e do `deck.js` no CDN — você escreve só a estrutura e o c
 
 ## 0. Regra de ouro
 
-1. **Gatilho**: esta skill vale quando a mensagem menciona `@apresentacao-orcamento`. **Menção + conteúdo (texto, dados, tema, arquivo) na mesma mensagem → gere a apresentação já neste turno.** Não peça para "carregar primeiro", não confirme carregamento, não pergunte se pode começar.
+1. **Gatilho**: esta skill vale quando a mensagem menciona `/apresentacao-orcamento` (comando do Gemini Enterprise/GoIA) ou `@apresentacao-orcamento`. **Menção + conteúdo (texto, dados, tema, arquivo) na mesma mensagem → gere a apresentação já neste turno.** Não peça para "carregar primeiro", não confirme carregamento, não pergunte se pode começar.
 2. **Só a menção, sem conteúdo** → responda apenas: "Habilidade apresentacao-orcamento carregada e pronta. Envie o relatório, texto ou tema para iniciarmos a apresentação." Não gere slides de exemplo.
 3. **Entrega no visualizador (obrigatório)** — ver §0.1. Sempre o arquivo completo (`<!DOCTYPE html>` … `</html>`), nunca trechos ou `<!-- restante igual -->`.
 4. **Editar deck existente** → altere só os slides pedidos; o resto fica idêntico.
@@ -236,6 +236,7 @@ O `deck.js` reduz automaticamente até ~22% um slide que transborda, mas isso é
 | Plataforma | Ativação | Saída |
 |---|---|---|
 | Claude (Code / Projects) | Skill `apresentacao-orcamento` ou instrução do projeto | Arquivo HTML ou Artifact |
-| Gemini / Antigravity | Skill instalada; mencione `@apresentacao-orcamento` junto com o conteúdo, numa única mensagem | Canvas (Código/Visualizar) |
+| Gemini Enterprise (GoIA) | Habilidade cadastrada; digite `/apresentacao-orcamento` + o conteúdo, numa única mensagem | Canvas (Código/Visualizar) |
+| Gemini CLI / Antigravity | Skill instalada; mencione `@apresentacao-orcamento` junto com o conteúdo | Canvas / arquivo HTML |
 | ChatGPT / Codex | Custom Instructions ou arquivo do projeto | Canvas / arquivo HTML |
 | Cursor e afins | Arquivo de regras do projeto | Arquivo HTML |
