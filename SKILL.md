@@ -27,10 +27,9 @@ vêm do `deck.css` e do `deck.js` no CDN — você escreve só a estrutura e o c
 
 - **Gemini / Gemini Enterprise (GoIA)**: escreva o HTML completo **num documento do Canvas** (painel lateral), para o usuário acompanhar e editar. É proibido entregar o HTML como bloco de código no corpo do chat.
 - **NUNCA use o gerador de slides nativo do Canvas** ("modo apresentação", slides com miniaturas): ele remove `<link>` e `<script>`, então o `deck.css`, o `deck.js` e o Chart.js não carregam, e o Design System se perde. A apresentação é sempre UM arquivo HTML no Canvas de documento.
-- **Ao entregar no GoIA**, a única linha no chat é: "Para ver os slides: no Canvas, **Exportar → Copiar conteúdo** e cole em https://douglasvieiragyn-boop.github.io/design-system-orcamento/visualizar.html" (o Canvas do GoIA mostra o código, não a prévia).
 - **Claude**: entregue como Artifact HTML. **ChatGPT**: entregue no Canvas.
 - **Alterações pedidas no chat** ("muda o título do slide 3", "troca o gráfico", "inclui um slide"): **atualize o mesmo documento do Canvas** (não abra outro e não cole o HTML no chat), mantendo o arquivo íntegro de ponta a ponta.
-- **Silêncio no chat**: fora do Canvas, no máximo 1 linha (no GoIA, a linha do visualizador acima). Sem saudações, desculpas, listas do que mudou ou explicações.
+- **Silêncio no chat**: fora do Canvas, no máximo 1 linha (ex.: "Apresentação atualizada no Canvas."). Sem saudações, desculpas, listas do que mudou ou explicações.
 - Plataforma sem visualizador: entregue o HTML num único bloco de código e nada mais.
 
 ## 1. Fidelidade — onde está sua liberdade e onde ela acaba
@@ -239,7 +238,7 @@ O `deck.js` reduz automaticamente até ~22% um slide que transborda, mas isso é
 | Plataforma | Ativação | Saída |
 |---|---|---|
 | Claude (Code / Projects) | Skill `apresentacao-orcamento` ou instrução do projeto | Arquivo HTML ou Artifact |
-| Gemini Enterprise (GoIA) | Habilidade cadastrada; digite `/apresentacao-orcamento` + o conteúdo, numa única mensagem | Canvas (Código/Visualizar) |
+| Gemini Enterprise (GoIA) | Habilidade cadastrada; digite `/apresentacao-orcamento` + o conteúdo, numa única mensagem | Canvas (documento HTML) |
 | Gemini CLI / Antigravity | Skill instalada; mencione `@apresentacao-orcamento` junto com o conteúdo | Canvas / arquivo HTML |
 | ChatGPT / Codex | Custom Instructions ou arquivo do projeto | Canvas / arquivo HTML |
 | Cursor e afins | Arquivo de regras do projeto | Arquivo HTML |
