@@ -1,11 +1,12 @@
 ---
 name: apresentacao-orcamento
 description: >-
-  Cria e edita apresentações institucionais em HTML 16:9 (1920x1080) do Governo de Goiás
-  (Secretaria da Economia) no Design System Orçamento, com CSS/JS servidos pelo GitHub (CDN).
-  Use quando pedirem slides, apresentação, deck ou relatório visual a partir de texto, dados ou tema.
-  Se pedirem apenas para carregar a skill, só confirme no chat. Fidelidade total ao conteúdo enviado:
-  a IA decide a forma (layout, blocos, gráficos, ritmo); nunca inventa, altera ou reordena conteúdo.
+  Ative SOMENTE quando a mensagem mencionar @apresentacao-orcamento (ou "apresentacao-orcamento").
+  Gera e edita apresentações institucionais HTML 16:9 do Governo de Goiás (Secretaria da Economia)
+  no Design System Orçamento, entregues SEMPRE no Canvas/visualizador HTML, nunca como bloco de código no chat.
+  Se a menção vier com texto, dados ou tema, gere a apresentação completa NO MESMO TURNO, sem pedir
+  para carregar antes. Só confirme o carregamento quando a mensagem for apenas a menção, sem conteúdo.
+  Fidelidade total: a IA decide a forma (layout, blocos, gráficos); nunca inventa, altera ou reordena conteúdo.
 ---
 
 # Apresentação Orçamento — v4.0.0
@@ -16,9 +17,18 @@ vêm do `deck.css` e do `deck.js` no CDN — você escreve só a estrutura e o c
 
 ## 0. Regra de ouro
 
-1. **Só carregar** → responda apenas: "Habilidade apresentacao-orcamento carregada e pronta. Envie o relatório, texto ou tema para iniciarmos a apresentação." Não gere slides de exemplo.
-2. **Gerar/editar** → entregue o HTML completo (`<!DOCTYPE html>` … `</html>`), no visualizador/canvas/artifact quando a plataforma tiver um. Fora do HTML, no máximo 2 linhas de resumo.
-3. **Editar deck existente** → altere só os slides pedidos; o resto fica idêntico.
+1. **Gatilho**: esta skill vale quando a mensagem menciona `@apresentacao-orcamento`. **Menção + conteúdo (texto, dados, tema, arquivo) na mesma mensagem → gere a apresentação já neste turno.** Não peça para "carregar primeiro", não confirme carregamento, não pergunte se pode começar.
+2. **Só a menção, sem conteúdo** → responda apenas: "Habilidade apresentacao-orcamento carregada e pronta. Envie o relatório, texto ou tema para iniciarmos a apresentação." Não gere slides de exemplo.
+3. **Entrega no visualizador (obrigatório)** — ver §0.1. Sempre o arquivo completo (`<!DOCTYPE html>` … `</html>`), nunca trechos ou `<!-- restante igual -->`.
+4. **Editar deck existente** → altere só os slides pedidos; o resto fica idêntico.
+
+### 0.1 Visualizador HTML obrigatório (Gemini Canvas, Claude Artifact, ChatGPT Canvas)
+
+- **Gemini**: crie a apresentação como **documento de código no Canvas** (painel lateral com abas Código/Visualizar), para o usuário acompanhar e editar em tempo real. É proibido entregar o HTML como bloco de código no corpo do chat. Não escreva frases do tipo "Código da apresentação (clique em copiar)" — elas desativam a prévia.
+- **Claude**: entregue como Artifact HTML. **ChatGPT**: entregue no Canvas.
+- **Alterações pedidas no chat** ("muda o título do slide 3", "troca o gráfico", "inclui um slide"): **atualize o mesmo documento do Canvas** (não abra outro e não cole o HTML no chat), mantendo o arquivo íntegro de ponta a ponta.
+- **Silêncio no chat**: fora do Canvas, no máximo 1 linha (ex.: "Apresentação atualizada no Canvas."). Sem saudações, desculpas, listas do que mudou ou explicações.
+- Plataforma sem visualizador: entregue o HTML num único bloco de código e nada mais.
 
 ## 1. Fidelidade — onde está sua liberdade e onde ela acaba
 
@@ -189,6 +199,7 @@ O `deck.js` reduz automaticamente até ~22% um slide que transborda, mas isso é
 - [ ] Cada slide tem um protagonista claro; nenhum layout repetido em sequência; ≥ 1/3 editorial.
 - [ ] Gráficos só via `.deck-chart`; sem botões, emojis, cores ou fontes fora do sistema.
 - [ ] Roteiro em comentário no topo do `<body>`.
+- [ ] Entregue no Canvas/visualizador (não como bloco de código no chat), arquivo completo, chat em silêncio.
 
 ## 11. Esqueleto do arquivo (é tudo que você precisa escrever além dos slides)
 
@@ -225,6 +236,6 @@ O `deck.js` reduz automaticamente até ~22% um slide que transborda, mas isso é
 | Plataforma | Ativação | Saída |
 |---|---|---|
 | Claude (Code / Projects) | Skill `apresentacao-orcamento` ou instrução do projeto | Arquivo HTML ou Artifact |
-| Gemini / Antigravity | Skill ou System Prompt; no Gemini Web, envie a skill num turno e o conteúdo no seguinte | Canvas / prévia 16:9 |
+| Gemini / Antigravity | Skill instalada; mencione `@apresentacao-orcamento` junto com o conteúdo, numa única mensagem | Canvas (Código/Visualizar) |
 | ChatGPT / Codex | Custom Instructions ou arquivo do projeto | Canvas / arquivo HTML |
 | Cursor e afins | Arquivo de regras do projeto | Arquivo HTML |
