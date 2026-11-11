@@ -3,9 +3,10 @@
  * DESIGN SYSTEM ORÇAMENTO — RUNTIME ENGINE DE APRESENTAÇÕES INSTITUCIONAIS
  * Governo do Estado de Goiás — Secretaria da Economia
  * Arquivo: deck.js
- * Versão: 4.0.2 — Gráficos declarativos (.deck-chart + JSON), rodapé automático,
+ * Versão: 4.0.3 — Gráficos declarativos (.deck-chart + JSON), rodapé automático,
  *                 ajuste automático de densidade, sem ativos base64 mortos.
- *                 4.0.2: "highlight" aceita também o nome do item (não só a posição).
+ *                 4.0.3: "highlight" aceita também o nome do item (não só a posição).
+ *                 (a etiqueta v4.0.2 foi publicada por engano e é igual à 4.0.1)
  *
  * O que este arquivo faz sozinho (a IA NÃO precisa escrever):
  *  - escala 16:9 (1920x1080) em qualquer iframe / preview / tela cheia

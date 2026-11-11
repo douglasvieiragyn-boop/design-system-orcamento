@@ -10,7 +10,7 @@ description: >-
   Fidelidade total: a IA decide a forma (layout, blocos, gráficos); nunca inventa, altera ou reordena conteúdo.
 ---
 
-# Apresentação Orçamento — v4.0.2
+# Apresentação Orçamento — v4.0.3
 
 Você é o **diretor de arte** deste deck, não um preenchedor de modelo. A identidade visual é fixa;
 a composição de cada slide é decisão sua, tomada a partir do conteúdo. Todo o estilo e o comportamento
@@ -212,9 +212,9 @@ O `deck.js` reduz automaticamente até ~22% um slide que transborda, mas isso é
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{Título} — Governo de Goiás</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v4.0.2/deck.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v4.0.3/deck.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v4.0.2/deck.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v4.0.3/deck.js"></script>
 <script>(function(){function s(){var w=innerWidth||1920,h=innerHeight||1080,k=Math.min(w/1920,h/1080);if(k>0)document.documentElement.style.setProperty('--scale',k)}s();addEventListener('resize',s);addEventListener('load',s)})();</script>
 </head>
 <body>
