@@ -3,8 +3,9 @@
  * DESIGN SYSTEM ORÇAMENTO — RUNTIME ENGINE DE APRESENTAÇÕES INSTITUCIONAIS
  * Governo do Estado de Goiás — Secretaria da Economia
  * Arquivo: deck.js
- * Versão: 4.0.1 — Gráficos declarativos (.deck-chart + JSON), rodapé automático,
+ * Versão: 4.0.2 — Gráficos declarativos (.deck-chart + JSON), rodapé automático,
  *                 ajuste automático de densidade, sem ativos base64 mortos.
+ *                 4.0.2: "highlight" aceita também o nome do item (não só a posição).
  *
  * O que este arquivo faz sozinho (a IA NÃO precisa escrever):
  *  - escala 16:9 (1920x1080) em qualquer iframe / preview / tela cheia
@@ -357,7 +358,7 @@
   //      <script type="application/json">{"labels":[...],"series":[{"label":"...","data":[...]}]}</script>
   //    </div>
   //    Tipos: bar | hbar | stacked | hstacked | line | area | combo | donut | pie | radar | polar
-  //    Opcionais no JSON: highlight (índice ou lista), target ({value,label} ou lista),
+  //    Opcionais no JSON: highlight (índice, nome do item ou lista), target ({value,label} ou lista),
   //                       center ({value,label} — rosca), labels:false, decimals, format
   // ------------------------------------------------------------------------
   function hexA(hex, a) {
@@ -402,7 +403,14 @@
     const stacked = type === 'stacked' || type === 'hstacked';
     const isArc = type === 'doughnut' || type === 'pie' || type === 'polar';
     const baseType = ({ hbar: 'bar', stacked: 'bar', hstacked: 'bar', area: 'line', combo: 'bar', polar: 'polarArea' })[type] || type;
-    const hl = spec.highlight === undefined || spec.highlight === null ? null : [].concat(spec.highlight);
+    // highlight aceita a posição (2, [0,3]) ou o nome do item ("Policlínica", ["A","B"])
+    const normHl = v => String(v).trim().toLowerCase();
+    const hl = spec.highlight === undefined || spec.highlight === null ? null
+      : [].concat(spec.highlight).map(h => {
+          if (typeof h === 'number') return h;
+          if (typeof h === 'string' && h.trim() !== '' && !isNaN(+h)) return +h;
+          return spec.labels.findIndex(l => normHl(l) === normHl(h));
+        }).filter(i => i >= 0);
 
     const datasets = spec.series.map((s, i) => {
       const data = (s.data || []).map(v => (typeof v === 'string' && v.trim() !== '' && !isNaN(+v)) ? +v : v);

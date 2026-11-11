@@ -10,7 +10,7 @@ description: >-
   Fidelidade total: a IA decide a forma (layout, blocos, gráficos); nunca inventa, altera ou reordena conteúdo.
 ---
 
-# Apresentação Orçamento — v4.0.1
+# Apresentação Orçamento — v4.0.2
 
 Você é o **diretor de arte** deste deck, não um preenchedor de modelo. A identidade visual é fixa;
 a composição de cada slide é decisão sua, tomada a partir do conteúdo. Todo o estilo e o comportamento
@@ -178,7 +178,7 @@ Arquétipos da v3 continuam válidos como casos destas receitas (8:4, Hero 4:8, 
 ```
 - `data-type`: `bar` · `hbar` · `stacked` · `hstacked` · `line` · `area` · `combo` (1ª série barra, demais linha) · `donut` · `pie` · `radar` · `polar`.
 - `data-format`: modelo do rótulo, `{v}` = valor em pt-BR exatamente como informado (`"{v}%"`, `"R$ {v} Mi"`). `data-decimals="1"` fixa casas.
-- Opcionais no JSON: `"highlight": 2` (ou `[0,3]`) destaca barras numa série única · `"target": {"value": 46.55, "label": "Limite prudencial 46,55%"}` (ou lista) desenha linha de referência · `"center": {"value": "R$ 48,9 Bi", "label": "Total"}` no centro da rosca · `"dataLabels": false` oculta rótulos.
+- Opcionais no JSON: `"highlight": 2` (ou `[0,3]`, ou o nome do item, ex.: `"highlight": "Saúde"`) destaca barras numa série única · `"target": {"value": 46.55, "label": "Limite prudencial 46,55%"}` (ou lista) desenha linha de referência · `"center": {"value": "R$ 48,9 Bi", "label": "Total"}` no centro da rosca · `"dataLabels": false` oculta rótulos.
 - Números no JSON com ponto decimal (`42.8`); a exibição sai em pt-BR (`42,8`). Copie os valores do usuário sem arredondar.
 - Cores automáticas: 1ª série `#219647`, 2ª `#738b7b`, depois `#9eb2a4`, `#cbd8cf`. Não passe cores.
 - Coloque o `.deck-chart` dentro de `.chart-card` (ou região com altura); ele ocupa o espaço restante.
@@ -212,9 +212,9 @@ O `deck.js` reduz automaticamente até ~22% um slide que transborda, mas isso é
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{Título} — Governo de Goiás</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v4.0.1/deck.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v4.0.2/deck.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v4.0.1/deck.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/douglasvieiragyn-boop/design-system-orcamento@v4.0.2/deck.js"></script>
 <script>(function(){function s(){var w=innerWidth||1920,h=innerHeight||1080,k=Math.min(w/1920,h/1080);if(k>0)document.documentElement.style.setProperty('--scale',k)}s();addEventListener('resize',s);addEventListener('load',s)})();</script>
 </head>
 <body>
